@@ -1,7 +1,9 @@
 package edu.neu.team28finalproject;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -23,41 +25,46 @@ public class StockViewHolder extends RecyclerView.ViewHolder {
     TextView pctChange;
     ImageButton likeButton;
 
+    private Button[] btn = new Button[4];
+    private Button btn_unfocus;
+    private int[] btn_id = {R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5};
 
-    public StockViewHolder(@NonNull View itemView) {
-        super(itemView);
 
+    public StockViewHolder(@NonNull View stockView) {
+        super(stockView);
 
+        this.graphView = stockView.findViewById(R.id.idGraphView);
+        this.ticker = stockView.findViewById(R.id.url);
+        this.cPrice = stockView.findViewById(R.id.price);
+        this.change = stockView.findViewById(R.id.change);
+        this.pctChange = stockView.findViewById(R.id.pctChange);
+        this.likeButton = stockView.findViewById(R.id.likeButton);
 
-        RadioGroup rg = (RadioGroup) itemView.findViewById(R.id.RadioGroup);
-
-        RadioButton oneDay = new RadioButton(rg.getContext());
-        oneDay.setText("1D");
-        RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-        rg.addView(oneDay, params);
-
-        RadioButton fiveDay = new RadioButton(rg.getContext());
-        fiveDay.setText("5D");
-        RadioGroup.LayoutParams params2 = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-        rg.addView(fiveDay, params2);
-
-        RadioButton oneMonth = new RadioButton(rg.getContext());
-        oneMonth.setText("1M");
-        RadioGroup.LayoutParams params3 = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-        rg.addView(oneMonth, params3);
-
-        RadioButton sixMonth = new RadioButton(rg.getContext());
-        sixMonth.setText("6M");
-        RadioGroup.LayoutParams params4 = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-        rg.addView(sixMonth, params4);
-
-        RadioButton oneYear = new RadioButton(rg.getContext());
-        oneYear.setText("1Y");
-        RadioGroup.LayoutParams params5 = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-        rg.addView(oneYear, params5);
+        for(int i = 0; i < btn.length; i++){
+            btn[i] = (Button) stockView.findViewById(btn_id[i]);
+            btn[i].setBackgroundColor(Color.rgb(207, 207, 207));
+            btn[i].setOnClickListener((View.OnClickListener) stockView);
+        }
+        btn_unfocus = btn[0];
     }
 
     public void bindThisData(StockViewObj stockToBind) {
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[]{
+                new DataPoint(0, 1),
+                new DataPoint(1, 3),
+                new DataPoint(2, 4),
+                new DataPoint(3, 9),
+                new DataPoint(4, 6),
+                new DataPoint(5, 3),
+                new DataPoint(6, 6),
+                new DataPoint(7, 1),
+                new DataPoint(8, 2)
+        });
+        graphView.addSeries(series);
+        ticker.setText(stockToBind.getTicker());
+        cPrice.setText(Double.toString((stockToBind.getCurrent())));
+        change.setText(Double.toString(stockToBind.getChange()));
+        pctChange.setText(Double.toString(stockToBind.getPctChange()) + "%");
 
 
 

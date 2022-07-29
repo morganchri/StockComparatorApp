@@ -80,16 +80,6 @@
         android:backgroundTint="#00FFFFFF"
         app:srcCompat="@android:drawable/radiobutton_off_background" />
 
-    <RadioGroup
-        android:id="@+id/RadioGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp" />
-
     <ImageButton
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
@@ -103,5 +93,79 @@
         android:minWidth="48dp"
         android:minHeight="48dp"
         app:srcCompat="@android:drawable/btn_dialog" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/idGraphView"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn0"
+            android:layout_width="68.5dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:text="A"
+            android:background="@drawable/homebuttonshape"
+            android:backgroundTint="#00FFFFFF"
+            android:textColor="#000000"
+            app:backgroundTint="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="68.5dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:text="B"
+            android:background="@drawable/homebuttonshape"
+            android:backgroundTint="#00FFFFFF"
+            android:textColor="#000000"
+            app:backgroundTint="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/btn2"
+            android:layout_width="68.5dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:text="C"
+            android:background="@drawable/homebuttonshape"
+            android:backgroundTint="#00FFFFFF"
+            android:textColor="#000000"
+            app:backgroundTint="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/btn3"
+            android:layout_width="68.5dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:text="D"
+            android:background="@drawable/homebuttonshape"
+            android:backgroundTint="#00FFFFFF"
+            android:textColor="#000000"
+            app:backgroundTint="@android:color/transparent"/>
+        <Button
+            android:id="@+id/btn4"
+            android:layout_width="68.5dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:text="E"
+            android:background="@drawable/homebuttonshape"
+            android:backgroundTint="#00FFFFFF"
+            android:textColor="#000000"
+            app:backgroundTint="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/btn5"
+            android:layout_width="68.5dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:text="F"
+            android:background="@drawable/homebuttonshape"
+            android:backgroundTint="#00FFFFFF"
+            android:textColor="#000000"
+            app:backgroundTint="@android:color/transparent"/>
+    </LinearLayout>
+
 
 </RelativeLayout>
