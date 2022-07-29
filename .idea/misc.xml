@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/activity_main.xml" value="0.5489130434782609" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/drawable/homebuttonshape.xml" value="0.5335" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/activity_stock_view.xml" value="0.24351851851851852" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/stockviewlayout.xml" value="0.4466666666666667" />
       </map>
     </option>
   </component>
