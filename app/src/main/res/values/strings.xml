@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Team 28 Final project</string>
+    <string name="ticker">Ticker</string>
+    <string name="dollar_price">Price</string>
+    <string name="delta_price">+/- Price</string>
+    <string name="delta_percent">+/- %</string>
+    <string name="info">Basic Info</string>
+    <string name="industry">Industry</string>
+    <string name="market_cap">Market Cap</string>
+    <string name="total_revenue">Total Revenue</string>
+    <string name="p_e">P/E</string>
+
 </resources>
