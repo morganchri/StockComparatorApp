@@ -12,10 +12,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.opencsv.CSVReader;
+//import com.opencsv.CSVReader;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         title = findViewById(R.id.Title);
         title.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        stockList = new ArrayList<>();
         RecyclerView stockRecyclerView = findViewById(R.id.recyclerView);
         stockRecyclerView.setHasFixedSize(true);
         stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -71,15 +73,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static boolean isValidTicker(String ticker) {
-        try {
-            CSVReader reader = new CSVReader(new FileReader("res\\raw\\ticker.csv"));
-            String[] nextLine;
-            while ((nextLine = reader.readNext()) != null) {
-                System.out.println(nextLine[0] + nextLine[1] + "etc...");
-            }
-        } catch (IOException e) {
-            System.out.println("Could not find file");
-        }
+        //try {
+        //    CSVReader reader = new CSVReader(new FileReader("res\\raw\\ticker.csv"));
+        //    String[] nextLine;
+        //    while ((nextLine = reader.readNext()) != null) {
+        //        System.out.println(nextLine[0] + nextLine[1] + "etc...");
+        //   }
+        //} catch (IOException e) {
+        //    System.out.println("Could not find file");
+        //}
         return true;
     }
 

@@ -20,14 +20,6 @@
         android:textSize="20sp"
         tools:text="NULL" />
 
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/idGraphView"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp" />
-
     <TextView
         android:id="@+id/price"
         android:layout_width="wrap_content"
@@ -95,9 +87,9 @@
         app:srcCompat="@android:drawable/btn_dialog" />
 
     <LinearLayout
+        android:id="@+id/linLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/idGraphView"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
@@ -106,65 +98,66 @@
             android:layout_width="68.5dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:text="A"
             android:background="@drawable/homebuttonshape"
             android:backgroundTint="#00FFFFFF"
+            android:text="A"
             android:textColor="#000000"
-            app:backgroundTint="@android:color/transparent"/>
+            app:backgroundTint="@android:color/transparent" />
 
         <Button
             android:id="@+id/btn1"
             android:layout_width="68.5dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:text="B"
             android:background="@drawable/homebuttonshape"
             android:backgroundTint="#00FFFFFF"
+            android:text="B"
             android:textColor="#000000"
-            app:backgroundTint="@android:color/transparent"/>
+            app:backgroundTint="@android:color/transparent" />
 
         <Button
             android:id="@+id/btn2"
             android:layout_width="68.5dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:text="C"
             android:background="@drawable/homebuttonshape"
             android:backgroundTint="#00FFFFFF"
+            android:text="C"
             android:textColor="#000000"
-            app:backgroundTint="@android:color/transparent"/>
+            app:backgroundTint="@android:color/transparent" />
 
         <Button
             android:id="@+id/btn3"
             android:layout_width="68.5dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:text="D"
             android:background="@drawable/homebuttonshape"
             android:backgroundTint="#00FFFFFF"
+            android:text="D"
             android:textColor="#000000"
-            app:backgroundTint="@android:color/transparent"/>
+            app:backgroundTint="@android:color/transparent" />
+
         <Button
             android:id="@+id/btn4"
             android:layout_width="68.5dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:text="E"
             android:background="@drawable/homebuttonshape"
             android:backgroundTint="#00FFFFFF"
+            android:text="E"
             android:textColor="#000000"
-            app:backgroundTint="@android:color/transparent"/>
+            app:backgroundTint="@android:color/transparent" />
 
         <Button
             android:id="@+id/btn5"
             android:layout_width="68.5dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:text="F"
             android:background="@drawable/homebuttonshape"
             android:backgroundTint="#00FFFFFF"
+            android:text="F"
             android:textColor="#000000"
-            app:backgroundTint="@android:color/transparent"/>
+            app:backgroundTint="@android:color/transparent" />
     </LinearLayout>
 
 
