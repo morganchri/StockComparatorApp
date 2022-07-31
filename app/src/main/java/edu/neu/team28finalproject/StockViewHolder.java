@@ -12,23 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class StockViewHolder extends RecyclerView.ViewHolder {
 
-    View view;
-    TextView ticker;
-    TextView cPrice;
-    TextView change;
-    TextView pctChange;
-    ImageButton likeButton;
-    LinearLayout linearLayout;
-    Button btn1;
-    Button btn2;
-    Button btn3;
-    Button btn4;
-    Button btn5;
-    Button btn6;
-
-    //private Button[] btn = new Button[4];
-    //private Button btn_unfocus;
-    //private int[] btn_id = {R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5};
+    public TextView ticker;
+    public TextView cPrice;
+    public TextView change;
+    public TextView pctChange;
+    public ImageButton likeButton;
+    public LinearLayout linearLayout;
+    public Button btn1;
+    public Button btn2;
+    public Button btn3;
+    public Button btn4;
+    public Button btn5;
+    public Button btn6;
 
 
     public StockViewHolder(@NonNull View stockView) {
@@ -46,7 +41,6 @@ public class StockViewHolder extends RecyclerView.ViewHolder {
         btn4 = stockView.findViewById(R.id.btn3);
         btn5 = stockView.findViewById(R.id.btn4);
         btn6 = stockView.findViewById(R.id.btn5);
-        view = stockView;
 
         //for(int i = 0; i < btn.length; i++){
             //btn[i] = (Button) stockView.findViewById(btn_id[i]);
@@ -58,12 +52,10 @@ public class StockViewHolder extends RecyclerView.ViewHolder {
 
     @SuppressLint("SetTextI18n")
     public void bindThisData(StockViewObj stockToBind) {
-
-        //ticker.setText(stockToBind.getTicker());
-        ticker.setText("AAPL");
-        cPrice.setText(Double.toString((stockToBind.getCurrent())));
-        change.setText(Double.toString(stockToBind.getChange()));
-        pctChange.setText(Double.toString(stockToBind.getPctChange()) + "%");
+        ticker.setText(stockToBind.getTicker().toString());
+        //cPrice.setText(Double.toString((stockToBind.getCurrent())));
+        //change.setText(Double.toString(stockToBind.getChange()));
+        //pctChange.setText(Double.toString(stockToBind.getPctChange()) + "%");
 
 
 

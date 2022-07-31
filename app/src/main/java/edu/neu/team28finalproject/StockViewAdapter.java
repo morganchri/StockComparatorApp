@@ -22,7 +22,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<StockViewHolder>{
     @NonNull
     @Override
     public StockViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new StockViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_main,
+        return new StockViewHolder(LayoutInflater.from(context).inflate(R.layout.stockviewlayout,
                 null));
     }
 

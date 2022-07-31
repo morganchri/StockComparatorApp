@@ -5,25 +5,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
-//import com.opencsv.CSVReader;
 
-import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView title;
-    private List<StockViewObj> stockList;
+    List<StockViewObj> stockList;
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +39,9 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView stockRecyclerView = findViewById(R.id.recyclerView);
         stockRecyclerView.setHasFixedSize(true);
         stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        stockRecyclerView.setAdapter(new StockViewAdapter(stockList, this));
-
+        StockViewAdapter sa = new StockViewAdapter(stockList, this);
+        stockRecyclerView.setAdapter(sa);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     public void addStock(View view) {
@@ -49,16 +55,26 @@ public class MainActivity extends AppCompatActivity {
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                if (isValidTicker(stockInput.getText().toString())) {
-                    StockViewObj newStock = new StockViewObj(stockInput.getText().toString(), 100.00,
-                            98.00);
-                    stockList.add(newStock);
-                    Snackbar.make(view, "Adding Stock was successful", Snackbar.LENGTH_LONG)
+                if (stockInput.getText().toString().equals(" ")) {
+                    Snackbar.make(view, "Stock ticker must not be blank", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 } else {
-                    Snackbar.make(view, "Adding Stock was unsuccessful, not valid Ticker",
-                                    Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    try {
+                        if (isValidTicker(stockInput.getText().toString().toUpperCase())) {
+                            StockViewObj newStock = new StockViewObj(stockInput.getText().toString().toUpperCase(),
+                                    100.00,
+                                    98.00);
+                            stockList.add(newStock);
+                            Snackbar.make(view, "Adding Stock was successful", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        } else {
+                            Snackbar.make(view, "Adding Stock was unsuccessful, not valid Ticker",
+                                            Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -72,17 +88,28 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
-    public static boolean isValidTicker(String ticker) {
-        //try {
-        //    CSVReader reader = new CSVReader(new FileReader("res\\raw\\ticker.csv"));
-        //    String[] nextLine;
-        //    while ((nextLine = reader.readNext()) != null) {
-        //        System.out.println(nextLine[0] + nextLine[1] + "etc...");
-        //   }
-        //} catch (IOException e) {
-        //    System.out.println("Could not find file");
-        //}
-        return true;
+    public ArrayList<String> getTickers() throws IOException {
+        ArrayList<String> tickers = new ArrayList<>();
+        InputStream inputStream = getResources().openRawResource(R.raw.newtickers);
+        BufferedReader bufferedReader= new BufferedReader(new InputStreamReader(inputStream));
+        String eachline = bufferedReader.readLine();
+        while (eachline != null) {
+            eachline = bufferedReader.readLine();
+            tickers.add(eachline);
+        }
+        return tickers;
     }
 
+    public boolean isValidTicker(String ticker) throws IOException {
+        ArrayList<String> tickers = this.getTickers();
+        int i = 0;
+        while (i < tickers.size()) {
+            if (Objects.equals(ticker, tickers.get(i))) {
+                return true;
+            } else {
+                i++;
+            }
+        }
+        return false;
+    }
 }
