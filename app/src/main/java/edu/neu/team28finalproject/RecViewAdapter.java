@@ -1,6 +1,7 @@
 package edu.neu.team28finalproject;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -23,16 +24,16 @@ public class RecViewAdapter extends RecyclerView.Adapter<RecViewHolder> {
     @NonNull
     @Override
     public RecViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        return new RecViewHolder(LayoutInflater.from(context).inflate(R.layout.recommendations_layout,null));
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecViewHolder holder, int position) {
-
+        holder.bindThisData(recList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return recList.size();
     }
 }
