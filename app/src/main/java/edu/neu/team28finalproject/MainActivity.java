@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -42,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
         StockViewAdapter sa = new StockViewAdapter(stockList, this);
         stockRecyclerView.setAdapter(sa);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        Button openList = findViewById(R.id.listButton);
+        openList.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent openList = new Intent(MainActivity.this, AllStocksActivity.class);
+                MainActivity.this.startActivity(openList);
+            }
+        });
     }
 
     public void addStock(View view) {

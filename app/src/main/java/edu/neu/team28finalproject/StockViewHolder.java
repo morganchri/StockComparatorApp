@@ -29,7 +29,7 @@ public class StockViewHolder extends RecyclerView.ViewHolder {
     public StockViewHolder(@NonNull View stockView) {
         super(stockView);
 
-        this.ticker = stockView.findViewById(R.id.url);
+        this.ticker = stockView.findViewById(R.id.listTicker);
         this.cPrice = stockView.findViewById(R.id.price);
         this.change = stockView.findViewById(R.id.change);
         this.pctChange = stockView.findViewById(R.id.pctChange);
@@ -52,10 +52,10 @@ public class StockViewHolder extends RecyclerView.ViewHolder {
 
     @SuppressLint("SetTextI18n")
     public void bindThisData(StockViewObj stockToBind) {
-        ticker.setText(stockToBind.getTicker().toString());
-        //cPrice.setText(Double.toString((stockToBind.getCurrent())));
-        //change.setText(Double.toString(stockToBind.getChange()));
-        //pctChange.setText(Double.toString(stockToBind.getPctChange()) + "%");
+        ticker.setText(stockToBind.getTicker());
+        cPrice.setText(Double.toString((stockToBind.getCurrent())));
+        change.setText(Double.toString(stockToBind.getChange()));
+        pctChange.setText(Double.toString(stockToBind.getPctChange()) + "%");
 
 
 
