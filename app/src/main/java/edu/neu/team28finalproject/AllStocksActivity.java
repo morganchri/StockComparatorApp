@@ -33,18 +33,18 @@ public class AllStocksActivity extends AppCompatActivity {
         StockListAdapter sa = new StockListAdapter(stocks,this);
         listRecyclerView.setAdapter(sa);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        try{
+        try {
             InputStream inputStream = getResources().openRawResource(R.raw.alltickers);
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
             String strLine;
-            while ((strLine = br.readLine()) != null)   {
+            while ((strLine = br.readLine()) != null) {
                 String[] splitted = strLine.split(" ");
                 StockListObj stock = new StockListObj(splitted[0], splitted[1]);
                 if (!Objects.equals(stock.getSector(), "nan")) {
                     stocks.add(stock);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
     }
