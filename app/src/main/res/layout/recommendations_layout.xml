@@ -48,25 +48,25 @@
         android:layout_height="wrap_content"
         android:text="@string/delta_percent"
         android:textSize="20sp"
-        android:layout_toStartOf="@id/likeButton"
+        android:layout_toStartOf="@id/like_button"
         android:layout_alignParentTop="true"
         android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
         />
 
     <ImageButton
-        android:id="@+id/likeButton"
+        android:id="@+id/like_button"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@id/addButton"
+        android:layout_toStartOf="@id/add_button"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:backgroundTint="#00FFFFFF"
         app:srcCompat="@android:drawable/radiobutton_off_background" />
 
     <ImageButton
-        android:id="@+id/addButton"
+        android:id="@+id/add_button"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
