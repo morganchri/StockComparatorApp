@@ -70,10 +70,15 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     try {
                         if (isValidTicker(stockInput.getText().toString().toUpperCase())) {
+                            //Just test data for now
                             StockViewObj newStock = new StockViewObj(stockInput.getText().toString().toUpperCase(),
                                     100.00,
-                                    98.00);
+                                    140.00);
                             stockList.add(newStock);
+                            StockViewObj newStock1 = new StockViewObj(stockInput.getText().toString().toUpperCase(),
+                                    100.00,
+                                    90.00);
+                            stockList.add(newStock1);
                             Snackbar.make(view, "Adding Stock was successful", Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
                         } else {
@@ -121,4 +126,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
+
+
+
 }

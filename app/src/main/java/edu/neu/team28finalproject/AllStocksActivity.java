@@ -9,8 +9,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -38,8 +36,8 @@ public class AllStocksActivity extends AppCompatActivity {
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
             String strLine;
             while ((strLine = br.readLine()) != null) {
-                String[] splitted = strLine.split(" ");
-                StockListObj stock = new StockListObj(splitted[0], splitted[1]);
+                String[] split = strLine.split(" ");
+                StockListObj stock = new StockListObj(split[0], split[1]);
                 if (!Objects.equals(stock.getSector(), "nan")) {
                     stocks.add(stock);
                 }

@@ -1,6 +1,8 @@
 package edu.neu.team28finalproject;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -10,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DecimalFormat;
+
 public class StockViewHolder extends RecyclerView.ViewHolder {
 
     public TextView ticker;
@@ -17,6 +21,7 @@ public class StockViewHolder extends RecyclerView.ViewHolder {
     public TextView change;
     public TextView pctChange;
     public ImageButton likeButton;
+    public ImageButton deleteButton;
     public LinearLayout linearLayout;
     public Button btn1;
     public Button btn2;
@@ -24,7 +29,6 @@ public class StockViewHolder extends RecyclerView.ViewHolder {
     public Button btn4;
     public Button btn5;
     public Button btn6;
-
 
     public StockViewHolder(@NonNull View stockView) {
         super(stockView);
@@ -34,6 +38,7 @@ public class StockViewHolder extends RecyclerView.ViewHolder {
         this.change = stockView.findViewById(R.id.change);
         this.pctChange = stockView.findViewById(R.id.pctChange);
         this.likeButton = stockView.findViewById(R.id.likeButton);
+        this.deleteButton = stockView.findViewById(R.id.deleteButton);
         linearLayout = stockView.findViewById(R.id.linLayout);
         btn1 = stockView.findViewById(R.id.btn0);
         btn2 = stockView.findViewById(R.id.btn1);
@@ -54,10 +59,14 @@ public class StockViewHolder extends RecyclerView.ViewHolder {
     public void bindThisData(StockViewObj stockToBind) {
         ticker.setText(stockToBind.getTicker());
         cPrice.setText(Double.toString((stockToBind.getCurrent())));
-        change.setText(Double.toString(stockToBind.getChange()));
-        pctChange.setText(Double.toString(stockToBind.getPctChange()) + "%");
-
-
-
+        change.setText("(" + stockToBind.getChange() + ")");
+        pctChange.setText(stockToBind.getPctChange() + "%");
+        if (stockToBind.getChange() > 0) {
+            change.setTextColor(Color.rgb(76,153,0));
+            pctChange.setTextColor(Color.rgb(76,153,0));
+        } else {
+            change.setTextColor(Color.RED);
+            pctChange.setTextColor(Color.RED);
+        }
     }
 }

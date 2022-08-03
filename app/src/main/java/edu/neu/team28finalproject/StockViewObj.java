@@ -12,7 +12,7 @@ public class StockViewObj {
         this.current = current;
         this.open = open;
         this.change = current - open;
-        this.pctChange = (current - open) / open;
+        this.pctChange = ((current - open) / open)*100;
     }
 
     public String getTicker() {
@@ -32,6 +32,6 @@ public class StockViewObj {
     }
 
     public double getPctChange() {
-        return pctChange;
+        return Math.round(pctChange);
     }
 }
