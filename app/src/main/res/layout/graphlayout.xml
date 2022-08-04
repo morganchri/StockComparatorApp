@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="210dp">
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="false"
+        android:visibility="visible"
+        android:layout_above="@id/linLayout"/>
+
+    <LinearLayout
+        android:id="@+id/linLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/oneDay"
+            android:layout_width="68.5dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/homebuttonshape"
+            android:backgroundTint="#00FFFFFF"
+            android:text="1D"
+            android:textColor="#000000"
+            app:backgroundTint="@android:color/transparent" />
+
+        <Button
+            android:id="@+id/fiveDay"
+            android:layout_width="68.5dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/homebuttonshape"
+            android:backgroundTint="#00FFFFFF"
+            android:text="5D"
+            android:textColor="#000000"
+            app:backgroundTint="@android:color/transparent" />
+
+        <Button
+            android:id="@+id/oneMonth"
+            android:layout_width="68.5dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/homebuttonshape"
+            android:backgroundTint="#00FFFFFF"
+            android:text="1M"
+            android:textColor="#000000"
+            app:backgroundTint="@android:color/transparent" />
+
+        <Button
+            android:id="@+id/sixMonth"
+            android:layout_width="68.5dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/homebuttonshape"
+            android:backgroundTint="#00FFFFFF"
+            android:text="6M"
+            android:textColor="#000000"
+            app:backgroundTint="@android:color/transparent" />
+
+        <Button
+            android:id="@+id/Year"
+            android:layout_width="68.5dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/homebuttonshape"
+            android:backgroundTint="#00FFFFFF"
+            android:text="Y"
+            android:textColor="#000000"
+            app:backgroundTint="@android:color/transparent" />
+
+        <Button
+            android:id="@+id/customDate"
+            android:layout_width="68.5dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/homebuttonshape"
+            android:backgroundTint="#00FFFFFF"
+            android:text="Date"
+            android:textColor="#000000"
+            app:backgroundTint="@android:color/transparent" />
+    </LinearLayout>
+
+
+</RelativeLayout>

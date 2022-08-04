@@ -9,12 +9,16 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.BufferedReader;
@@ -28,7 +32,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     TextView title;
-    List<StockViewObj> stockList;
+    List<Object> stockList;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -41,13 +45,14 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView stockRecyclerView = findViewById(R.id.recyclerView);
         stockRecyclerView.setHasFixedSize(true);
         stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        StockViewAdapter sa = new StockViewAdapter(stockList, this);
+        StockViewAdapter sa = new StockViewAdapter(stockList,this);
         stockRecyclerView.setAdapter(sa);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Button openList = findViewById(R.id.listButton);
         openList.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent openList = new Intent(MainActivity.this, AllStocksActivity.class);
+                Intent openList = new Intent(MainActivity.this,
+                        AllStocksActivity.class);
                 MainActivity.this.startActivity(openList);
             }
         });
@@ -71,18 +76,21 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         if (isValidTicker(stockInput.getText().toString().toUpperCase())) {
                             //Just test data for now
-                            StockViewObj newStock = new StockViewObj(stockInput.getText().toString().toUpperCase(),
+                            StockViewObj newStock = new StockViewObj(stockInput.getText()
+                                    .toString().toUpperCase(),
                                     100.00,
                                     140.00);
                             stockList.add(newStock);
-                            StockViewObj newStock1 = new StockViewObj(stockInput.getText().toString().toUpperCase(),
-                                    100.00,
-                                    90.00);
-                            stockList.add(newStock1);
-                            Snackbar.make(view, "Adding Stock was successful", Snackbar.LENGTH_LONG)
+                            GraphViewObj newGraph = new GraphViewObj(stockInput.getText()
+                                    .toString().toUpperCase(),
+                                    getData(36,100));
+                            stockList.add(newGraph);
+                            Snackbar.make(view, "Adding Stock was successful",
+                                            Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
                         } else {
-                            Snackbar.make(view, "Adding Stock was unsuccessful, not valid Ticker",
+                            Snackbar.make(view, "Adding Stock was unsuccessful, " +
+                                                    "not valid Ticker",
                                             Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
                         }
@@ -125,6 +133,24 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private LineData getData(int count, int range) {
+        ArrayList<Entry> yVals = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            float val = (float) (Math.random()*range) + 3;
+            yVals.add(new Entry(i,val));
+        }
+        LineDataSet set1 = new LineDataSet(yVals, "Data Set");
+        set1.setLineWidth(3f);
+        //set1.setCircleRadius(5f);
+        //set1.setCircleHoleRadius(2.5f);
+        set1.setColor(Color.BLACK);
+        //set1.setCircleColor(Color.BLACK);
+        //set1.setHighLightColor(Color.BLACK);
+        set1.setDrawValues(false);
+        return new LineData(set1);
     }
 
 
