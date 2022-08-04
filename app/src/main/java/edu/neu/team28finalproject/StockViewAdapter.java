@@ -43,8 +43,13 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((StockViewHolder) holder).bindThisData((StockViewObj) item);
             ((StockViewHolder) holder).deleteButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    int newPosition = holder.getAdapterPosition();
                     stocks.remove(position);
                     notifyItemRemoved(position);
+                    notifyItemRangeChanged(newPosition, stocks.size());
+                    stocks.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(newPosition, stocks.size());
                 }
             });
             ((StockViewHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
