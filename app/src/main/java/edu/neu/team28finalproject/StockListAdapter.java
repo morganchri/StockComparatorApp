@@ -2,6 +2,7 @@ package edu.neu.team28finalproject;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,11 @@ public class StockListAdapter extends RecyclerView.Adapter<StockListHolder>{
     @Override
     public void onBindViewHolder(@NonNull StockListHolder holder, int position) {
         holder.bindThisData(stocks.get(position));
+        holder.ticker.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override

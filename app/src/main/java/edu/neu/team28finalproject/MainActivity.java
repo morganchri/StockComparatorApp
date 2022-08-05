@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -53,10 +54,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent openList = new Intent(MainActivity.this,
                         AllStocksActivity.class);
+                Bundle args = new Bundle();
+                args.putSerializable("Stocks",(Serializable)stockList);
+                openList.putExtra("Stocks",args);
                 MainActivity.this.startActivity(openList);
+
+
+
             }
         });
+
     }
+
 
     public void addStock(View view) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);

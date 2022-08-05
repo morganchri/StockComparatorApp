@@ -5,8 +5,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -14,22 +19,51 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class AllStocksActivity extends AppCompatActivity {
 
     List<StockListObj> stocks;
+    SearchView searchBar;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_stocks);
+        searchBar = findViewById(R.id.searchView);
         stocks = new ArrayList<>();
         RecyclerView listRecyclerView = findViewById(R.id.stockListRecyclerView);
         listRecyclerView.setHasFixedSize(true);
         listRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         StockListAdapter sa = new StockListAdapter(stocks,this);
         listRecyclerView.setAdapter(sa);
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("Stocks");
+        ArrayList<Object> views = (ArrayList<Object>) args.getSerializable("Stocks");
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(containsName(stocks, query)){
+                    List<StockListObj> temp;
+                    temp = stocks.stream().filter(stockListObj ->
+                                    Objects.equals(stockListObj.getName(), query))
+                            .collect(Collectors.toList());
+                    StockListAdapter sa = new StockListAdapter(temp,AllStocksActivity.this);
+                    listRecyclerView.setAdapter(sa);
+                } else {
+                    Toast.makeText(AllStocksActivity.this,
+                            "No Match found",Toast.LENGTH_LONG).show();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //    adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         try {
             InputStream inputStream = getResources().openRawResource(R.raw.alltickers);
@@ -37,13 +71,20 @@ public class AllStocksActivity extends AppCompatActivity {
             String strLine;
             while ((strLine = br.readLine()) != null) {
                 String[] split = strLine.split(" ");
-                StockListObj stock = new StockListObj(split[0], split[1]);
-                if (!Objects.equals(stock.getSector(), "nan")) {
+                if (split[2].equals("Telecommunications")) {
+                    split[2] = "Telecoms";
+                }
+                StockListObj stock = new StockListObj(split[0], split[1].replaceAll("\\s+",""), split[2]);
+                if (!Objects.equals(stock.getSector(), "nan") && !Objects.equals(stock.getSector(), " ") && !Objects.equals(stock.getName(), " ") && !Objects.equals(stock.getSector(), "NaN")) {
                     stocks.add(stock);
                 }
             }
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
+    }
+
+    public boolean containsName(final List<StockListObj> list, final String name){
+        return list.stream().anyMatch(o -> o.getName().equals(name));
     }
 }
