@@ -54,13 +54,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent openList = new Intent(MainActivity.this,
                         AllStocksActivity.class);
-                Bundle args = new Bundle();
-                args.putSerializable("Stocks",(Serializable)stockList);
-                openList.putExtra("Stocks",args);
                 MainActivity.this.startActivity(openList);
-
-
-
             }
         });
 

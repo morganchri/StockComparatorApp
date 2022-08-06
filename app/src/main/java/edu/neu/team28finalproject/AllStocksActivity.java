@@ -38,9 +38,6 @@ public class AllStocksActivity extends AppCompatActivity {
         listRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         StockListAdapter sa = new StockListAdapter(stocks,this);
         listRecyclerView.setAdapter(sa);
-        Intent intent = getIntent();
-        Bundle args = intent.getBundleExtra("Stocks");
-        ArrayList<Object> views = (ArrayList<Object>) args.getSerializable("Stocks");
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -51,16 +48,23 @@ public class AllStocksActivity extends AppCompatActivity {
                             .collect(Collectors.toList());
                     StockListAdapter sa = new StockListAdapter(temp,AllStocksActivity.this);
                     listRecyclerView.setAdapter(sa);
-                } else {
-                    Toast.makeText(AllStocksActivity.this,
-                            "No Match found",Toast.LENGTH_LONG).show();
                 }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //    adapter.getFilter().filter(newText);
+                if(containsName(stocks, newText)){
+                    List<StockListObj> temp;
+                    temp = stocks.stream().filter(stockListObj ->
+                                    Objects.equals(stockListObj.getName(), newText))
+                            .collect(Collectors.toList());
+                    StockListAdapter sa = new StockListAdapter(temp,AllStocksActivity.this);
+                    listRecyclerView.setAdapter(sa);
+                } else {
+                    StockListAdapter sa = new StockListAdapter(stocks,AllStocksActivity.this);
+                    listRecyclerView.setAdapter(sa);
+                }
                 return false;
             }
         });
@@ -74,8 +78,14 @@ public class AllStocksActivity extends AppCompatActivity {
                 if (split[2].equals("Telecommunications")) {
                     split[2] = "Telecoms";
                 }
-                StockListObj stock = new StockListObj(split[0], split[1].replaceAll("\\s+",""), split[2]);
-                if (!Objects.equals(stock.getSector(), "nan") && !Objects.equals(stock.getSector(), " ") && !Objects.equals(stock.getName(), " ") && !Objects.equals(stock.getSector(), "NaN")) {
+                StockListObj stock = new StockListObj(split[0],
+                        split[1].replaceAll("\\s+",""), split[2]);
+                if (!Objects.equals(stock.getSector(), "nan")
+                        && !Objects.equals(stock.getSector(), " ")
+                        && !Objects.equals(stock.getName(), " ")
+                        && !Objects.equals(stock.getSector(), "NaN")
+                        && !Objects.equals(stock.getSector(), "")
+                        && !Objects.equals(stock.getName(), "")) {
                     stocks.add(stock);
                 }
             }
