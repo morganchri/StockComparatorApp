@@ -64,6 +64,16 @@ public class SymbolLookup {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "SymbolLookup{" +
+                "description='" + description + '\'' +
+                ", displaySymbol='" + displaySymbol + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }
 
 

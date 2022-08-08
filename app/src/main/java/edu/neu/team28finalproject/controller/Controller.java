@@ -1,4 +1,4 @@
-package edu.neu.team28finalproject.webservice;
+package edu.neu.team28finalproject.controller;
 
 import java.util.List;
 
@@ -7,46 +7,44 @@ import edu.neu.team28finalproject.datatransferobjects.Quote;
 import edu.neu.team28finalproject.datatransferobjects.Symbol;
 import edu.neu.team28finalproject.datatransferobjects.SymbolLookupWrapper;
 import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
 
 /**
- * Interface that represents a web service communication to a remote endpoint.
+ * Interface that represents a controller that sits in between the
+ * application and the web service.
  */
-public interface WebService {
+public interface Controller {
     /**
      * Get a list of supported stocks.
      *
-     * @param exchange exchange in which stock trades on
-     * @return call that resolves to a list of Symbols
+     * @return completable future that resolves to a list of Symbols
      */
-    @GET("/api/v1/stock/symbol")
-    Call<List<Symbol>> getSymbols(@Query("exchange") String exchange);
+    Call<List<Symbol>> getSymbols();
 
     /**
      * Search for best matching symbol based on query.
      *
      * @param query query text such as symbol, name, isin or cusip
-     * @return call that resolves to an object with a count and list of SymbolLookups
+     * @return call that resolves to a count and list of SymbolLookups
      */
-    @GET("/api/v1/search")
-    Call<SymbolLookupWrapper> searchSymbol(@Query("q") String query);
+    Call<SymbolLookupWrapper> searchSymbol(String query);
 
     /**
      * Get general information of company with ticker provided.
+     * When there is no match, the empty json will still be
+     * deserialized into a java object with all reference values = null
      *
      * @param ticker symbol/ticker of the company e.g AAPL
      * @return company information
      */
-    @GET("/api/v1/stock/profile2")
-    Call<CompanyProfile> getCompany(@Query("symbol") String ticker);
+    Call<CompanyProfile> getCompany(String ticker);
 
     /**
      * Get real time quote data for stocks.
+     * When there is no match, the empty json will still be
+     * deserialized into a java object with all reference values = null
      *
      * @param ticker symbol
      * @return quote data
      */
-    @GET("/api/v1/quote")
-    Call<Quote> getQuote(@Query(("symbol")) String ticker);
+    Call<Quote> getQuote(String ticker);
 }

@@ -96,4 +96,17 @@ public class Symbol {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Symbol{" +
+                "currency='" + currency + '\'' +
+                ", description='" + description + '\'' +
+                ", displaySymbol='" + displaySymbol + '\'' +
+                ", figi='" + figi + '\'' +
+                ", mic='" + mic + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

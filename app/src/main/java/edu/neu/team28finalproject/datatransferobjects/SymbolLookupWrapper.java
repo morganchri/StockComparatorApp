@@ -42,4 +42,12 @@ public class SymbolLookupWrapper {
     public void setSymbols(List<SymbolLookup> result) {
         this.result = result;
     }
+
+    @Override
+    public String toString() {
+        return "SymbolLookupWrapper{" +
+                "count=" + count +
+                ", result=" + result +
+                '}';
+    }
 }
