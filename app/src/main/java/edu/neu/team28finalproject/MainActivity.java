@@ -1,9 +1,11 @@
 package edu.neu.team28finalproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -29,10 +31,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 public class MainActivity extends AppCompatActivity {
 
     TextView title;
+    SwipeRefreshLayout swipeRefreshLayout;
     List<Object> stockList;
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -43,9 +45,27 @@ public class MainActivity extends AppCompatActivity {
         title = findViewById(R.id.Title);
         title.setGravity(View.TEXT_ALIGNMENT_CENTER);
         stockList = new ArrayList<>();
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         RecyclerView stockRecyclerView = findViewById(R.id.recyclerView);
         stockRecyclerView.setHasFixedSize(true);
-        stockRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linLayManager = new LinearLayoutManager(this);
+        stockRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy < 0) {
+
+                } else if (dy > 0) {
+                    // Recycle view scrolling down...
+                }
+            }
+        });
+        stockRecyclerView.setLayoutManager(linLayManager);
         StockViewAdapter sa = new StockViewAdapter(stockList,this);
         stockRecyclerView.setAdapter(sa);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -55,6 +75,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent openList = new Intent(MainActivity.this,
                         AllStocksActivity.class);
                 MainActivity.this.startActivity(openList);
+            }
+        });
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -155,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
         set1.setDrawValues(false);
         return new LineData(set1);
     }
-
 
 
 }
