@@ -3,6 +3,8 @@ package edu.neu.team28finalproject.controller;
 import java.util.List;
 
 import edu.neu.team28finalproject.datatransferobjects.CompanyProfile;
+import edu.neu.team28finalproject.datatransferobjects.Indicator;
+import edu.neu.team28finalproject.datatransferobjects.IndicatorResolution;
 import edu.neu.team28finalproject.datatransferobjects.Quote;
 import edu.neu.team28finalproject.datatransferobjects.Symbol;
 import edu.neu.team28finalproject.datatransferobjects.SymbolLookupWrapper;
@@ -59,5 +61,12 @@ public class ControllerImpl implements Controller {
     @Override
     public Call<Quote> getQuote(String ticker) {
         return webService.getQuote(ticker);
+    }
+
+    @Override
+    public Call<Indicator> getIndicators(String ticker, IndicatorResolution resolution,
+                                         long from, long to) {
+        String indicator = "sma";
+        return webService.getIndicators(ticker, resolution.getResolution(), from, to, indicator);
     }
 }
