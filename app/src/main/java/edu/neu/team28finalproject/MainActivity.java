@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -33,6 +34,9 @@ import java.util.List;
 import java.util.Objects;
 
 import edu.neu.team28finalproject.controller.ControllerImpl;
+import edu.neu.team28finalproject.datatransferobjects.Error;
+import edu.neu.team28finalproject.datatransferobjects.Indicator;
+import edu.neu.team28finalproject.datatransferobjects.IndicatorResolution;
 import edu.neu.team28finalproject.datatransferobjects.Quote;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
     List<Object> stockList;
     RecyclerView stockRecyclerView;
-    ControllerImpl cr = new ControllerImpl();
+    ControllerImpl cr;
     private static final String TAG = "Main";
 
 
@@ -56,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         title = findViewById(R.id.Title);
         title.setGravity(View.TEXT_ALIGNMENT_CENTER);
         stockList = new ArrayList<>();
+        cr = new ControllerImpl();
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         stockRecyclerView = findViewById(R.id.recyclerView);
         stockRecyclerView.setHasFixedSize(true);
@@ -115,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     try {
                         if (isValidTicker(stockInput.getText().toString().toUpperCase())) {
-                            //Just test data for now
                             cr.getQuote(stockInput.getText().toString().toUpperCase())
                                     .enqueue(new Callback<Quote>() {
                                 @Override
@@ -124,19 +128,18 @@ public class MainActivity extends AppCompatActivity {
                                         if (response.body().getTimestamp() > 0) {
                                             double cPrice = response.body().getCurrentPrice();
                                             double oPrice = response.body().getOpenPrice();
-                                            StockViewObj newStock = new StockViewObj(stockInput.getText()
+                                            StockViewObj newStock = new StockViewObj(stockInput
+                                                    .getText()
                                                     .toString().toUpperCase(),
                                                     cPrice,
                                                     oPrice);
                                             stockList.add(newStock);
-                                            GraphViewObj newGraph = new GraphViewObj(stockInput.getText()
-                                                    .toString().toUpperCase(),
-                                                    getData(36,100));
-                                            stockList.add(newGraph);
+
                                             Snackbar.make(view, "Adding Stock was successful",
                                                             Snackbar.LENGTH_LONG)
                                                     .setAction("Action", null).show();
-                                            Log.i(TAG, "getQuoteOnResponse: " + response.body());
+                                            Log.i(TAG, "getQuoteOnResponse: "
+                                                    + response.body());
                                         }
                                         else {
                                             Snackbar.make(view, "No match",
@@ -155,6 +158,45 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onFailure(Call<Quote> call, Throwable t) {
                                     Log.i(TAG, "getQuoteOnFailure: " + t);
+                                }
+                            });
+                            cr.getIndicators(stockInput.getText().toString().toUpperCase(),
+                                    IndicatorResolution.RES_D, 1583098857,
+                                    1584308457).enqueue(new Callback<Indicator>() {
+                                @Override
+                                public void onResponse(Call<Indicator> call,
+                                                       Response<Indicator> response) {
+                                    if (response.isSuccessful()) {
+                                        if (response.body().getStatus()
+                                                .equalsIgnoreCase("ok")) {
+                                            GraphViewObj newGraph = new GraphViewObj(stockInput
+                                                    .getText().toString().toUpperCase(),
+                                                    getData(response.body().getClosePrices()));
+                                            stockList.add(newGraph);
+                                            Log.i(TAG, "getIndicatorsOnResponse: "
+                                                    + response.body());
+                                        } else {
+                                            // No data
+                                        }
+                                    } else {
+                                        try {
+                                            Log.i(TAG,
+                                                    "getIndicatorsOnResponseNotSuccessful: " +
+                                                    response.errorBody().
+                                                            string());
+                                            ObjectMapper om = new ObjectMapper();
+                                            Error e = om.readValue(response.errorBody().string(),
+                                                    Error.class);
+                                            Log.i(TAG, "error: " + e.getError());
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Indicator> call, Throwable t) {
+                                    Log.i(TAG, "getIndicatorsOnFailure: " + t);
                                 }
                             });
                         } else {
@@ -204,18 +246,18 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private LineData getData(int count, int range) {
+    private LineData getData(List<Double> prices) {
         ArrayList<Entry> yVals = new ArrayList<>();
 
-        for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random()*range) + 3;
+        for (int i = 0; i < prices.size(); i++) {
+            float val = prices.get(i).floatValue();
             yVals.add(new Entry(i,val));
         }
         LineDataSet set1 = new LineDataSet(yVals, "Data Set");
         set1.setLineWidth(3f);
         //set1.setCircleRadius(5f);
         //set1.setCircleHoleRadius(2.5f);
-        set1.setColor(Color.BLACK);
+        //set1.setColor(Color.BLACK);
         //set1.setCircleColor(Color.BLACK);
         //set1.setHighLightColor(Color.BLACK);
         set1.setDrawValues(false);
