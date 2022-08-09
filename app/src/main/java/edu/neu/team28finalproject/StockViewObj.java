@@ -28,7 +28,7 @@ public class StockViewObj {
     }
 
     public double getChange() {
-        return change;
+        return Math.round(change* 100.0) / 100.0;
     }
 
     public double getPctChange() {

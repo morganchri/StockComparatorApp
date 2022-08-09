@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,11 +32,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import edu.neu.team28finalproject.controller.ControllerImpl;
+import edu.neu.team28finalproject.datatransferobjects.Quote;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView title;
     SwipeRefreshLayout swipeRefreshLayout;
     List<Object> stockList;
+    RecyclerView stockRecyclerView;
+    ControllerImpl cr = new ControllerImpl();
+    private static final String TAG = "Main";
+
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -46,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         title.setGravity(View.TEXT_ALIGNMENT_CENTER);
         stockList = new ArrayList<>();
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-        RecyclerView stockRecyclerView = findViewById(R.id.recyclerView);
+        stockRecyclerView = findViewById(R.id.recyclerView);
         stockRecyclerView.setHasFixedSize(true);
         LinearLayoutManager linLayManager = new LinearLayoutManager(this);
         stockRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -105,18 +116,47 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         if (isValidTicker(stockInput.getText().toString().toUpperCase())) {
                             //Just test data for now
-                            StockViewObj newStock = new StockViewObj(stockInput.getText()
-                                    .toString().toUpperCase(),
-                                    100.00,
-                                    140.00);
-                            stockList.add(newStock);
-                            GraphViewObj newGraph = new GraphViewObj(stockInput.getText()
-                                    .toString().toUpperCase(),
-                                    getData(36,100));
-                            stockList.add(newGraph);
-                            Snackbar.make(view, "Adding Stock was successful",
-                                            Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+                            cr.getQuote(stockInput.getText().toString().toUpperCase())
+                                    .enqueue(new Callback<Quote>() {
+                                @Override
+                                public void onResponse(Call<Quote> call, Response<Quote> response) {
+                                    if (response.isSuccessful()) {
+                                        if (response.body().getTimestamp() > 0) {
+                                            double cPrice = response.body().getCurrentPrice();
+                                            double oPrice = response.body().getOpenPrice();
+                                            StockViewObj newStock = new StockViewObj(stockInput.getText()
+                                                    .toString().toUpperCase(),
+                                                    cPrice,
+                                                    oPrice);
+                                            stockList.add(newStock);
+                                            GraphViewObj newGraph = new GraphViewObj(stockInput.getText()
+                                                    .toString().toUpperCase(),
+                                                    getData(36,100));
+                                            stockList.add(newGraph);
+                                            Snackbar.make(view, "Adding Stock was successful",
+                                                            Snackbar.LENGTH_LONG)
+                                                    .setAction("Action", null).show();
+                                            Log.i(TAG, "getQuoteOnResponse: " + response.body());
+                                        }
+                                        else {
+                                            Snackbar.make(view, "No match",
+                                                            Snackbar.LENGTH_LONG)
+                                                    .setAction("Action", null).show();
+                                        }
+                                    } else {
+                                        try {
+                                            Log.i(TAG, "getQuoteOnResponseNotSuccessful: " +
+                                                    response.errorBody().string());
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+                                @Override
+                                public void onFailure(Call<Quote> call, Throwable t) {
+                                    Log.i(TAG, "getQuoteOnFailure: " + t);
+                                }
+                            });
                         } else {
                             Snackbar.make(view, "Adding Stock was unsuccessful, " +
                                                     "not valid Ticker",
@@ -180,6 +220,10 @@ public class MainActivity extends AppCompatActivity {
         //set1.setHighLightColor(Color.BLACK);
         set1.setDrawValues(false);
         return new LineData(set1);
+    }
+
+    private void getQuote(String ticker) {
+
     }
 
 
