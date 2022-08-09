@@ -176,7 +176,9 @@ public class MainActivity extends AppCompatActivity {
                                             Log.i(TAG, "getIndicatorsOnResponse: "
                                                     + response.body());
                                         } else {
-                                            // No data
+                                            Snackbar.make(view, "No data",
+                                                            Snackbar.LENGTH_LONG)
+                                                    .setAction("Action", null).show();
                                         }
                                     } else {
                                         try {
@@ -235,13 +237,27 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean isValidTicker(String ticker) throws IOException {
         ArrayList<String> tickers = this.getTickers();
-        int i = 0;
-        while (i < tickers.size()) {
-            if (Objects.equals(ticker, tickers.get(i))) {
+        //int i = 0;
+        //while (i < tickers.size()) {
+        //    if (Objects.equals(ticker, tickers.get(i))) {
+        //        return true;
+        //    } else {
+        //        i++;
+        //    }
+        //}
+        //return false;
+        int l = 0;
+        int r = tickers.size() - 1;
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+
+            int res = ticker.toUpperCase().compareTo(tickers.get(m).toUpperCase());
+            if (res == 0)
                 return true;
-            } else {
-                i++;
-            }
+            if (res > 0)
+                l = m + 1;
+            else
+                r = m - 1;
         }
         return false;
     }
@@ -257,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         set1.setLineWidth(3f);
         //set1.setCircleRadius(5f);
         //set1.setCircleHoleRadius(2.5f);
-        //set1.setColor(Color.BLACK);
+        set1.setColor(Color.BLACK);
         //set1.setCircleColor(Color.BLACK);
         //set1.setHighLightColor(Color.BLACK);
         set1.setDrawValues(false);
