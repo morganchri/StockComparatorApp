@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeRefreshLayout;
     List<Object> stockList;
     RecyclerView stockRecyclerView;
+    StockViewAdapter sa;
     ControllerImpl cr;
     private static final String TAG = "Main";
 
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         stockRecyclerView.setLayoutManager(linLayManager);
-        StockViewAdapter sa = new StockViewAdapter(stockList,this);
+        sa = new StockViewAdapter(stockList,this);
         stockRecyclerView.setAdapter(sa);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Button openList = findViewById(R.id.listButton);
@@ -121,8 +122,10 @@ public class MainActivity extends AppCompatActivity {
                             cr.getQuote(stockInput.getText().toString().toUpperCase())
                                     .enqueue(new Callback<Quote>() {
                                 @Override
-                                public void onResponse(Call<Quote> call, Response<Quote> response) {
+                                public void onResponse(@NonNull Call<Quote> call,
+                                                       @NonNull Response<Quote> response) {
                                     if (response.isSuccessful()) {
+                                        assert response.body() != null;
                                         if (response.body().getTimestamp() > 0) {
                                             double cPrice = response.body().getCurrentPrice();
                                             double oPrice = response.body().getOpenPrice();
@@ -132,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
                                                     cPrice,
                                                     oPrice);
                                             stockList.add(newStock);
-
                                             Snackbar.make(view, "Adding Stock was successful",
                                                             Snackbar.LENGTH_LONG)
                                                     .setAction("Action", null).show();
@@ -146,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     } else {
                                         try {
+                                            assert response.errorBody() != null;
                                             Log.i(TAG, "getQuoteOnResponseNotSuccessful: " +
                                                     response.errorBody().string());
                                         } catch (IOException e) {
@@ -154,23 +157,27 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                                 @Override
-                                public void onFailure(Call<Quote> call, Throwable t) {
+                                public void onFailure(@NonNull Call<Quote> call,
+                                                      @NonNull Throwable t) {
                                     Log.i(TAG, "getQuoteOnFailure: " + t);
                                 }
                             });
                             cr.getIndicators(stockInput.getText().toString().toUpperCase(),
                                     IndicatorResolution.RES_D, 1583098857,
                                     1584308457).enqueue(new Callback<Indicator>() {
+                                @SuppressLint("NotifyDataSetChanged")
                                 @Override
-                                public void onResponse(Call<Indicator> call,
-                                                       Response<Indicator> response) {
+                                public void onResponse(@NonNull Call<Indicator> call,
+                                                       @NonNull Response<Indicator> response) {
                                     if (response.isSuccessful()) {
+                                        assert response.body() != null;
                                         if (response.body().getStatus()
                                                 .equalsIgnoreCase("ok")) {
                                             GraphViewObj newGraph = new GraphViewObj(stockInput
                                                     .getText().toString().toUpperCase(),
                                                     getData(response.body().getClosePrices()));
                                             stockList.add(newGraph);
+                                            sa.notifyDataSetChanged();
                                             Log.i(TAG, "getIndicatorsOnResponse: "
                                                     + response.body());
                                         } else {
@@ -180,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     } else {
                                         try {
+                                            assert response.errorBody() != null;
                                             Log.i(TAG,
                                                     "getIndicatorsOnResponseNotSuccessful: " +
                                                     response.errorBody().
@@ -195,7 +203,8 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
                                 @Override
-                                public void onFailure(Call<Indicator> call, Throwable t) {
+                                public void onFailure(@NonNull Call<Indicator> call,
+                                                      @NonNull Throwable t) {
                                     Log.i(TAG, "getIndicatorsOnFailure: " + t);
                                 }
                             });
