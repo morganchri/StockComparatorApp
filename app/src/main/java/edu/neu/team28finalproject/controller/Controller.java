@@ -31,9 +31,10 @@ public interface Controller {
     Call<SymbolLookupWrapper> searchSymbol(String query);
 
     /**
-     * Get general information of company with ticker provided.
-     * When there is no match, the empty json will still be
-     * deserialized into a java object with all reference values = null
+     * Get general information (such as name, industry, market cap etc.)
+     * of company with ticker provided. When there is no match, the empty
+     * json will still be deserialized into a java object with all reference
+     * values = null
      *
      * @param ticker symbol/ticker of the company e.g AAPL
      * @return company information
