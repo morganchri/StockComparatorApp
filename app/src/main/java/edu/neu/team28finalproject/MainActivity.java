@@ -31,7 +31,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import edu.neu.team28finalproject.controller.ControllerImpl;
 import edu.neu.team28finalproject.datatransferobjects.Error;
@@ -101,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
 
     public void addStock(View view) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -274,15 +272,9 @@ public class MainActivity extends AppCompatActivity {
         //set1.setCircleRadius(5f);
         //set1.setCircleHoleRadius(2.5f);
         set1.setColor(Color.BLACK);
-        //set1.setCircleColor(Color.BLACK);
+        set1.setCircleColor(Color.BLACK);
         //set1.setHighLightColor(Color.BLACK);
         set1.setDrawValues(false);
         return new LineData(set1);
     }
-
-    private void getQuote(String ticker) {
-
-    }
-
-
 }
