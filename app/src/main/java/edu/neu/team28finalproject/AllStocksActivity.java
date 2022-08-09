@@ -44,7 +44,7 @@ public class AllStocksActivity extends AppCompatActivity {
                 if(containsName(stocks, query)){
                     List<StockListObj> temp;
                     temp = stocks.stream().filter(stockListObj ->
-                                    Objects.equals(stockListObj.getName(), query))
+                                    stockListObj.getName().toLowerCase().contains(query.toLowerCase()))
                             .collect(Collectors.toList());
                     StockListAdapter sa = new StockListAdapter(temp,AllStocksActivity.this);
                     listRecyclerView.setAdapter(sa);
@@ -55,12 +55,12 @@ public class AllStocksActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if(containsName(stocks, newText)){
-                    List<StockListObj> temp;
-                    temp = stocks.stream().filter(stockListObj ->
-                                    Objects.equals(stockListObj.getName(), newText))
-                            .collect(Collectors.toList());
-                    StockListAdapter sa = new StockListAdapter(temp,AllStocksActivity.this);
-                    listRecyclerView.setAdapter(sa);
+            //        List<StockListObj> temp;
+            //        temp = stocks.stream().filter(stockListObj ->
+            //                        stockListObj.getName().toLowerCase().contains(newText.toLowerCase()))
+            //                .collect(Collectors.toList());
+            //        StockListAdapter sa = new StockListAdapter(temp,AllStocksActivity.this);
+            //        listRecyclerView.setAdapter(sa);
                 } else {
                     StockListAdapter sa = new StockListAdapter(stocks,AllStocksActivity.this);
                     listRecyclerView.setAdapter(sa);
@@ -95,6 +95,6 @@ public class AllStocksActivity extends AppCompatActivity {
     }
 
     public boolean containsName(final List<StockListObj> list, final String name){
-        return list.stream().anyMatch(o -> o.getName().equals(name));
+        return list.stream().anyMatch(o -> o.getName().toLowerCase().equals(name.toLowerCase()));
     }
 }
