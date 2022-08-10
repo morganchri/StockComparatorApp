@@ -15,7 +15,7 @@ import retrofit2.http.Query;
 /**
  * Interface that represents a web service communication to a remote endpoint.
  */
-public interface WebService {
+public interface FinnhubWebService {
     /**
      * Get a list of supported stocks.
      *

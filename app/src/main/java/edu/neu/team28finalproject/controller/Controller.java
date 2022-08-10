@@ -2,6 +2,7 @@ package edu.neu.team28finalproject.controller;
 
 import java.util.List;
 
+import edu.neu.team28finalproject.datatransferobjects.BiggestMovers;
 import edu.neu.team28finalproject.datatransferobjects.CompanyProfile;
 import edu.neu.team28finalproject.datatransferobjects.Indicator;
 import edu.neu.team28finalproject.datatransferobjects.IndicatorResolution;
@@ -67,4 +68,18 @@ public interface Controller {
      */
     Call<Indicator> getIndicators(String ticker, IndicatorResolution resolution, long from,
                                   long to);
+
+    /**
+     * Gets the biggest movers in the positive direction.
+     *
+     * @return list of biggest movers
+     */
+    Call<List<BiggestMovers>> getMostGainers();
+
+    /**
+     * Gets the biggest movers in the negative direction.
+     *
+     * @return list of biggest movers
+     */
+    Call<List<BiggestMovers>> getMostLosers();
 }
