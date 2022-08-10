@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
 
+import edu.neu.team28finalproject.datatransferobjects.BiggestMovers;
 import edu.neu.team28finalproject.datatransferobjects.CompanyProfile;
 import edu.neu.team28finalproject.datatransferobjects.Error;
 import edu.neu.team28finalproject.datatransferobjects.Indicator;
@@ -181,6 +182,33 @@ public class Demo {
             @Override
             public void onFailure(Call<Indicator> call, Throwable t) {
                 Log.i(TAG, "getIndicatorsOnFailure: " + t);
+            }
+        });
+    }
+
+    /**
+     * Demo get biggest gainers and movers.
+     */
+    private void getBiggestMovers() {
+        // Use getMostLosers to get biggest losers
+        controller.getMostGainers().enqueue(new Callback<List<BiggestMovers>>() {
+            @Override
+            public void onResponse(Call<List<BiggestMovers>> call, Response<List<BiggestMovers>> response) {
+                if (response.isSuccessful()) {
+                    Log.i(TAG, "getBiggestMoversOnResponse: " + response.body());
+                } else {
+                    try {
+                        Log.i(TAG, "getBiggestMoversNotSuccessful: " +
+                                response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<BiggestMovers>> call, Throwable t) {
+                Log.i(TAG, "getBiggestMoversOnFailure: " + t);
             }
         });
     }
