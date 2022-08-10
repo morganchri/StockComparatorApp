@@ -118,18 +118,18 @@ public class MainActivity extends AppCompatActivity {
         Button histButton = findViewById(R.id.histButton);
         histButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //Intent openList = new Intent(MainActivity.this,
-                //        MoversActivity.class);
-                //MainActivity.this.startActivity(openList);
+                Intent openList = new Intent(MainActivity.this,
+                        HistoryActivity.class);
+                MainActivity.this.startActivity(openList);
             }
         });
 
         Button likedButton = findViewById(R.id.likedButton);
         likedButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //Intent openList = new Intent(MainActivity.this,
-                //        MoversActivity.class);
-                //MainActivity.this.startActivity(openList);
+                Intent openList = new Intent(MainActivity.this,
+                        LikesActivity.class);
+                MainActivity.this.startActivity(openList);
             }
         });
 
