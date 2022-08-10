@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class RecommendationsActivity extends AppCompatActivity {
 
     ArrayList<RecViewObj> recList;
-    LinearLayoutManager layoutManager;
     RecViewAdapter adapter;
 
     protected void onCreate(Bundle savedInstanceState){
@@ -23,11 +22,10 @@ public class RecommendationsActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recRecyclerView);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecViewAdapter(recList, this);
-
-
+        recyclerView.setAdapter(adapter);
     }
 
 }

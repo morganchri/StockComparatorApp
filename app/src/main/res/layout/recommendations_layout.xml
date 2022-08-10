@@ -1,67 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/ticker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ticker"
-        android:textSize="20sp"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@id/dollar_price"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="0dp"
-        />
+        android:layout_toStartOf="@id/dollar_price"
+        android:text="@string/ticker"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/dollar_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dollar_price"
-        android:textSize="20sp"
-        android:layout_toStartOf="@id/delta_price"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
-        />
+        android:layout_marginTop="10dp"
+        android:layout_toStartOf="@id/delta_price"
+        android:text="@string/dollar_price"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/delta_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/delta_price"
-        android:textSize="20sp"
-        android:layout_toStartOf="@id/delta_percent"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
-        />
+        android:layout_marginTop="10dp"
+        android:layout_toStartOf="@id/delta_percent"
+        android:text="@string/delta_price"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/delta_percent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/delta_percent"
-        android:textSize="20sp"
-        android:layout_toStartOf="@id/like_button"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
-        />
+        android:layout_marginTop="10dp"
+        android:layout_toStartOf="@id/like_button"
+        android:text="@string/delta_percent"
+        android:textSize="20sp" />
 
     <ImageButton
         android:id="@+id/like_button"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@id/add_button"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
+        android:layout_toStartOf="@id/add_button"
         android:backgroundTint="#00FFFFFF"
         app:srcCompat="@android:drawable/radiobutton_off_background" />
 
@@ -70,10 +65,10 @@
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="0dp"
-        android:layout_alignParentEnd="true"
         android:backgroundTint="#00FFFFFF"
         app:srcCompat="@android:drawable/radiobutton_off_background" />
 
@@ -81,49 +76,44 @@
         android:id="@+id/info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/info"
         android:layout_below="@id/delta_price"
-        android:textSize="20sp"
         android:layout_centerHorizontal="true"
-        />
+        android:text="@string/info"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/industry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/industry"
         android:layout_below="@id/info"
         android:layout_marginStart="10dp"
-        />
+        android:text="@string/industry" />
 
     <TextView
         android:id="@+id/total_revenue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/total_revenue"
         android:layout_below="@id/industry"
-        android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
-        />
+        android:layout_marginTop="5dp"
+        android:text="@string/total_revenue" />
 
     <TextView
         android:id="@+id/market_cap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/market_cap"
         android:layout_below="@id/p_e"
-        android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
-        />
+        android:layout_marginTop="5dp"
+        android:text="@string/market_cap" />
 
     <TextView
         android:id="@+id/p_e"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/p_e"
         android:layout_below="@id/total_revenue"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        />
+        android:text="@string/p_e" />
 
 </RelativeLayout>

@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         sa = new StockViewAdapter(stockList,this);
         stockRecyclerView.setAdapter(sa);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         Button openList = findViewById(R.id.listButton);
         openList.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -93,6 +94,44 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(openList);
             }
         });
+
+        Button openRecs = findViewById(R.id.recsButton);
+        openRecs.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent openRecs = new Intent(MainActivity.this,
+                        RecommendationsActivity.class);
+                MainActivity.this.startActivity(openRecs);
+            }
+        });
+
+        Button openMovers = findViewById(R.id.openMovers);
+        openMovers.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent openMovers = new Intent(MainActivity.this,
+                        Movers.class);
+                MainActivity.this.startActivity(openMovers);
+            }
+        });
+
+        Button histButton = findViewById(R.id.histButton);
+        histButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Intent openList = new Intent(MainActivity.this,
+                //        MoversActivity.class);
+                //MainActivity.this.startActivity(openList);
+            }
+        });
+
+        Button likedButton = findViewById(R.id.likedButton);
+        likedButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //Intent openList = new Intent(MainActivity.this,
+                //        MoversActivity.class);
+                //MainActivity.this.startActivity(openList);
+            }
+        });
+
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

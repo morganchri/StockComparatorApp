@@ -17,6 +17,12 @@
             android:name=".AllStocksActivity"
             android:exported="false" />
         <activity
+            android:name=".Movers"
+            android:exported="false" />
+        <activity
+            android:name=".RecommendationsActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
