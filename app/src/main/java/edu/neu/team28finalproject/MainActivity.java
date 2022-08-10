@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private LocalDate getPrevDay() {
-        return LocalDate.now().minusDays(1);
+        return LocalDate.now().minusDays(3);
     }
 
 

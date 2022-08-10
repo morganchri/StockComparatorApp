@@ -89,14 +89,18 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         unFocus(((GraphViewHolder) holder).btn[i]);
                     }
                     setFocus(((GraphViewHolder) holder).btn[0]);
+                    System.out.println(dateToUnix(getPrevDay()));
+                    System.out.println(dateToUnix(getCurrYear()));
                     controller.getIndicators(((GraphViewObj) item).getTicker(),
-                            IndicatorResolution.RES_D, dateToUnix(getPrevDay()),
+                            IndicatorResolution.RES_60, dateToUnix(getPrevDay()),
                             dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
                         @Override
                         public void onResponse(Call<Indicator> call, Response<Indicator> response) {
                             if (response.isSuccessful()) {
                                 if (response.body().getStatus().equalsIgnoreCase("ok")) {
                                     ((GraphViewObj) item).setEntries(getData(response.body().getClosePrices()));
+                                    System.out.println(dateToUnix(getPrevDay()));
+                                    System.out.println(dateToUnix(getCurrYear()));
                                     notifyDataSetChanged();
                                     Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
                                 } else {
@@ -131,7 +135,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     setFocus(((GraphViewHolder) holder).btn[1]);
 
                     controller.getIndicators(((GraphViewObj) item).getTicker(),
-                            IndicatorResolution.RES_D, dateToUnix(getPrevFiveDays()),
+                            IndicatorResolution.RES_60, dateToUnix(getPrevFiveDays()),
                             dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
                         @Override
                         public void onResponse(Call<Indicator> call, Response<Indicator> response) {
@@ -336,7 +340,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private LocalDate getPrevDay() {
-        return LocalDate.now().minusDays(1);
+        return LocalDate.now().minusDays(3);
     }
 
     private LineData getData(List<Double> prices) {
