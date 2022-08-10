@@ -4,8 +4,8 @@ import com.github.mikephil.charting.data.LineData;
 
 public class GraphViewObj {
 
-    private final String ticker;
-    private final LineData entries;
+    private String ticker;
+    private LineData entries;
 
     public GraphViewObj(String ticker, LineData entries) {
         this.ticker = ticker;
@@ -18,6 +18,10 @@ public class GraphViewObj {
 
     public LineData getEntries() {
         return entries;
+    }
+
+    public void setEntries(LineData newEntries) {
+        this.entries = newEntries;
     }
 
 }

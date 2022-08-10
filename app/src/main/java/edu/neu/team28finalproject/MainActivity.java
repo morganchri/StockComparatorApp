@@ -29,6 +29,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -202,8 +204,8 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                             cr.getIndicators(stockInput.getText().toString().toUpperCase(),
-                                    IndicatorResolution.RES_D, 1583098857,
-                                    1584308457).enqueue(new Callback<Indicator>() {
+                                    IndicatorResolution.RES_D, dateToUnix(getPrevYear()),
+                                    dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
                                 @SuppressLint("NotifyDataSetChanged")
                                 @Override
                                 public void onResponse(@NonNull Call<Indicator> call,
@@ -240,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-
                                 @Override
                                 public void onFailure(@NonNull Call<Indicator> call,
                                                       @NonNull Throwable t) {
@@ -283,15 +284,6 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean isValidTicker(String ticker) throws IOException {
         ArrayList<String> tickers = this.getTickers();
-        //int i = 0;
-        //while (i < tickers.size()) {
-        //    if (Objects.equals(ticker, tickers.get(i))) {
-        //        return true;
-        //    } else {
-        //        i++;
-        //    }
-        //}
-        //return false;
         int l = 0;
         int r = tickers.size() - 1;
         while (l <= r) {
@@ -316,13 +308,45 @@ public class MainActivity extends AppCompatActivity {
             yVals.add(new Entry(i,val));
         }
         LineDataSet set1 = new LineDataSet(yVals, "Data Set");
-        set1.setLineWidth(3f);
-        //set1.setCircleRadius(5f);
-        //set1.setCircleHoleRadius(2.5f);
-        set1.setColor(Color.BLACK);
-        set1.setCircleColor(Color.BLACK);
-        //set1.setHighLightColor(Color.BLACK);
+        if (prices.get(prices.size() - 1) > prices.get(prices.size() - 2)) {
+            set1.setColor(Color.rgb(76,153,0));
+        } else if (prices.get(prices.size() - 1) < prices.get(prices.size() - 2)) {
+            set1.setColor(Color.RED);
+        } else {
+            set1.setColor(Color.BLACK);
+        }
         set1.setDrawValues(false);
+        set1.setDrawCircles(false);
         return new LineData(set1);
     }
+    private long dateToUnix(LocalDate date) {
+        ZoneId zoneId = ZoneId.systemDefault();
+        return date.atStartOfDay(zoneId).toEpochSecond();
+    }
+
+    private LocalDate getCurrYear() {
+        return LocalDate.now();
+    }
+
+    private LocalDate getPrevYear() {
+        return LocalDate.now().minusYears(1);
+    }
+
+    private LocalDate getPrevSixMonths() {
+        return LocalDate.now().minusMonths(6);
+    }
+
+    private LocalDate getPrevMonth() {
+        return LocalDate.now().minusMonths(1);
+    }
+
+    private LocalDate getPrevFiveDays() {
+        return LocalDate.now().minusDays(5);
+    }
+
+    private LocalDate getPrevDay() {
+        return LocalDate.now().minusDays(1);
+    }
+
+
 }

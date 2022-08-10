@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="210dp">
+    android:layout_height="210dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp">
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="false"
-        android:visibility="visible"
-        android:layout_above="@id/linLayout"/>
+        android:layout_above="@id/linLayout" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,70 +22,76 @@
 
         <Button
             android:id="@+id/oneDay"
-            android:layout_width="68.5dp"
+            android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/homebuttonshape"
             android:backgroundTint="#00FFFFFF"
             android:text="1D"
             android:textColor="#000000"
-            app:backgroundTint="@android:color/transparent" />
+            app:backgroundTint="@android:color/transparent"
+            app:layout_constraintEnd_toStartOf="@+id/fiveDay"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/fiveDay"
-            android:layout_width="68.5dp"
+            android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/homebuttonshape"
             android:backgroundTint="#00FFFFFF"
             android:text="5D"
             android:textColor="#000000"
-            app:backgroundTint="@android:color/transparent" />
+            app:backgroundTint="@android:color/transparent"
+            app:layout_constraintEnd_toStartOf="@+id/oneMonth"
+            app:layout_constraintStart_toEndOf="@+id/oneDay"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/oneMonth"
-            android:layout_width="68.5dp"
+            android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/homebuttonshape"
             android:backgroundTint="#00FFFFFF"
             android:text="1M"
             android:textColor="#000000"
-            app:backgroundTint="@android:color/transparent" />
+            app:backgroundTint="@android:color/transparent"
+            app:layout_constraintEnd_toStartOf="@+id/sixMonth"
+            app:layout_constraintStart_toEndOf="@+id/fiveDay"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/sixMonth"
-            android:layout_width="68.5dp"
+            android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/homebuttonshape"
             android:backgroundTint="#00FFFFFF"
             android:text="6M"
             android:textColor="#000000"
-            app:backgroundTint="@android:color/transparent" />
+            app:backgroundTint="@android:color/transparent"
+            app:layout_constraintEnd_toStartOf="@+id/Year"
+            app:layout_constraintStart_toEndOf="@+id/oneMonth"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/Year"
-            android:layout_width="68.5dp"
+            android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/homebuttonshape"
             android:backgroundTint="#00FFFFFF"
             android:text="Y"
             android:textColor="#000000"
-            app:backgroundTint="@android:color/transparent" />
+            app:backgroundTint="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/sixMonth"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/customDate"
-            android:layout_width="68.5dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/homebuttonshape"
-            android:backgroundTint="#00FFFFFF"
-            android:text="Date"
-            android:textColor="#000000"
-            app:backgroundTint="@android:color/transparent" />
-    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </RelativeLayout>

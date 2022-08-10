@@ -27,14 +27,6 @@ public class StockViewHolder extends RecyclerView.ViewHolder {
         this.pctChange = stockView.findViewById(R.id.pctChange);
         this.likeButton = stockView.findViewById(R.id.likeButton);
         this.deleteButton = stockView.findViewById(R.id.deleteButton);
-
-
-        //for(int i = 0; i < btn.length; i++){
-            //btn[i] = (Button) stockView.findViewById(btn_id[i]);
-            //btn[i].setBackgroundColor(Color.rgb(207, 207, 207));
-            //btn[i].setOnClickListener((View.OnClickListener) stockView);
-        //}
-        //btn_unfocus = btn[0];
     }
 
     @SuppressLint("SetTextI18n")
