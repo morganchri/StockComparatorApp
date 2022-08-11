@@ -11,5 +11,5 @@
     <string name="p_e">P/E</string>
     <string name="recommendations">Stock Recommendations</string>
     <string name="movers">Biggest Movers</string>
-
+    <string name="preference_file_key">com.mads22.team28.PREFERENCE_FILE_KEY</string>
 </resources>
