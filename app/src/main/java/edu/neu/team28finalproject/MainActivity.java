@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +30,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -39,11 +41,12 @@ import edu.neu.team28finalproject.datatransferobjects.Error;
 import edu.neu.team28finalproject.datatransferobjects.Indicator;
 import edu.neu.team28finalproject.datatransferobjects.IndicatorResolution;
 import edu.neu.team28finalproject.datatransferobjects.Quote;
+import edu.neu.team28finalproject.preferences.UserPreferencesImpl;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Serializable {
 
     TextView title;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView stockRecyclerView;
     StockViewAdapter sa;
     ControllerImpl cr;
+    UserPreferencesImpl up;
     private static final String TAG = "Main";
 
 
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         title = findViewById(R.id.Title);
         title.setGravity(View.TEXT_ALIGNMENT_CENTER);
         stockList = new ArrayList<>();
+        up = new UserPreferencesImpl(this);
         cr = new ControllerImpl();
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         stockRecyclerView = findViewById(R.id.recyclerView);
@@ -129,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent openList = new Intent(MainActivity.this,
                         LikesActivity.class);
-                MainActivity.this.startActivity(openList);
+                startActivity(openList);
             }
         });
 
@@ -154,6 +159,14 @@ public class MainActivity extends AppCompatActivity {
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
+                for (int i = 0; i < stockList.size(); i+=2) {
+                    StockViewObj check = (StockViewObj)stockList.get(i);
+                    if (check.getTicker().equalsIgnoreCase(stockInput.getText().toString())) {
+                        Snackbar.make(view, "Stock already in list", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        return;
+                    }
+                }
                 if (stockInput.getText().toString().equals(" ")) {
                     Snackbar.make(view, "Stock ticker must not be blank", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -218,6 +231,8 @@ public class MainActivity extends AppCompatActivity {
                                                     .getText().toString().toUpperCase(),
                                                     getData(response.body().getClosePrices()));
                                             stockList.add(newGraph);
+                                            up.viewStock(stockInput
+                                                    .getText().toString().toUpperCase());
                                             sa.notifyDataSetChanged();
                                             Log.i(TAG, "getIndicatorsOnResponse: "
                                                     + response.body());

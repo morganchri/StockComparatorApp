@@ -129,6 +129,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/homebuttonshape"
             android:backgroundTint="#00FFFFFF"
+            android:clickable="true"
             android:text="Liked"
             android:textColor="#000000"
             android:textSize="10sp"

@@ -14,7 +14,7 @@ public class StockListHolder extends RecyclerView.ViewHolder{
 
     public StockListHolder(@NonNull View listView) {
         super(listView);
-        this.ticker = listView.findViewById(R.id.listTicker);
+        this.ticker = listView.findViewById(R.id.listTickerLikes);
         this.name = listView.findViewById(R.id.name);
         this.sector = listView.findViewById(R.id.tickerSector);
     }

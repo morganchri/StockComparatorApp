@@ -21,10 +21,10 @@ public class StockViewHolder extends RecyclerView.ViewHolder {
 
     public StockViewHolder(@NonNull View stockView) {
         super(stockView);
-        this.ticker = stockView.findViewById(R.id.listTicker);
-        this.cPrice = stockView.findViewById(R.id.price);
-        this.change = stockView.findViewById(R.id.change);
-        this.pctChange = stockView.findViewById(R.id.pctChange);
+        this.ticker = stockView.findViewById(R.id.listTickerLikes);
+        this.cPrice = stockView.findViewById(R.id.priceLikes);
+        this.change = stockView.findViewById(R.id.changeLikes);
+        this.pctChange = stockView.findViewById(R.id.pctChangeLikes);
         this.likeButton = stockView.findViewById(R.id.likeButton);
         this.deleteButton = stockView.findViewById(R.id.deleteButton);
     }

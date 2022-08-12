@@ -23,12 +23,14 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import edu.neu.team28finalproject.controller.Controller;
 import edu.neu.team28finalproject.controller.ControllerImpl;
 import edu.neu.team28finalproject.datatransferobjects.Error;
 import edu.neu.team28finalproject.datatransferobjects.Indicator;
 import edu.neu.team28finalproject.datatransferobjects.IndicatorResolution;
+import edu.neu.team28finalproject.preferences.UserPreferencesImpl;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,6 +40,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private final List<Object> stocks;
     private final Context context;
     private final Controller controller = new ControllerImpl();
+    private final UserPreferencesImpl up;
     private static final String TAG = "ViewAdapter";
 
 
@@ -45,6 +48,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             Context context) {
         this.stocks = stocks;
         this.context = context;
+        up = new UserPreferencesImpl(context);
     }
 
     @NonNull
@@ -78,7 +82,26 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             });
             ((StockViewHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    //code to add to the firebase DB
+                    if (up.getLikedStocks().size() > 0) {
+                        for (int i = 0; i < up.getLikedStocks().size(); i++) {
+                            StockViewObj stock = (StockViewObj) stocks.get(position);
+                            if (Objects.equals(stock.getTicker(), up.getLikedStocks().get(i))) {
+                                Snackbar.make(v, "Stock already liked",
+                                                Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            } else {
+                                up.likeStock(((StockViewHolder) holder).ticker.toString());
+                                Snackbar.make(v, "Stock liked",
+                                                Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            }
+                        }
+                    } else {
+                        up.likeStock(((StockViewHolder) holder).ticker.toString());
+                        Snackbar.make(v, "Stock liked",
+                                        Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
                 }
             });
         } else {
@@ -89,8 +112,6 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         unFocus(((GraphViewHolder) holder).btn[i]);
                     }
                     setFocus(((GraphViewHolder) holder).btn[0]);
-                    System.out.println(dateToUnix(getPrevDay()));
-                    System.out.println(dateToUnix(getCurrYear()));
                     controller.getIndicators(((GraphViewObj) item).getTicker(),
                             IndicatorResolution.RES_60, dateToUnix(getPrevDay()),
                             dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
