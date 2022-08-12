@@ -1,11 +1,14 @@
 package edu.neu.team28finalproject.controller;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.neu.team28finalproject.datatransferobjects.BiggestMovers;
 import edu.neu.team28finalproject.datatransferobjects.CompanyProfile;
 import edu.neu.team28finalproject.datatransferobjects.Indicator;
 import edu.neu.team28finalproject.datatransferobjects.IndicatorResolution;
+import edu.neu.team28finalproject.datatransferobjects.Industries;
 import edu.neu.team28finalproject.datatransferobjects.Quote;
 import edu.neu.team28finalproject.datatransferobjects.Symbol;
 import edu.neu.team28finalproject.datatransferobjects.SymbolLookupWrapper;
@@ -70,6 +73,12 @@ public class ControllerImpl implements Controller {
     @Override
     public Call<List<BiggestMovers>> getMostLosers() {
         return fmpWebService.getMostLosers(fmpKey);
+    }
+
+    @Override
+    public List<String> getIndustries() {
+        return Arrays.asList(Industries.values()).stream()
+                .map(industry -> industry.getValue()).collect(Collectors.toList());
     }
 
     /**

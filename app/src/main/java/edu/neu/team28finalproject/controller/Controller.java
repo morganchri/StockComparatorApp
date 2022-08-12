@@ -82,4 +82,11 @@ public interface Controller {
      * @return list of biggest movers
      */
     Call<List<BiggestMovers>> getMostLosers();
+
+    /**
+     * Get a list of industry classifications.
+     *
+     * @return list of industries
+     */
+    List<String> getIndustries();
 }

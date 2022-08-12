@@ -12,7 +12,7 @@ public enum IndicatorResolution {
 
     private String resolution;
 
-    private IndicatorResolution(String resolution) {
+    IndicatorResolution(String resolution) {
         this.resolution = resolution;
     };
 
