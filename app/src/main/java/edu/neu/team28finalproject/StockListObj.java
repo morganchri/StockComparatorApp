@@ -1,6 +1,8 @@
 package edu.neu.team28finalproject;
 
-public class StockListObj {
+import java.io.Serializable;
+
+public class StockListObj implements Serializable {
 
     private String ticker;
     private String sector;
