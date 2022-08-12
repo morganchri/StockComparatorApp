@@ -10,6 +10,7 @@ import edu.neu.team28finalproject.datatransferobjects.Indicator;
 import edu.neu.team28finalproject.datatransferobjects.IndicatorResolution;
 import edu.neu.team28finalproject.datatransferobjects.Industries;
 import edu.neu.team28finalproject.datatransferobjects.Quote;
+import edu.neu.team28finalproject.datatransferobjects.StockScreener;
 import edu.neu.team28finalproject.datatransferobjects.Symbol;
 import edu.neu.team28finalproject.datatransferobjects.SymbolLookupWrapper;
 import edu.neu.team28finalproject.webservice.FMPWebService;
@@ -79,6 +80,11 @@ public class ControllerImpl implements Controller {
     public List<String> getIndustries() {
         return Arrays.asList(Industries.values()).stream()
                 .map(industry -> industry.getValue()).collect(Collectors.toList());
+    }
+
+    @Override
+    public Call<List<StockScreener>> getStocksByIndustry(String industry) {
+        return fmpWebService.getStocksByIndustry(fmpKey, industry);
     }
 
     /**

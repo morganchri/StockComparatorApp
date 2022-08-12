@@ -7,6 +7,7 @@ import edu.neu.team28finalproject.datatransferobjects.CompanyProfile;
 import edu.neu.team28finalproject.datatransferobjects.Indicator;
 import edu.neu.team28finalproject.datatransferobjects.IndicatorResolution;
 import edu.neu.team28finalproject.datatransferobjects.Quote;
+import edu.neu.team28finalproject.datatransferobjects.StockScreener;
 import edu.neu.team28finalproject.datatransferobjects.Symbol;
 import edu.neu.team28finalproject.datatransferobjects.SymbolLookupWrapper;
 import retrofit2.Call;
@@ -89,4 +90,12 @@ public interface Controller {
      * @return list of industries
      */
     List<String> getIndustries();
+
+    /**
+     * Get stocks by industry.
+     *
+     * @param industry industry to query upon
+     * @return list of stocks for that industry
+     */
+    Call<List<StockScreener>> getStocksByIndustry(String industry);
 }

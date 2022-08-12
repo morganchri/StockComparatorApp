@@ -14,6 +14,7 @@ public class StockScreener {
     private long volume;
     private String exchange;
     private String exchangeShortName;
+    private String industry;
 
     /**
      * Creates an instance of this class.
@@ -35,10 +36,12 @@ public class StockScreener {
      * @param volume trade volume
      * @param exchange exchange that stock is being traded on
      * @param exchangeShortName exchange short name
+     * @param industry company industry
      */
     public StockScreener(String symbol, String companyName, long marketCap,
                          String sector, double beta, double price, double lastAnnualDividend,
-                         long volume, String exchange, String exchangeShortName) {
+                         long volume, String exchange, String exchangeShortName,
+                         String industry) {
         this.symbol = symbol;
         this.companyName = companyName;
         this.marketCap = marketCap;
@@ -49,6 +52,7 @@ public class StockScreener {
         this.volume = volume;
         this.exchange = exchange;
         this.exchangeShortName = exchangeShortName;
+        this.industry = industry;
     }
 
     public String getSymbol() {
@@ -129,5 +133,30 @@ public class StockScreener {
 
     public void setExchangeShortName(String exchangeShortName) {
         this.exchangeShortName = exchangeShortName;
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
+
+    @Override
+    public String toString() {
+        return "StockScreener{" +
+                "symbol='" + symbol + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", marketCap=" + marketCap +
+                ", sector='" + sector + '\'' +
+                ", beta=" + beta +
+                ", price=" + price +
+                ", lastAnnualDividend=" + lastAnnualDividend +
+                ", volume=" + volume +
+                ", exchange='" + exchange + '\'' +
+                ", exchangeShortName='" + exchangeShortName + '\'' +
+                ", industry='" + industry + '\'' +
+                '}';
     }
 }
