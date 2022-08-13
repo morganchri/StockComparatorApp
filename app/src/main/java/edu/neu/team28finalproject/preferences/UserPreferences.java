@@ -45,4 +45,11 @@ public interface UserPreferences {
      * Clear viewed stocks.
      */
     void clearViewedStocks();
+
+    /**
+     * Unlike stock.
+     *
+     * @param ticker name of stock
+     */
+    void unlikeStock(String ticker);
 }

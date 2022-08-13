@@ -18,14 +18,14 @@ import edu.neu.team28finalproject.R;
  * Class that represents an implementation of the UserPreference interface.
  */
 public class UserPreferencesImpl implements UserPreferences {
-    private Set<String> favorites;
-    private Set<String> viewed;
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
     private final String favoritesKey = "favorites";
     private final String viewedKey = "viewed";
     private final Type setType = new TypeToken<HashSet<String>>(){}.getType();
     private final Gson gson = new Gson();
+    private Set<String> favorites;
+    private Set<String> viewed;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     /**
      * Creates an instance of this class.
@@ -80,6 +80,15 @@ public class UserPreferencesImpl implements UserPreferences {
         editor.remove(viewedKey);
         editor.commit();
         viewed.clear();
+    }
+
+    @Override
+    public void unlikeStock(String ticker) {
+        if (favorites.contains(ticker)) {
+            favorites.remove(ticker);
+            editor.putString(favoritesKey, gson.toJson(favorites));
+            editor.commit();
+        }
     }
 
     /**
