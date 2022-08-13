@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     StockViewAdapter sa;
     ControllerImpl cr;
     UserPreferencesImpl up;
+    List<String> stockNames;
+    List<String> timestamps;
     private static final String TAG = "Main";
 
 
@@ -188,6 +190,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                                     cPrice,
                                                     oPrice);
                                             stockList.add(newStock);
+                                            stockNames.add(stockInput.getText().toString().toUpperCase());
+                                            timestamps.add(String.valueOf(System.currentTimeMillis()));
                                             Snackbar.make(view, "Adding Stock was successful",
                                                             Snackbar.LENGTH_LONG)
                                                     .setAction("Action", null).show();
