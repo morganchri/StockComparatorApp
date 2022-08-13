@@ -50,9 +50,11 @@ public class UserPreferencesImpl implements UserPreferences {
     }
 
     @Override
-    public void viewStock(String ticker) {
+    public void viewStock(String ticker, String timestamp) {
         if (!viewed.contains(ticker)) {
-            viewed.add(ticker);
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(ticker).append("-").append(timestamp);
+            viewed.add(String.valueOf(stringBuilder));
             editor.putString(viewedKey, gson.toJson(viewed));
             editor.commit();
         }

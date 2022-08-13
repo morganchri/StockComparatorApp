@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         stockList = new ArrayList<>();
         up = new UserPreferencesImpl(this);
         cr = new ControllerImpl();
+//        up.clearViewedStocks();
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         stockRecyclerView = findViewById(R.id.recyclerView);
         stockRecyclerView.setHasFixedSize(true);
@@ -183,16 +184,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                     if (response.isSuccessful()) {
                                         assert response.body() != null;
                                         if (response.body().getTimestamp() > 0) {
-//                                            Intent intent = new Intent(MainActivity.this,
-//                                                    HistoryActivity.class);
-////                                            Bundle b = new Bundle();
-//                                            stockNames.add(stockInput.getText().toString().toUpperCase());
-//                                            timestamps.add(String.valueOf(System.currentTimeMillis()));
-//                                            intent.putExtra("stockNames", stockNames);
-//                                            intent.putExtra("timestamps", timestamps);
-//                                            startActivity(intent);
                                             up.viewStock(stockInput
-                                                    .getText().toString().toUpperCase());
+                                                    .getText().toString().toUpperCase(),
+                                                    String.valueOf(System.currentTimeMillis()));
                                             double cPrice = response.body().getCurrentPrice();
                                             double oPrice = response.body().getOpenPrice();
                                             StockViewObj newStock = new StockViewObj(stockInput
@@ -243,8 +237,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                                     .getText().toString().toUpperCase(),
                                                     getData(response.body().getClosePrices()));
                                             stockList.add(newGraph);
-                                            up.viewStock(stockInput
-                                                    .getText().toString().toUpperCase());
+//                                            up.viewStock(stockInput
+//                                                    .getText().toString().toUpperCase(),
+//                                                    String.valueOf(System.currentTimeMillis()));
                                             sa.notifyDataSetChanged();
                                             Log.i(TAG, "getIndicatorsOnResponse: "
                                                     + response.body());
