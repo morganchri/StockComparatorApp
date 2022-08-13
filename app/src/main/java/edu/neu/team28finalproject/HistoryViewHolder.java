@@ -22,10 +22,17 @@ public class HistoryViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindThisData(HistoryViewObj historyToBind) {
-        ticker.setText(historyToBind.getTickerName());
-        long millis = Long.valueOf(historyToBind.getTimestamp());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd,yyyy HH:mm");
-        Date date = new Date(millis);
-        timestamp.setText(simpleDateFormat.format(date));
+        String tickerName = historyToBind.getTickerName();
+        String timestampTime = historyToBind.getTimestamp();
+        if (!tickerName.equals("") && !timestampTime.equals("")) {
+            ticker.setText(tickerName);
+            long millis = Long.valueOf(timestampTime);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+            Date date = new Date(millis);
+            timestamp.setText(simpleDateFormat.format(date));
+        } else {
+            ticker.setText("            No History Found");
+            timestamp.setText("");
+        }
     }
 }
