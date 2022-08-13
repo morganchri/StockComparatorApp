@@ -34,4 +34,13 @@ public interface FMPWebService {
     @GET("/api/v3/stock-screener")
     Call<List<StockScreener>> getStocksByIndustry(@Query("apikey") String apiKey,
                                                   @Query("industry") String industry);
+
+    /**
+     * Get all info for all stocks
+     *
+     * @return list of stocks
+     */
+    @GET("/api/v3/stock-screener")
+    Call<List<StockScreener>> getAllStockInfo(@Query("apikey") String apiKey);
+
 }
