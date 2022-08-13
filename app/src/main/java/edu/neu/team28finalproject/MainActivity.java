@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -54,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     StockViewAdapter sa;
     ControllerImpl cr;
     UserPreferencesImpl up;
-    List<String> stockNames;
-    List<String> timestamps;
+    List<String> stockNames = new ArrayList<>();
+    List<String> timestamps = new ArrayList<>();
     private static final String TAG = "Main";
 
 
@@ -182,6 +183,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                     if (response.isSuccessful()) {
                                         assert response.body() != null;
                                         if (response.body().getTimestamp() > 0) {
+                                            Intent intent = new Intent(MainActivity.this,
+                                                    HistoryActivity.class);
+                                            Bundle b = new Bundle();
+                                            stockNames.add(stockInput.getText().toString().toUpperCase());
+                                            timestamps.add(String.valueOf(System.currentTimeMillis()));
+                                            b.putStringArrayList("stockNames", (ArrayList<String>) stockNames);
+                                            b.putStringArrayList("timestamps", (ArrayList<String>) timestamps);
+                                            intent.putExtras(b);
+                                            startActivity(intent);
                                             double cPrice = response.body().getCurrentPrice();
                                             double oPrice = response.body().getOpenPrice();
                                             StockViewObj newStock = new StockViewObj(stockInput
@@ -190,8 +200,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                                     cPrice,
                                                     oPrice);
                                             stockList.add(newStock);
-                                            stockNames.add(stockInput.getText().toString().toUpperCase());
-                                            timestamps.add(String.valueOf(System.currentTimeMillis()));
                                             Snackbar.make(view, "Adding Stock was successful",
                                                             Snackbar.LENGTH_LONG)
                                                     .setAction("Action", null).show();

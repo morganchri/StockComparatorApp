@@ -30,6 +30,8 @@ public class HistoryActivity extends AppCompatActivity {
     TextView header;
     UserPreferencesImpl up;
     ControllerImpl controller;
+    List<String> stockNamesList = new ArrayList<>();
+    List<String> timestampsList = new ArrayList<>();
     private static final String TAG = "History";
 
     @Override
@@ -46,6 +48,17 @@ public class HistoryActivity extends AppCompatActivity {
         ha = new HistoryAdapter(histories, this);
         historyRecycler.setAdapter(ha);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            stockNamesList = bundle.getStringArrayList("stockNames");
+            timestampsList = bundle.getStringArrayList("timestamps");
+        int len = stockNamesList.size();
+        for(int i = len-1; i >= 0; i--) {
+            HistoryViewObj historyViewObj = new HistoryViewObj(stockNamesList.get(i), timestampsList.get(i));
+            histories.add(historyViewObj);
+            ha.notifyDataSetChanged();
+        }
+        }
 //        up = new UserPreferencesImpl(this);
 //        controller = new ControllerImpl();
 //        if (up.getLikedStocks().size() > 0) {
