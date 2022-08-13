@@ -16,9 +16,9 @@ public class RecViewHolder extends RecyclerView.ViewHolder {
         public ImageButton like_button;
         public ImageButton add_button;
         public TextView industry;
-        public TextView total_revenue;
+        public TextView dividends;
         public TextView market_cap;
-        public TextView p_e;
+        public TextView volume;
 
 
     public RecViewHolder(@NonNull View itemView) {
@@ -32,9 +32,9 @@ public class RecViewHolder extends RecyclerView.ViewHolder {
         this.like_button = itemView.findViewById(R.id.like_button);
         this.add_button = itemView.findViewById(R.id.add_button);
         this.industry = itemView.findViewById(R.id.industry);
-        this.total_revenue = itemView.findViewById(R.id.total_revenue);
+        this.dividends = itemView.findViewById(R.id.dividends);
         this.market_cap = itemView.findViewById(R.id.market_cap);
-        this.p_e = itemView.findViewById(R.id.p_e);
+        this.volume = itemView.findViewById(R.id.volume);
 
     }
 
@@ -49,9 +49,9 @@ public class RecViewHolder extends RecyclerView.ViewHolder {
         //add_button.setImageDrawable();
 
         industry.setText(recToBind.getIndustry());
-        total_revenue.setText((int) recToBind.getTotalRev());
+        dividends.setText((int) recToBind.getDividends());
         market_cap.setText((int) recToBind.getMarketCap());
-        p_e.setText((int) recToBind.getPE());
+        volume.setText((int) recToBind.getVolume());
 
     }
 }

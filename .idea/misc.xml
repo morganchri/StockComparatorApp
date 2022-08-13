@@ -3,29 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/drawable/background_border.xml" value="0.273" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/drawable/homebuttonshape.xml" value="0.5335" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/activity_all_stocks.xml" value="0.39059304703476483" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/activity_history.xml" value="0.3889392565729828" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/activity_likes.xml" value="0.4466666666666667" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/activity_main.xml" value="0.4629981024667932" />
+        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/activity_stock_view.xml" value="0.24351851851851852" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/buttonlayout.xml" value="0.4553227875160325" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/dialog_layout.xml" value="0.22210614291684078" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/graphlayout.xml" value="0.5536458333333333" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/likeslayout.xml" value="0.5" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/movers_layout.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/recommendations.xml" value="0.19925857275254866" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/recommendations_layout.xml" value="0.12140871177015755" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/stock_list_layour.xml" value="0.45446772124839674" />
-        <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/stock_list_layout.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/Owner/AndroidStudioProjects/Team28Finalproject/app/src/main/res/layout/stockviewlayout.xml" value="0.4466666666666667" />
-        <entry key="app/src/main/res/layout/activity_all_stocks.xml" value="0.182518115942029" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.18553935617640396" />
-        <entry key="app/src/main/res/layout/dialog_layout.xml" value="0.182518115942029" />
-        <entry key="app/src/main/res/layout/movers_layout.xml" value="0.182518115942029" />
-        <entry key="app/src/main/res/layout/stock_list_layout.xml" value="0.182518115942029" />
-        <entry key="app/src/main/res/layout/stockviewlayout.xml" value="0.182518115942029" />
+        <entry key="..\:/Users/ruzzo/AndroidStudioProjects/Team_28_Final_Project/app/src/main/res/layout/activity_all_stocks.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/ruzzo/AndroidStudioProjects/Team_28_Final_Project/app/src/main/res/layout/activity_main.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/ruzzo/AndroidStudioProjects/Team_28_Final_Project/app/src/main/res/layout/dialog_layout.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/ruzzo/AndroidStudioProjects/Team_28_Final_Project/app/src/main/res/layout/movers_layout.xml" value="0.2453125" />
+        <entry key="..\:/Users/ruzzo/AndroidStudioProjects/Team_28_Final_Project/app/src/main/res/layout/recommendations.xml" value="0.2453125" />
+        <entry key="..\:/Users/ruzzo/AndroidStudioProjects/Team_28_Final_Project/app/src/main/res/layout/recommendations_layout.xml" value="0.536" />
+        <entry key="..\:/Users/ruzzo/AndroidStudioProjects/Team_28_Final_Project/app/src/main/res/layout/stock_list_layout.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/ruzzo/AndroidStudioProjects/Team_28_Final_Project/app/src/main/res/layout/stockviewlayout.xml" value="0.24635416666666668" />
       </map>
     </option>
   </component>

@@ -117,9 +117,6 @@ public class AllStocksActivity extends AppCompatActivity {
             }
         });
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //Sending list of all stocks to the RecommendationsActivity
-        Intent intent = new Intent(this, RecommendationsActivity.class);
-        intent.putExtra("stocks", (Serializable) stocks);
     }
 
     public boolean containsName(final List<StockListObj> list, final String name){
