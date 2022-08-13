@@ -16,10 +16,10 @@ public class LikesViewHolder extends RecyclerView.ViewHolder {
 
     public LikesViewHolder(@NonNull View likesView) {
         super(likesView);
-        this.ticker = likesView.findViewById(R.id.listTickerLikes);
-        this.price = likesView.findViewById(R.id.priceLikes);
-        this.change = likesView.findViewById(R.id.changeLikes);
-        this.pctChange = likesView.findViewById(R.id.pctChangeLikes);
+        this.ticker = likesView.findViewById(R.id.listTicker);
+        this.price = likesView.findViewById(R.id.price);
+        this.change = likesView.findViewById(R.id.change);
+        this.pctChange = likesView.findViewById(R.id.pctChange);
     }
 
     public void bindThisData(StockViewObj likeToBind) {

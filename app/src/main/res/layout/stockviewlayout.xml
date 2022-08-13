@@ -14,71 +14,68 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/listTickerLikes"
+            android:id="@+id/listTicker"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_alignParentStart="true"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_toStartOf="@id/priceLikes"
+            android:layout_toStartOf="@id/price"
             android:linksClickable="false"
             android:textColor="@color/black"
             android:textSize="20sp"
             tools:text="NULL" />
 
         <TextView
-            android:id="@+id/priceLikes"
+            android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="10dp"
-            android:layout_toStartOf="@id/changeLikes"
+            android:layout_toStartOf="@id/change"
             android:text="100.00"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/changeLikes"
+            android:id="@+id/change"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="10dp"
-            android:layout_toStartOf="@id/pctChangeLikes"
+            android:layout_toStartOf="@id/pctChange"
             android:text="(-14.00)"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/pctChangeLikes"
+            android:id="@+id/pctChange"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="15dp"
             android:layout_toStartOf="@id/likeButton"
             android:text="13.68%"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
-        <ImageButton
+        <RadioButton
             android:id="@+id/likeButton"
-            android:layout_width="48dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
-            android:layout_toStartOf="@id/deleteButton"
-            android:backgroundTint="#00FFFFFF"
-            app:srcCompat="@android:drawable/radiobutton_off_background" />
+            android:backgroundTint="#00FFFFFF" />
 
         <ImageButton
             android:id="@+id/deleteButton"
@@ -86,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="-4dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
             android:background="#00FFFFFF"
