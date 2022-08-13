@@ -145,9 +145,103 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
+                updateOperation();
+                Log.i(TAG, "onRefresh called from SwipeRefreshLayout");
             }
         });
 
+    }
+
+    public void updateOperation() {
+        int i;
+        for (i = 0; i < stockList.size(); i++) {
+            int finalI = i;
+            if (finalI % 2 == 0) {
+                StockViewObj stock = (StockViewObj) stockList.get(finalI);
+                cr.getQuote(stock.getTicker().toUpperCase())
+                        .enqueue(new Callback<Quote>() {
+                            @Override
+                            public void onResponse(@NonNull Call<Quote> call,
+                                                   @NonNull Response<Quote> response) {
+                                if (response.isSuccessful()) {
+                                    assert response.body() != null;
+                                    if (response.body().getTimestamp() > 0) {;
+                                        double cPrice = response.body().getCurrentPrice();
+                                        double oPrice = response.body().getOpenPrice();
+                                        StockViewObj newStock = new StockViewObj(stock.getTicker()
+                                                .toUpperCase(),
+                                                cPrice,
+                                                oPrice);
+                                        stockList.set(finalI, newStock);
+                                        Log.i(TAG, "getQuoteOnResponse: "
+                                                + response.body());
+                                    }
+                                    else {
+                                        //no data
+                                    }
+                                } else {
+                                    try {
+                                        assert response.errorBody() != null;
+                                        Log.i(TAG, "getQuoteOnResponseNotSuccessful: " +
+                                                response.errorBody().string());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onFailure(@NonNull Call<Quote> call,
+                                                  @NonNull Throwable t) {
+                                Log.i(TAG, "getQuoteOnFailure: " + t);
+                            }
+                        });
+            } else {
+                GraphViewObj graph = (GraphViewObj) stockList.get(finalI);
+                cr.getIndicators(graph.getTicker().toUpperCase(),
+                        IndicatorResolution.RES_D, dateToUnix(getPrevYear()),
+                        dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onResponse(@NonNull Call<Indicator> call,
+                                           @NonNull Response<Indicator> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (response.body().getStatus()
+                                    .equalsIgnoreCase("ok")) {
+                                GraphViewObj newGraph = new GraphViewObj(graph.getTicker().toUpperCase(),
+                                        getData(response.body().getClosePrices()));
+                                stockList.set(finalI, newGraph);
+                                stockRecyclerView.setAdapter(sa);
+                                //sa.notifyDataSetChanged();
+                                Log.i(TAG, "getIndicatorsOnResponse: "
+                                        + response.body());
+                            } else {
+                                //no data
+                            }
+                        } else {
+                            try {
+                                assert response.errorBody() != null;
+                                Log.i(TAG,
+                                        "getIndicatorsOnResponseNotSuccessful: " +
+                                                response.errorBody().
+                                                        string());
+                                ObjectMapper om = new ObjectMapper();
+                                Error e = om.readValue(response.errorBody().string(),
+                                        Error.class);
+                                Log.i(TAG, "error: " + e.getError());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    @Override
+                    public void onFailure(@NonNull Call<Indicator> call,
+                                          @NonNull Throwable t) {
+                        Log.i(TAG, "getIndicatorsOnFailure: " + t);
+                    }
+                });
+            }
+        }
     }
 
     public void addStock(View view) {
