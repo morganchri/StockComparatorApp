@@ -99,11 +99,13 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                     Snackbar.make(v, "Stock already liked",
                                                     Snackbar.LENGTH_LONG)
                                             .setAction("Action", null).show();
+                                    notifyDataSetChanged();
                                 } else {
                                     up.likeStock(stock.getTicker());
                                     Snackbar.make(v, "Stock liked",
                                                     Snackbar.LENGTH_LONG)
                                             .setAction("Action", null).show();
+                                    notifyDataSetChanged();
                                 }
                             }
                         } else {
@@ -111,6 +113,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             Snackbar.make(v, "Stock liked",
                                             Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
+                            notifyDataSetChanged();
                         }
                     }
                 });
@@ -123,6 +126,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         Snackbar.make(v, "Stock unliked",
                                         Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
+                        notifyDataSetChanged();
                     }
                 });
             }
