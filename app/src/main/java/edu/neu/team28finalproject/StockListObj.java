@@ -5,13 +5,12 @@ import java.io.Serializable;
 public class StockListObj implements Serializable {
 
     private String ticker;
-    private String sector;
     private String name;
 
-    public StockListObj(String ticker, String name, String sector) {
+    public StockListObj(String ticker, String name) {
         this.ticker = ticker;
         this.name = name;
-        this.sector = sector;
+
     }
 
     public String getTicker() {
@@ -22,7 +21,4 @@ public class StockListObj implements Serializable {
         return this.name;
     }
 
-    public String getSector() {
-        return this.sector;
-    }
 }

@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LikesActivity extends AppCompatActivity implements Serializable {
+public class LikesActivity extends AppCompatActivity {
 
     List<StockViewObj> likes;
     RecyclerView likesRecycler;
@@ -49,9 +49,8 @@ public class LikesActivity extends AppCompatActivity implements Serializable {
         la = new LikesAdapter(likes, this);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         up = new UserPreferencesImpl(this);
-
         controller = new ControllerImpl();
-        if (up.getLikedStocks().size() > 0 ){
+        if (up.getLikedStocks().size() > 0) {
             for (int i = 0; i < up.getLikedStocks().size(); i++) {
                 String ticker = up.getLikedStocks().get(i);
                 controller.getQuote(ticker)

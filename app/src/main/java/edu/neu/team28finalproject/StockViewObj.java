@@ -1,7 +1,5 @@
 package edu.neu.team28finalproject;
 
-import java.io.Serializable;
-
 public class StockViewObj {
     private final String ticker;
     private final double current;
