@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         stockList = new ArrayList<>();
         up = new UserPreferencesImpl(this);
         cr = new ControllerImpl();
-//        up.clearViewedStocks();
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         stockRecyclerView = findViewById(R.id.recyclerView);
         stockRecyclerView.setHasFixedSize(true);
