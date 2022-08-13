@@ -5,16 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,12 +44,14 @@ public class LikesActivity extends AppCompatActivity {
         LinearLayoutManager likesLinLayout = new LinearLayoutManager(this);
         likesRecycler.setLayoutManager(likesLinLayout);
         la = new LikesAdapter(likes, this);
+        likesRecycler.setAdapter(la);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         up = new UserPreferencesImpl(this);
         controller = new ControllerImpl();
         if (up.getLikedStocks().size() > 0) {
             for (int i = 0; i < up.getLikedStocks().size(); i++) {
                 String ticker = up.getLikedStocks().get(i);
+                System.out.println(ticker);
                 controller.getQuote(ticker)
                         .enqueue(new Callback<Quote>() {
                             @Override
@@ -63,10 +62,10 @@ public class LikesActivity extends AppCompatActivity {
                                     if (response.body().getTimestamp() > 0) {
                                         double cPrice = response.body().getCurrentPrice();
                                         double oPrice = response.body().getOpenPrice();
-                                        StockViewObj newStock = new StockViewObj(ticker,
-                                                cPrice,
+                                        StockViewObj newStock = new StockViewObj(ticker, cPrice,
                                                 oPrice);
                                         likes.add(newStock);
+                                        la.notifyDataSetChanged();
                                         Log.i(TAG, "getQuoteOnResponse: "
                                                 + response.body());
                                     }
@@ -76,20 +75,20 @@ public class LikesActivity extends AppCompatActivity {
                                         Log.i(TAG, "getQuoteOnResponseNotSuccessful: " +
                                                 response.errorBody().string());
                                     } catch (IOException e) {
-                                        e.printStackTrace();
+                                       e.printStackTrace();
                                     }
                                 }
                             }
                             @Override
                             public void onFailure(@NonNull Call<Quote> call,
-                                                  @NonNull Throwable t) {
+                                                   @NonNull Throwable t) {
                                 Log.i(TAG, "getQuoteOnFailure: " + t);
                             }
                         });
+                 }
+                } else {
+                    likes.add(new StockViewObj("No Likes", 0.00, 0.00));
             }
-        } else {
-            likes.add(new StockViewObj("No Likes", 0.00, 0.00));
         }
-    }
 
 }

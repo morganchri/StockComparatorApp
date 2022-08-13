@@ -43,7 +43,6 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private final UserPreferencesImpl up;
     private static final String TAG = "ViewAdapter";
 
-
     public StockViewAdapter(List<Object> stocks,
                             Context context) {
         this.stocks = stocks;
@@ -82,22 +81,22 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             });
             ((StockViewHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    StockViewObj stock = (StockViewObj) stocks.get(position);
                     if (up.getLikedStocks().size() > 0) {
                         for (int i = 0; i < up.getLikedStocks().size(); i++) {
-                            StockViewObj stock = (StockViewObj) stocks.get(position);
-                            if (Objects.equals(stock.getTicker(), up.getLikedStocks().get(i))) {
+                            if (stock.getTicker().equalsIgnoreCase(up.getLikedStocks().get(i))) {
                                 Snackbar.make(v, "Stock already liked",
                                                 Snackbar.LENGTH_LONG)
                                         .setAction("Action", null).show();
                             } else {
-                                up.likeStock(((StockViewHolder) holder).ticker.toString());
+                                up.likeStock(stock.getTicker());
                                 Snackbar.make(v, "Stock liked",
                                                 Snackbar.LENGTH_LONG)
                                         .setAction("Action", null).show();
                             }
                         }
                     } else {
-                        up.likeStock(((StockViewHolder) holder).ticker.toString());
+                        up.likeStock(stock.getTicker());
                         Snackbar.make(v, "Stock liked",
                                         Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
@@ -120,8 +119,6 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             if (response.isSuccessful()) {
                                 if (response.body().getStatus().equalsIgnoreCase("ok")) {
                                     ((GraphViewObj) item).setEntries(getData(response.body().getClosePrices()));
-                                    System.out.println(dateToUnix(getPrevDay()));
-                                    System.out.println(dateToUnix(getCurrYear()));
                                     notifyDataSetChanged();
                                     Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
                                 } else {
