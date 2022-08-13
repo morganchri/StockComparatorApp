@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     StockViewAdapter sa;
     ControllerImpl cr;
     UserPreferencesImpl up;
-    List<String> stockNames = new ArrayList<>();
-    List<String> timestamps = new ArrayList<>();
+    ArrayList<String> stockNames = new ArrayList<>();
+    ArrayList<String> timestamps = new ArrayList<>();
     private static final String TAG = "Main";
 
 
@@ -183,15 +183,16 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                     if (response.isSuccessful()) {
                                         assert response.body() != null;
                                         if (response.body().getTimestamp() > 0) {
-                                            Intent intent = new Intent(MainActivity.this,
-                                                    HistoryActivity.class);
-                                            Bundle b = new Bundle();
-                                            stockNames.add(stockInput.getText().toString().toUpperCase());
-                                            timestamps.add(String.valueOf(System.currentTimeMillis()));
-                                            b.putStringArrayList("stockNames", (ArrayList<String>) stockNames);
-                                            b.putStringArrayList("timestamps", (ArrayList<String>) timestamps);
-                                            intent.putExtras(b);
-                                            startActivity(intent);
+//                                            Intent intent = new Intent(MainActivity.this,
+//                                                    HistoryActivity.class);
+////                                            Bundle b = new Bundle();
+//                                            stockNames.add(stockInput.getText().toString().toUpperCase());
+//                                            timestamps.add(String.valueOf(System.currentTimeMillis()));
+//                                            intent.putExtra("stockNames", stockNames);
+//                                            intent.putExtra("timestamps", timestamps);
+//                                            startActivity(intent);
+                                            up.viewStock(stockInput
+                                                    .getText().toString().toUpperCase());
                                             double cPrice = response.body().getCurrentPrice();
                                             double oPrice = response.body().getOpenPrice();
                                             StockViewObj newStock = new StockViewObj(stockInput

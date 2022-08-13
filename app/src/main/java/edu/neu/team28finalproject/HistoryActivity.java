@@ -48,59 +48,28 @@ public class HistoryActivity extends AppCompatActivity {
         ha = new HistoryAdapter(histories, this);
         historyRecycler.setAdapter(ha);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            stockNamesList = bundle.getStringArrayList("stockNames");
-            timestampsList = bundle.getStringArrayList("timestamps");
-        int len = stockNamesList.size();
-        for(int i = len-1; i >= 0; i--) {
-            HistoryViewObj historyViewObj = new HistoryViewObj(stockNamesList.get(i), timestampsList.get(i));
-            histories.add(historyViewObj);
-            ha.notifyDataSetChanged();
-        }
-        }
-//        up = new UserPreferencesImpl(this);
-//        controller = new ControllerImpl();
-//        if (up.getLikedStocks().size() > 0) {
-//            for (int i = 0; i < up.getLikedStocks().size(); i++) {
-//                String ticker = up.getLikedStocks().get(i);
-//                System.out.println(ticker);
-//                controller.getQuote(ticker)
-//                        .enqueue(new Callback<Quote>() {
-//                            @Override
-//                            public void onResponse(@NonNull Call<Quote> call,
-//                                                   @NonNull Response<Quote> response) {
-//                                if (response.isSuccessful()) {
-//                                    assert response.body() != null;
-//                                    if (response.body().getTimestamp() > 0) {
-//                                        double cPrice = response.body().getCurrentPrice();
-//                                        double oPrice = response.body().getOpenPrice();
-//                                        StockViewObj newStock = new StockViewObj(ticker, cPrice,
-//                                                oPrice);
-//                                        likes.add(newStock);
-//                                        la.notifyDataSetChanged();
-//                                        Log.i(TAG, "getQuoteOnResponse: "
-//                                                + response.body());
-//                                    }
-//                                } else {
-//                                    try {
-//                                        assert response.errorBody() != null;
-//                                        Log.i(TAG, "getQuoteOnResponseNotSuccessful: " +
-//                                                response.errorBody().string());
-//                                    } catch (IOException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            }
-//                            @Override
-//                            public void onFailure(@NonNull Call<Quote> call,
-//                                                  @NonNull Throwable t) {
-//                                Log.i(TAG, "getQuoteOnFailure: " + t);
-//                            }
-//                        });
-//            }
-//        } else {
-//            likes.add(new StockViewObj("No Likes", 0.00, 0.00));
+//        Bundle bundle = getIntent().getExtras();
+//        if (bundle != null) {
+//            stockNamesList = bundle.getStringArrayList("stockNames");
+//            timestampsList = bundle.getStringArrayList("timestamps");
+//        int len = stockNamesList.size();
+//        for(int i = len-1; i >= 0; i--) {
+//            HistoryViewObj historyViewObj = new HistoryViewObj(stockNamesList.get(i), timestampsList.get(i));
+//            histories.add(historyViewObj);
+//            ha.notifyDataSetChanged();
 //        }
+        up = new UserPreferencesImpl(this);
+        controller = new ControllerImpl();
+        if (up.getViewedStocks().size() > 0) {
+            for (int i = 0; i < up.getViewedStocks().size(); i++) {
+                String ticker = up.getViewedStocks().get(i);
+                System.out.println(ticker);
+                HistoryViewObj historyViewObj = new HistoryViewObj(ticker, String.valueOf(System.currentTimeMillis()));
+                histories.add(historyViewObj);
+                ha.notifyDataSetChanged();
+            }
+        } else {
+            histories.add(new HistoryViewObj("No History", ""));
+        }
     }
 }
