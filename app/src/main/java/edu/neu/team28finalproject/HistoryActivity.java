@@ -49,7 +49,8 @@ public class HistoryActivity extends AppCompatActivity {
         up = new UserPreferencesImpl(this);
         controller = new ControllerImpl();
         if (up.getViewedStocks().size() > 0) {
-            for (int i = 0; i < up.getViewedStocks().size(); i++) {
+            int viewedStocksSize = up.getViewedStocks().size();
+            for (int i = viewedStocksSize - 1; i >= 0; i--) {
                 String[] tickerPlusTimestamp = up.getViewedStocks().get(i).split("-");
                 String ticker = tickerPlusTimestamp[0];
                 String timestamp = tickerPlusTimestamp[1];
