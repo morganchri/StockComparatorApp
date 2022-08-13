@@ -85,18 +85,17 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 for (int i = 0; i < up.getLikedStocks().size(); i++) {
                     if (stock.getTicker().equalsIgnoreCase(up.getLikedStocks().get(i))) {
                         ((StockViewHolder) holder).likeButton.setChecked(true);
+                        ((StockViewHolder) holder).likeButton.setClickable(false);
                     }
                 }
             }
-            ((StockViewHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    if (((StockViewHolder) holder).likeButton.isChecked()) {
-                        //do nothing for now
-                    } else {
+            if (!((StockViewHolder) holder).likeButton.isChecked()) {
+                ((StockViewHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
                         StockViewObj stock = (StockViewObj) stocks.get(position);
                         if (up.getLikedStocks().size() > 0) {
                             for (int i = 0; i < up.getLikedStocks().size(); i++) {
-                                if (stock.getTicker().equalsIgnoreCase(up.getLikedStocks().get(i))) {
+                                if (stock.getTicker().equals(up.getLikedStocks().get(i))) {
                                     Snackbar.make(v, "Stock already liked",
                                                     Snackbar.LENGTH_LONG)
                                             .setAction("Action", null).show();
@@ -114,8 +113,19 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                     .setAction("Action", null).show();
                         }
                     }
-                }
-            });
+                });
+            } else {
+                ((StockViewHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        StockViewObj stock = (StockViewObj) stocks.get(position);
+                        up.unlikeStock(stock.getTicker());
+                        ((StockViewHolder) holder).likeButton.setChecked(false);
+                        Snackbar.make(v, "Stock unliked",
+                                        Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+                });
+            }
         } else {
             ((GraphViewHolder) holder).bindThisData((GraphViewObj) item);
             ((GraphViewHolder) holder).btn[0].setOnClickListener(new View.OnClickListener() {
