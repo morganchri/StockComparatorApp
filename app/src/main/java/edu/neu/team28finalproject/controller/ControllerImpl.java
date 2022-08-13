@@ -87,6 +87,10 @@ public class ControllerImpl implements Controller {
         return fmpWebService.getStocksByIndustry(fmpKey, industry);
     }
 
+    public Call<List<StockScreener>> getAllStockInfo() {
+        return fmpWebService.getAllStockInfo(fmpKey);
+    }
+
     /**
      * Creates a FinnhubWebService object. An interceptor is added to
      * include api key in all requests.

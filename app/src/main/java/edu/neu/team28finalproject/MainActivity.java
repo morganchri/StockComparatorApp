@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     StockViewAdapter sa;
     ControllerImpl cr;
     UserPreferencesImpl up;
+    ArrayList<String> stockNames = new ArrayList<>();
+    ArrayList<String> timestamps = new ArrayList<>();
     private static final String TAG = "Main";
 
 
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         stockList = new ArrayList<>();
         up = new UserPreferencesImpl(this);
         cr = new ControllerImpl();
+//        up.clearViewedStocks();
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         stockRecyclerView = findViewById(R.id.recyclerView);
         stockRecyclerView.setHasFixedSize(true);
@@ -181,6 +184,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                     if (response.isSuccessful()) {
                                         assert response.body() != null;
                                         if (response.body().getTimestamp() > 0) {
+                                            up.viewStock(stockInput
+                                                    .getText().toString().toUpperCase(),
+                                                    String.valueOf(System.currentTimeMillis()));
                                             double cPrice = response.body().getCurrentPrice();
                                             double oPrice = response.body().getOpenPrice();
                                             StockViewObj newStock = new StockViewObj(stockInput
@@ -231,8 +237,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                                     .getText().toString().toUpperCase(),
                                                     getData(response.body().getClosePrices()));
                                             stockList.add(newGraph);
-                                            up.viewStock(stockInput
-                                                    .getText().toString().toUpperCase());
+//                                            up.viewStock(stockInput
+//                                                    .getText().toString().toUpperCase(),
+//                                                    String.valueOf(System.currentTimeMillis()));
                                             sa.notifyDataSetChanged();
                                             Log.i(TAG, "getIndicatorsOnResponse: "
                                                     + response.body());

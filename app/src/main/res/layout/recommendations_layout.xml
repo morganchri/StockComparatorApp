@@ -90,30 +90,30 @@
         android:text="@string/industry" />
 
     <TextView
-        android:id="@+id/total_revenue"
+        android:id="@+id/dividends"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/industry"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:text="@string/total_revenue" />
+        android:text="@string/dividends" />
 
     <TextView
         android:id="@+id/market_cap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/p_e"
+        android:layout_below="@id/volume"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:text="@string/market_cap" />
 
     <TextView
-        android:id="@+id/p_e"
+        android:id="@+id/volume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/total_revenue"
+        android:layout_below="@id/dividends"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:text="@string/p_e" />
+        android:text="@string/volume" />
 
 </RelativeLayout>

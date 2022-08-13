@@ -9,11 +9,11 @@ public class RecViewObj {
     private final double pctChange;
     private final String industry;
     private final double marketCap;
-    private final double pE;
-    private final double totalRev;
+    private final double volume;
+    private final double dividends;
 
     public RecViewObj(String ticker, double current, double open,String industry, double marketCap,
-                      double pE, double totalRev) {
+                      double volume, double dividends) {
         this.ticker = ticker;
         this.current = current;
         this.open = open;
@@ -21,8 +21,8 @@ public class RecViewObj {
         this.pctChange = (current - open) / open;
         this.industry = industry;
         this.marketCap = marketCap;
-        this.pE = pE;
-        this.totalRev = totalRev;
+        this.volume = volume;
+        this.dividends = dividends;
     }
 
     public String getTicker() {
@@ -49,7 +49,7 @@ public class RecViewObj {
 
     public double getMarketCap() {return marketCap;}
 
-    public double getPE() {return pE;}
+    public double getVolume() {return volume;}
 
-    public double getTotalRev() {return totalRev;}
+    public double getDividends() {return dividends;}
 }

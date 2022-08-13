@@ -1,7 +1,5 @@
 package edu.neu.team28finalproject;
 
-import java.io.Serializable;
-
 public class StockViewObj {
     private final String ticker;
     private final double current;
@@ -34,6 +32,6 @@ public class StockViewObj {
     }
 
     public double getPctChange() {
-        return Math.round(pctChange);
+        return Math.round(pctChange * 100.00) / 100.00;
     }
 }

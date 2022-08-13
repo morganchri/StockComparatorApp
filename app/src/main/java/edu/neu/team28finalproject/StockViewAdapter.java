@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,7 +43,6 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private final Controller controller = new ControllerImpl();
     private final UserPreferencesImpl up;
     private static final String TAG = "ViewAdapter";
-
 
     public StockViewAdapter(List<Object> stocks,
                             Context context) {
@@ -80,27 +80,39 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     notifyItemRangeChanged(newPosition, stocks.size());
                 }
             });
+            StockViewObj stock = (StockViewObj) stocks.get(position);
+            if (up.getLikedStocks().size() > 0) {
+                for (int i = 0; i < up.getLikedStocks().size(); i++) {
+                    if (stock.getTicker().equalsIgnoreCase(up.getLikedStocks().get(i))) {
+                        ((StockViewHolder) holder).likeButton.setChecked(true);
+                    }
+                }
+            }
             ((StockViewHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (up.getLikedStocks().size() > 0) {
-                        for (int i = 0; i < up.getLikedStocks().size(); i++) {
-                            StockViewObj stock = (StockViewObj) stocks.get(position);
-                            if (Objects.equals(stock.getTicker(), up.getLikedStocks().get(i))) {
-                                Snackbar.make(v, "Stock already liked",
-                                                Snackbar.LENGTH_LONG)
-                                        .setAction("Action", null).show();
-                            } else {
-                                up.likeStock(((StockViewHolder) holder).ticker.toString());
-                                Snackbar.make(v, "Stock liked",
-                                                Snackbar.LENGTH_LONG)
-                                        .setAction("Action", null).show();
-                            }
-                        }
+                    if (((StockViewHolder) holder).likeButton.isChecked()) {
+                        //do nothing for now
                     } else {
-                        up.likeStock(((StockViewHolder) holder).ticker.toString());
-                        Snackbar.make(v, "Stock liked",
-                                        Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
+                        StockViewObj stock = (StockViewObj) stocks.get(position);
+                        if (up.getLikedStocks().size() > 0) {
+                            for (int i = 0; i < up.getLikedStocks().size(); i++) {
+                                if (stock.getTicker().equalsIgnoreCase(up.getLikedStocks().get(i))) {
+                                    Snackbar.make(v, "Stock already liked",
+                                                    Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
+                                } else {
+                                    up.likeStock(stock.getTicker());
+                                    Snackbar.make(v, "Stock liked",
+                                                    Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
+                                }
+                            }
+                        } else {
+                            up.likeStock(stock.getTicker());
+                            Snackbar.make(v, "Stock liked",
+                                            Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
                     }
                 }
             });
@@ -120,8 +132,6 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             if (response.isSuccessful()) {
                                 if (response.body().getStatus().equalsIgnoreCase("ok")) {
                                     ((GraphViewObj) item).setEntries(getData(response.body().getClosePrices()));
-                                    System.out.println(dateToUnix(getPrevDay()));
-                                    System.out.println(dateToUnix(getCurrYear()));
                                     notifyDataSetChanged();
                                     Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
                                 } else {

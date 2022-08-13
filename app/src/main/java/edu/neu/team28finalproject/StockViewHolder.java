@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,16 +16,15 @@ public class StockViewHolder extends RecyclerView.ViewHolder {
     public TextView cPrice;
     public TextView change;
     public TextView pctChange;
-    public ImageButton likeButton;
+    public RadioButton likeButton;
     public ImageButton deleteButton;
-
 
     public StockViewHolder(@NonNull View stockView) {
         super(stockView);
-        this.ticker = stockView.findViewById(R.id.listTickerLikes);
-        this.cPrice = stockView.findViewById(R.id.priceLikes);
-        this.change = stockView.findViewById(R.id.changeLikes);
-        this.pctChange = stockView.findViewById(R.id.pctChangeLikes);
+        this.ticker = stockView.findViewById(R.id.listTicker);
+        this.cPrice = stockView.findViewById(R.id.price);
+        this.change = stockView.findViewById(R.id.change);
+        this.pctChange = stockView.findViewById(R.id.pctChange);
         this.likeButton = stockView.findViewById(R.id.likeButton);
         this.deleteButton = stockView.findViewById(R.id.deleteButton);
     }

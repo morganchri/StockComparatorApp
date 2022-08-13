@@ -20,7 +20,7 @@ public interface UserPreferences {
      *
      * @param ticker ticker/ symbol of stock
      */
-    void viewStock(String ticker);
+    void viewStock(String ticker, String timestamp);
 
     /**
      * Get favorite stocks.
