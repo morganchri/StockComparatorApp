@@ -1,11 +1,14 @@
 package edu.neu.team28finalproject;
 
 import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Date;
 
 public class HistoryViewHolder extends RecyclerView.ViewHolder {
 
@@ -20,6 +23,9 @@ public class HistoryViewHolder extends RecyclerView.ViewHolder {
 
     public void bindThisData(HistoryViewObj historyToBind) {
         ticker.setText(historyToBind.getTickerName());
-        timestamp.setText(historyToBind.getTimestamp());
+        long millis = Long.valueOf(historyToBind.getTimestamp());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+        Date date = new Date(millis);
+        timestamp.setText(simpleDateFormat.format(date));
     }
 }
