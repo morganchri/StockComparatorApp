@@ -20,13 +20,19 @@ public class LikesViewHolder extends RecyclerView.ViewHolder {
     private TextView pctChange;
     public Button removeLikeButton;
 
-    public LikesViewHolder(@NonNull View likesView) {
+    public LikesViewHolder(@NonNull View likesView, LikesAdapter.OnItemClickListener listener) {
         super(likesView);
         this.ticker = likesView.findViewById(R.id.listTicker);
         this.price = likesView.findViewById(R.id.price);
         this.change = likesView.findViewById(R.id.change);
         this.pctChange = likesView.findViewById(R.id.pctChange);
         this.removeLikeButton = likesView.findViewById(R.id.removeLikesButton);
+        removeLikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClick(getAdapterPosition());
+            }
+        });
     }
 
     public void bindThisData(StockViewObj likeToBind) {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,10 +22,11 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
     private final List<StockViewObj> likes;
     private final Context context;
     private final UserPreferencesImpl up;
-    private OnItemClickListener listener;
+    public OnItemClickListener listener;
+    public Button removeLikeButton;
 
     public interface OnItemClickListener{
-        void OnItemClick(int position);
+        void onItemClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener clickListener){
@@ -42,7 +44,7 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
     @Override
     public LikesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new LikesViewHolder(LayoutInflater.from(context).inflate(R.layout.likeslayout,
-                parent, false));
+                parent, false), listener);
     }
 
     @Override
@@ -56,14 +58,6 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
                 intent.putExtra("Ticker", likes.get(position).getTicker());
                 //startActivityForResult(intent, REQUEST_CODE_CHOOSE_ITEM);
                 context.startActivity(intent);
-            }
-        });
-        holder.removeLikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                up.unlikeStock(likes.get(position).getTicker().toUpperCase());
-                notifyItemRemoved(position);
-                notifyDataSetChanged();
             }
         });
     }

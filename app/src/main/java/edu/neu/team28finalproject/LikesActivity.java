@@ -91,11 +91,17 @@ public class LikesActivity extends AppCompatActivity {
                                 Log.i(TAG, "getQuoteOnFailure: " + t);
                             }
                         });
+                la.setOnItemClickListener(new LikesAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        up.unlikeStock(ticker);
+                        la.notifyItemRemoved(position);
+                    }
+                });
                  }
                 } else {
                     la.notifyDataSetChanged();
                     likes.add(new StockViewObj("No Liked Stocks", 0.00, 0.00));
             }
         }
-
 }
