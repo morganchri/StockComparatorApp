@@ -49,7 +49,7 @@ public class HistoryActivity extends AppCompatActivity {
         historyRecycler.setAdapter(ha);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         up = new UserPreferencesImpl(this);
-        up.clearViewedStocks();
+//        up.clearViewedStocks();
         controller = new ControllerImpl();
         if (up.getViewedStocks().size() > 0) {
             int viewedStocksSize = up.getViewedStocks().size();

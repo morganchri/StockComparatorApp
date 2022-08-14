@@ -34,7 +34,7 @@ public class LikesActivity extends AppCompatActivity {
     TextView header;
     UserPreferencesImpl up;
     ControllerImpl controller;
-    MaterialButton removeLikesButton;
+    Button removeLikesButton;
     private static final String TAG = "Likes";
 
     @Override

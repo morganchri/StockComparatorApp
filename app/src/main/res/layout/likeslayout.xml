@@ -33,6 +33,12 @@
             android:textSize="20sp"
             tools:text="NULL" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
         <TextView
             android:id="@+id/price"
             android:layout_width="wrap_content"
@@ -46,6 +52,12 @@
             android:textColor="@color/black"
             android:textSize="20sp" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
         <TextView
             android:id="@+id/change"
             android:layout_width="wrap_content"
@@ -58,6 +70,12 @@
             android:text="(-14.00)"
             android:textColor="@color/black"
             android:textSize="20sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
 
         <TextView
             android:id="@+id/pctChange"
@@ -73,7 +91,13 @@
             android:textColor="@color/black"
             android:textSize="20sp" />
 
-        <com.google.android.material.button.MaterialButton
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <Button
             style="@style/Widget.AppCompat.Button.Colored"
             android:id="@+id/removeLikesButton"
             android:layout_width="wrap_content"
@@ -84,7 +108,7 @@
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
             android:background="#00FFFFFF"
-            android:text="Unlike"
+            android:text="X"
             android:textColor="@color/black"
             app:strokeColor="#42413C"
             app:strokeWidth="2dp"

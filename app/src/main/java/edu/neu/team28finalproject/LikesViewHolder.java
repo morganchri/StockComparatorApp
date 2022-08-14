@@ -17,7 +17,7 @@ public class LikesViewHolder extends RecyclerView.ViewHolder {
     private TextView price;
     private TextView change;
     private TextView pctChange;
-    public MaterialButton removeLikeButton;
+    public Button removeLikeButton;
 
     public LikesViewHolder(@NonNull View likesView) {
         super(likesView);
