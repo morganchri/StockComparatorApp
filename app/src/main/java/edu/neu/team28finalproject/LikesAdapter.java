@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,15 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
     private final List<StockViewObj> likes;
     private final Context context;
     private final UserPreferencesImpl up;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener{
+        void OnItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener clickListener){
+        listener = clickListener;
+    }
 
     public LikesAdapter(List<StockViewObj> likes, Context context) {
         this.likes = likes;
