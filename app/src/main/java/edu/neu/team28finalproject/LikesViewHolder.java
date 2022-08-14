@@ -30,7 +30,7 @@ public class LikesViewHolder extends RecyclerView.ViewHolder {
         removeLikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onItemClick(getAdapterPosition());
+                listener.onItemClick(getAbsoluteAdapterPosition());
             }
         });
     }
