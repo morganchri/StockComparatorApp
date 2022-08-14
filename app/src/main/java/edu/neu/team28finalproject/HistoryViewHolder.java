@@ -2,6 +2,7 @@ package edu.neu.team28finalproject;
 
 import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -31,7 +32,8 @@ public class HistoryViewHolder extends RecyclerView.ViewHolder {
             Date date = new Date(millis);
             timestamp.setText(simpleDateFormat.format(date));
         } else {
-            ticker.setText("            No History Found");
+            ticker.setText("No History Found");
+            ticker.setGravity(Gravity.CENTER);
             timestamp.setText("");
         }
     }
