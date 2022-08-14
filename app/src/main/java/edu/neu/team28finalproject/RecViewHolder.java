@@ -59,8 +59,8 @@ public class RecViewHolder extends RecyclerView.ViewHolder {
 
         industry.setText(String.valueOf(recToBind.getIndustry()));
         dividends.setText(String.valueOf(recToBind.getDividends()));
-        market_cap.setText(String.format("%.2f", recToBind.getMarketCap()));
-        volume.setText(String.format("%.2f", recToBind.getVolume()));
+        market_cap.setText(String.format("%.0f", recToBind.getMarketCap()));
+        volume.setText(String.format("%.0f", recToBind.getVolume()));
 
     }
 }
