@@ -3,10 +3,12 @@ package edu.neu.team28finalproject;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -104,12 +106,22 @@ public class RecommendationsActivity extends AppCompatActivity {
                                             //Get price info using getQuote
                                             controller.getQuote(ticker).enqueue(new Callback<Quote>() {
                                                 @Override
-                                                public void onResponse(Call<Quote> call, Response<Quote> response) {
-                                                    assert response.body() != null;
-                                                    if (response.body().getTimestamp() > 0) {
-                                                        current = response.body().getCurrentPrice();
-                                                        open = response.body().getOpenPrice();
-                                                        Log.i(TAG,"getQuoteSuccessful: " + response.body());
+                                                public void onResponse(Call<Quote> call, @NonNull Response<Quote> response) {
+                                                    if (response.isSuccessful()) {
+                                                        assert response.body() != null;
+                                                        if (response.body().getTimestamp() > 0) {
+                                                            current = response.body().getCurrentPrice();
+                                                            open = response.body().getOpenPrice();
+                                                            Log.i(TAG, "getQuoteSuccessful: " + response.body());
+                                                        }
+                                                    }  else {
+                                                        try {
+                                                            assert response.errorBody() != null;
+                                                            Log.i(TAG, "getQuoteOnResponseNotSuccessful: " +
+                                                                    response.errorBody().string());
+                                                        } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                        }
                                                     }
                                                 }
 

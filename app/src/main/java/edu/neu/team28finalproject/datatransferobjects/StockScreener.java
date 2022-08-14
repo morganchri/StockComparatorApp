@@ -75,7 +75,7 @@ public class StockScreener {
         return marketCap;
     }
 
-    public void setMarketCap(double marketCap) {
+    public void setMarketCap(long marketCap) {
         this.marketCap = marketCap;
     }
 
