@@ -95,7 +95,8 @@ public class LikesActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(int position) {
                         up.unlikeStock(ticker);
-                        la.notifyItemRemoved(position);
+                        finish();
+                        startActivity(getIntent());
                     }
                 });
                  }
