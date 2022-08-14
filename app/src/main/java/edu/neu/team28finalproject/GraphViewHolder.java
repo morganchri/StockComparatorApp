@@ -9,6 +9,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.LineData;
 
 public class GraphViewHolder extends RecyclerView.ViewHolder {
@@ -40,8 +42,15 @@ public class GraphViewHolder extends RecyclerView.ViewHolder {
         chart.setScaleEnabled(false);
         chart.setPinchZoom(false);
         chart.setBackgroundColor(Color.WHITE);
-        chart.setViewPortOffsets(10,0,10,0);
         chart.getLegend().setEnabled(false);
+        YAxis rightAxis = chart.getAxisRight();
+        rightAxis.setEnabled(false);
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setEnabled(true);
+        leftAxis.setDrawGridLines(true);
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setEnabled(false);
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         chart.setData(data);
         chart.notifyDataSetChanged();
     }

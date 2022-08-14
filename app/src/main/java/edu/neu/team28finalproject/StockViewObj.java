@@ -3,7 +3,7 @@ package edu.neu.team28finalproject;
 public class StockViewObj {
     private final String ticker;
     private final double current;
-    private final double open;
+    private double open;
     private final double change;
     private final double pctChange;
 
@@ -28,10 +28,14 @@ public class StockViewObj {
     }
 
     public double getChange() {
-        return Math.round(change* 100.0) / 100.0;
+        return Math.round((current - open) * 100.0) / 100.0;
     }
 
     public double getPctChange() {
-        return Math.round(pctChange * 100.00) / 100.00;
+        return Math.round(((current - open) / open)*100 * 100.00) / 100.00;
+    }
+
+    public void setOpen(double newPrice) {
+        this.open = newPrice;
     }
 }

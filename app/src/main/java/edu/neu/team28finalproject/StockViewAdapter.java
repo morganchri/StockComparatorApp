@@ -91,6 +91,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
             if (!((StockViewHolder) holder).likeButton.isChecked()) {
                 ((StockViewHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("NotifyDataSetChanged")
                     public void onClick(View v) {
                         StockViewObj stock = (StockViewObj) stocks.get(position);
                         if (up.getLikedStocks().size() > 0) {
@@ -119,6 +120,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 });
             } else {
                 ((StockViewHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("NotifyDataSetChanged")
                     public void onClick(View v) {
                         StockViewObj stock = (StockViewObj) stocks.get(position);
                         up.unlikeStock(stock.getTicker());
@@ -141,11 +143,17 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     controller.getIndicators(((GraphViewObj) item).getTicker(),
                             IndicatorResolution.RES_60, dateToUnix(getPrevDay()),
                             dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
+                        @SuppressLint("NotifyDataSetChanged")
                         @Override
-                        public void onResponse(Call<Indicator> call, Response<Indicator> response) {
+                        public void onResponse(@NonNull Call<Indicator> call,
+                                               @NonNull Response<Indicator> response) {
                             if (response.isSuccessful()) {
+                                assert response.body() != null;
                                 if (response.body().getStatus().equalsIgnoreCase("ok")) {
                                     ((GraphViewObj) item).setEntries(getData(response.body().getClosePrices()));
+                                    StockViewObj stock = (StockViewObj) stocks.get(position - 1);
+                                    stock.setOpen(response.body().getClosePrices().get(0));
+                                    //notifyItemChanged(position - 1);
                                     notifyDataSetChanged();
                                     Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
                                 } else {
@@ -155,6 +163,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 }
                             } else {
                                 try {
+                                    assert response.errorBody() != null;
                                     Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
                                             response.errorBody().string());
                                     ObjectMapper om = new ObjectMapper();
@@ -166,7 +175,8 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             }
                         }
                         @Override
-                        public void onFailure(Call<Indicator> call, Throwable t) {
+                        public void onFailure(@NonNull Call<Indicator> call,
+                                              @NonNull Throwable t) {
                             Log.i(TAG, "getIndicatorsOnFailure: " + t);
                         }
                     });
@@ -182,11 +192,16 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     controller.getIndicators(((GraphViewObj) item).getTicker(),
                             IndicatorResolution.RES_60, dateToUnix(getPrevFiveDays()),
                             dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
+                        @SuppressLint("NotifyDataSetChanged")
                         @Override
-                        public void onResponse(Call<Indicator> call, Response<Indicator> response) {
+                        public void onResponse(@NonNull Call<Indicator> call,
+                                               @NonNull Response<Indicator> response) {
                             if (response.isSuccessful()) {
+                                assert response.body() != null;
                                 if (response.body().getStatus().equalsIgnoreCase("ok")) {
                                     ((GraphViewObj) item).setEntries(getData(response.body().getClosePrices()));
+                                    StockViewObj stock = (StockViewObj) stocks.get(position - 1);
+                                    stock.setOpen(response.body().getClosePrices().get(0));
                                     notifyDataSetChanged();
                                     Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
                                 } else {
@@ -196,6 +211,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 }
                             } else {
                                 try {
+                                    assert response.errorBody() != null;
                                     Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
                                             response.errorBody().string());
                                     ObjectMapper om = new ObjectMapper();
@@ -207,7 +223,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             }
                         }
                         @Override
-                        public void onFailure(Call<Indicator> call, Throwable t) {
+                        public void onFailure(@NonNull Call<Indicator> call, @NonNull Throwable t) {
                             Log.i(TAG, "getIndicatorsOnFailure: " + t);
                         }
                     });
@@ -223,11 +239,16 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     controller.getIndicators(((GraphViewObj) item).getTicker(),
                             IndicatorResolution.RES_D, dateToUnix(getPrevMonth()),
                             dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
+                        @SuppressLint("NotifyDataSetChanged")
                         @Override
-                        public void onResponse(Call<Indicator> call, Response<Indicator> response) {
+                        public void onResponse(@NonNull Call<Indicator> call,
+                                               @NonNull Response<Indicator> response) {
                             if (response.isSuccessful()) {
+                                assert response.body() != null;
                                 if (response.body().getStatus().equalsIgnoreCase("ok")) {
                                     ((GraphViewObj) item).setEntries(getData(response.body().getClosePrices()));
+                                    StockViewObj stock = (StockViewObj) stocks.get(position - 1);
+                                    stock.setOpen(response.body().getClosePrices().get(0));
                                     notifyDataSetChanged();
                                     Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
                                 } else {
@@ -237,6 +258,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 }
                             } else {
                                 try {
+                                    assert response.errorBody() != null;
                                     Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
                                             response.errorBody().string());
                                     ObjectMapper om = new ObjectMapper();
@@ -248,7 +270,8 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             }
                         }
                         @Override
-                        public void onFailure(Call<Indicator> call, Throwable t) {
+                        public void onFailure(@NonNull Call<Indicator> call,
+                                              @NonNull Throwable t) {
                             Log.i(TAG, "getIndicatorsOnFailure: " + t);
                         }
                     });
@@ -264,11 +287,16 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     controller.getIndicators(((GraphViewObj) item).getTicker(),
                             IndicatorResolution.RES_D, dateToUnix(getPrevSixMonths()),
                             dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
+                        @SuppressLint("NotifyDataSetChanged")
                         @Override
-                        public void onResponse(Call<Indicator> call, Response<Indicator> response) {
+                        public void onResponse(@NonNull Call<Indicator> call,
+                                               @NonNull Response<Indicator> response) {
                             if (response.isSuccessful()) {
+                                assert response.body() != null;
                                 if (response.body().getStatus().equalsIgnoreCase("ok")) {
                                     ((GraphViewObj) item).setEntries(getData(response.body().getClosePrices()));
+                                    StockViewObj stock = (StockViewObj) stocks.get(position - 1);
+                                    stock.setOpen(response.body().getClosePrices().get(0));
                                     notifyDataSetChanged();
                                     Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
                                 } else {
@@ -278,6 +306,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 }
                             } else {
                                 try {
+                                    assert response.errorBody() != null;
                                     Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
                                             response.errorBody().string());
                                     ObjectMapper om = new ObjectMapper();
@@ -289,7 +318,8 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             }
                         }
                         @Override
-                        public void onFailure(Call<Indicator> call, Throwable t) {
+                        public void onFailure(@NonNull Call<Indicator> call,
+                                              @NonNull Throwable t) {
                             Log.i(TAG, "getIndicatorsOnFailure: " + t);
                         }
                     });
@@ -304,11 +334,16 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     controller.getIndicators(((GraphViewObj) item).getTicker(),
                             IndicatorResolution.RES_D, dateToUnix(getPrevYear()),
                             dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
+                        @SuppressLint("NotifyDataSetChanged")
                         @Override
-                        public void onResponse(Call<Indicator> call, Response<Indicator> response) {
+                        public void onResponse(@NonNull Call<Indicator> call,
+                                               @NonNull Response<Indicator> response) {
                             if (response.isSuccessful()) {
+                                assert response.body() != null;
                                 if (response.body().getStatus().equalsIgnoreCase("ok")) {
                                     ((GraphViewObj) item).setEntries(getData(response.body().getClosePrices()));
+                                    StockViewObj stock = (StockViewObj) stocks.get(position - 1);
+                                    stock.setOpen(response.body().getClosePrices().get(0));
                                     notifyDataSetChanged();
                                     Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
                                 } else {
@@ -318,6 +353,7 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 }
                             } else {
                                 try {
+                                    assert response.errorBody() != null;
                                     Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
                                             response.errorBody().string());
                                     ObjectMapper om = new ObjectMapper();
@@ -329,7 +365,8 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             }
                         }
                         @Override
-                        public void onFailure(Call<Indicator> call, Throwable t) {
+                        public void onFailure(@NonNull Call<Indicator> call,
+                                              @NonNull Throwable t) {
                             Log.i(TAG, "getIndicatorsOnFailure: " + t);
                         }
                     });
@@ -396,9 +433,9 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             yVals.add(new Entry(i,val));
         }
         LineDataSet set1 = new LineDataSet(yVals, "Data Set");
-        if (prices.get(prices.size() - 1) > prices.get(prices.size() - 2)) {
+        if (prices.get(prices.size() - 1) > prices.get(0)) {
             set1.setColor(Color.rgb(76,153,0));
-        } else if (prices.get(prices.size() - 1) < prices.get(prices.size() - 2)) {
+        } else if (prices.get(prices.size() - 1) < prices.get(0)) {
             set1.setColor(Color.RED);
         } else {
             set1.setColor(Color.BLACK);
