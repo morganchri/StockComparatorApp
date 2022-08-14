@@ -2,6 +2,7 @@ package edu.neu.team28finalproject;
 
 import android.graphics.Color;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ public class LikesViewHolder extends RecyclerView.ViewHolder {
     private TextView price;
     private TextView change;
     private TextView pctChange;
+    public ImageButton removeLikeButton;
 
     public LikesViewHolder(@NonNull View likesView) {
         super(likesView);
@@ -20,6 +22,7 @@ public class LikesViewHolder extends RecyclerView.ViewHolder {
         this.price = likesView.findViewById(R.id.price);
         this.change = likesView.findViewById(R.id.change);
         this.pctChange = likesView.findViewById(R.id.pctChange);
+        this.removeLikeButton = likesView.findViewById(R.id.removeLikesButton);
     }
 
     public void bindThisData(StockViewObj likeToBind) {

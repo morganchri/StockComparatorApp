@@ -9,6 +9,8 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -30,6 +32,7 @@ public class LikesActivity extends AppCompatActivity {
     TextView header;
     UserPreferencesImpl up;
     ControllerImpl controller;
+    ImageButton removeLikesButton;
     private static final String TAG = "Likes";
 
     @Override
@@ -39,6 +42,7 @@ public class LikesActivity extends AppCompatActivity {
         header = findViewById(R.id.likesHeader);
         header.setGravity(View.TEXT_ALIGNMENT_CENTER);
         likes = new ArrayList<>();
+        removeLikesButton = findViewById(R.id.removeLikesButton);
         likesRecycler = findViewById(R.id.likesRecycler);
         likesRecycler.setHasFixedSize(true);
         LinearLayoutManager likesLinLayout = new LinearLayoutManager(this);
@@ -87,7 +91,7 @@ public class LikesActivity extends AppCompatActivity {
                         });
                  }
                 } else {
-                    likes.add(new StockViewObj("No Likes", 0.00, 0.00));
+                    likes.add(new StockViewObj("No Liked Stocks", 0.00, 0.00));
             }
         }
 
