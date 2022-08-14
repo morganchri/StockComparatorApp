@@ -32,7 +32,7 @@ public class HistoryViewHolder extends RecyclerView.ViewHolder {
             Date date = new Date(millis);
             timestamp.setText(simpleDateFormat.format(date));
         } else {
-            ticker.setText("No History Found");
+            ticker.setText("              No History Found");
             ticker.setGravity(Gravity.CENTER);
             timestamp.setText("");
         }
