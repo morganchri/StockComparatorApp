@@ -32,6 +32,7 @@ public class HistoryActivity extends AppCompatActivity {
     ControllerImpl controller;
     private static final String TAG = "History";
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
