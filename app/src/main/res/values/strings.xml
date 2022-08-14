@@ -5,10 +5,10 @@
     <string name="delta_price">+/- Price</string>
     <string name="delta_percent">+/- %</string>
     <string name="info">Basic Info</string>
-    <string name="industry">Industry</string>
-    <string name="market_cap">Market Cap</string>
-    <string name="dividends">Dividends</string>
-    <string name="volume">Volume</string>
+    <string name="industry">Industry: </string>
+    <string name="market_cap">Market Cap: </string>
+    <string name="dividends">Dividends: </string>
+    <string name="volume">Volume: </string>
     <string name="recommendations">Stock Recommendations</string>
     <string name="movers">Biggest Movers</string>
     <string name="preference_file_key">com.mads22.team28.PREFERENCE_FILE_KEY</string>

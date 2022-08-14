@@ -1,5 +1,6 @@
 package edu.neu.team28finalproject;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -31,13 +32,14 @@ public class RecViewHolder extends RecyclerView.ViewHolder {
         this.delta_price = itemView.findViewById(R.id.delta_price);
         this.like_button = itemView.findViewById(R.id.like_button);
         this.add_button = itemView.findViewById(R.id.add_button);
-        this.industry = itemView.findViewById(R.id.industry);
-        this.dividends = itemView.findViewById(R.id.dividends);
-        this.market_cap = itemView.findViewById(R.id.market_cap);
-        this.volume = itemView.findViewById(R.id.volume);
+        this.industry = itemView.findViewById(R.id.industryValue);
+        this.dividends = itemView.findViewById(R.id.dividendsValue);
+        this.market_cap = itemView.findViewById(R.id.market_capValue);
+        this.volume = itemView.findViewById(R.id.volumeValue);
 
     }
 
+    @SuppressLint("SetTextI18n")
     public void bindThisData(RecViewObj recToBind) {
         ticker.setText(recToBind.getTicker());
         price.setText(String.valueOf(recToBind.getCurrent()));
@@ -48,7 +50,7 @@ public class RecViewHolder extends RecyclerView.ViewHolder {
         //like_button.setImageDrawable();
         //add_button.setImageDrawable();
 
-        industry.setText(recToBind.getIndustry());
+        industry.setText(String.valueOf(recToBind.getIndustry()));
         dividends.setText(String.valueOf(recToBind.getDividends()));
         market_cap.setText(String.valueOf(recToBind.getMarketCap()));
         volume.setText(String.valueOf(recToBind.getVolume()));

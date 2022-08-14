@@ -12,7 +12,7 @@ public class RecViewObj {
     private final double volume;
     private final double dividends;
 
-    public RecViewObj(String ticker, double current, double open,String industry, double marketCap,
+    public RecViewObj(String ticker, double current, double open, String industry, double marketCap,
                       double volume, double dividends) {
         this.ticker = ticker;
         this.current = current;
@@ -52,4 +52,16 @@ public class RecViewObj {
     public double getVolume() {return volume;}
 
     public double getDividends() {return dividends;}
+
+    public String toString() {
+        return "Ticker: " + this.ticker + "/n"
+                + "Current: " + this.current + "/n"
+                + "Open: " + this.open + "/n"
+                + "Change: " + this.change + "/n"
+                + "Pct Change: " + this.pctChange + "/n" +
+                "Industry: " + this.industry + "/n" +
+                "MarketCap: " + this.marketCap + "/n" +
+                "Volume: " + this.volume + "/n" +
+                "Dividends: " + this.dividends + "/n";
+    }
 }

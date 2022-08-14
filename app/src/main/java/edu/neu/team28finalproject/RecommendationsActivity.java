@@ -112,6 +112,8 @@ public class RecommendationsActivity extends AppCompatActivity {
                                                         if (response.body().getTimestamp() > 0) {
                                                             current = response.body().getCurrentPrice();
                                                             open = response.body().getOpenPrice();
+                                                            Log.i(TAG, "" + current);
+                                                            Log.i(TAG, "" + open);
                                                             Log.i(TAG, "getQuoteSuccessful: " + response.body());
                                                         }
                                                     }  else {
@@ -135,6 +137,7 @@ public class RecommendationsActivity extends AppCompatActivity {
                                             double volume = topTen.get(i).getVolume();
                                             double dividends = topTen.get(i).getLastAnnualDividend();
                                             RecViewObj rec = new RecViewObj(ticker, current, open, industry, marketCap, volume, dividends);
+                                            Log.i(TAG, "recViewObj " + rec.toString());
                                             recList.add(rec);
                                             Log.i(TAG, "onResponse: " + recList);
                                             adapter.notifyDataSetChanged();
