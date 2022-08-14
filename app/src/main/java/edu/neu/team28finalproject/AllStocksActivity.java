@@ -187,11 +187,8 @@ public class AllStocksActivity extends AppCompatActivity {
     }
 
     private void detectTxt() {
-
         InputImage image = InputImage.fromBitmap(imageBitmap, 0);
-
         TextRecognizer detector = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
-
         detector.process(image)
                 .addOnSuccessListener(new OnSuccessListener<Text>() {
                     @Override
@@ -221,8 +218,6 @@ public class AllStocksActivity extends AppCompatActivity {
 
         switch (requestCode) {
             case 1: {
-
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     camera.setOnClickListener(new View.OnClickListener() {
@@ -231,22 +226,12 @@ public class AllStocksActivity extends AppCompatActivity {
                             dispatchTakePictureIntent();
                         }
                     });
-                    // permission was granted, yay! Do the
-                    // camera-related task you need to do.
+
                 } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-
                     Toast.makeText(this, "Permission denied to use the camera", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
-
-
 }
