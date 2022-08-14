@@ -32,6 +32,7 @@ public class HistoryActivity extends AppCompatActivity {
     ControllerImpl controller;
     private static final String TAG = "History";
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,10 +48,11 @@ public class HistoryActivity extends AppCompatActivity {
         historyRecycler.setAdapter(ha);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         up = new UserPreferencesImpl(this);
+        up.clearViewedStocks();
         controller = new ControllerImpl();
         if (up.getViewedStocks().size() > 0) {
             int viewedStocksSize = up.getViewedStocks().size();
-            for (int i = viewedStocksSize - 1; i >= 0; i--) {
+            for (int i = 0; i < viewedStocksSize; i++) {
                 String[] tickerPlusTimestamp = up.getViewedStocks().get(i).split("-");
                 String ticker = tickerPlusTimestamp[0];
                 String timestamp = tickerPlusTimestamp[1];
@@ -59,7 +61,7 @@ public class HistoryActivity extends AppCompatActivity {
                 ha.notifyDataSetChanged();
             }
         } else {
-            histories.add(new HistoryViewObj("No History", ""));
+            histories.add(new HistoryViewObj("          No History Found", ""));
         }
     }
 }
