@@ -18,7 +18,7 @@ public class RecViewObj {
         this.current = current;
         this.open = open;
         this.change = current - open;
-        this.pctChange = (current - open) / open;
+        this.pctChange = ((current - open) / open) * 100;
         this.industry = industry;
         this.marketCap = marketCap;
         this.volume = volume;
