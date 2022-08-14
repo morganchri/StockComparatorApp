@@ -46,20 +46,26 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="7dp"
-            android:text="Stock\nComparator"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:text="Stock Comparator"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/imageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:backgroundTint="#00FFFFFF"
+            android:layout_marginRight="6dp"
+            android:layout_gravity="right"
+            android:scaleType="fitEnd"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_info_details" />
+            android:src="@drawable/stocks" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
