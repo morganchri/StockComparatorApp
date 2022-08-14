@@ -6,7 +6,7 @@ package edu.neu.team28finalproject.datatransferobjects;
 public class StockScreener {
     private String symbol;
     private String companyName;
-    private long marketCap;
+    private double marketCap;
     private String sector;
     private double beta;
     private double price;
@@ -38,7 +38,7 @@ public class StockScreener {
      * @param exchangeShortName exchange short name
      * @param industry company industry
      */
-    public StockScreener(String symbol, String companyName, long marketCap,
+    public StockScreener(String symbol, String companyName, double marketCap,
                          String sector, double beta, double price, double lastAnnualDividend,
                          long volume, String exchange, String exchangeShortName,
                          String industry) {
@@ -71,7 +71,7 @@ public class StockScreener {
         this.companyName = companyName;
     }
 
-    public long getMarketCap() {
+    public double getMarketCap() {
         return marketCap;
     }
 
