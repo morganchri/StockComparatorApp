@@ -48,7 +48,14 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
                 context.startActivity(intent);
             }
         });
-
+        holder.removeLikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                up.unlikeStock(likes.get(position).getTicker().toUpperCase());
+                notifyItemRemoved(position);
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

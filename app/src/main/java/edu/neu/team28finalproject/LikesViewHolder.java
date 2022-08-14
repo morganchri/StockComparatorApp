@@ -1,5 +1,6 @@
 package edu.neu.team28finalproject;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
@@ -29,25 +30,33 @@ public class LikesViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindThisData(StockViewObj likeToBind) {
-        ticker.setText(likeToBind.getTicker());
-        price.setText(Double.toString(likeToBind.getCurrent()));
-        change.setText("(" + likeToBind.getChange() + ")");
-        pctChange.setText(likeToBind.getPctChange() + "%");
-        if (likeToBind.getChange() > 0) {
-            ticker.setTextColor(Color.rgb(76,153,0));
-            price.setTextColor(Color.rgb(76,153,0));
-            change.setTextColor(Color.rgb(76,153,0));
-            pctChange.setTextColor(Color.rgb(76,153,0));
-        } else if (likeToBind.getChange() > 0) {
-            ticker.setTextColor(Color.RED);
-            price.setTextColor(Color.RED);
-            change.setTextColor(Color.RED);
-            pctChange.setTextColor(Color.RED);
+        if (likeToBind.getTicker().equals("No Liked Stocks")) {
+            ticker.setText("                " + likeToBind.getTicker());
+            price.setText("");
+            change.setText("");
+            pctChange.setText("");
+            removeLikeButton.setTextColor(Integer.parseInt("F3F2EF", 16)+0xFF000000);
         } else {
-            ticker.setTextColor(Color.BLACK);
-            price.setTextColor(Color.BLACK);
-            change.setTextColor(Color.BLACK);
-            pctChange.setTextColor(Color.BLACK);
+            ticker.setText(likeToBind.getTicker());
+            price.setText(Double.toString(likeToBind.getCurrent()));
+            change.setText("(" + likeToBind.getChange() + ")");
+            pctChange.setText(likeToBind.getPctChange() + "%");
+            if (likeToBind.getChange() > 0) {
+                ticker.setTextColor(Color.rgb(76, 153, 0));
+                price.setTextColor(Color.rgb(76, 153, 0));
+                change.setTextColor(Color.rgb(76, 153, 0));
+                pctChange.setTextColor(Color.rgb(76, 153, 0));
+            } else if (likeToBind.getChange() > 0) {
+                ticker.setTextColor(Color.RED);
+                price.setTextColor(Color.RED);
+                change.setTextColor(Color.RED);
+                pctChange.setTextColor(Color.RED);
+            } else {
+                ticker.setTextColor(Color.BLACK);
+                price.setTextColor(Color.BLACK);
+                change.setTextColor(Color.BLACK);
+                pctChange.setTextColor(Color.BLACK);
+            }
         }
     }
 }

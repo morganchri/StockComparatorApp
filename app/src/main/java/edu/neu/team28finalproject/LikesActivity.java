@@ -93,6 +93,7 @@ public class LikesActivity extends AppCompatActivity {
                         });
                  }
                 } else {
+                    la.notifyDataSetChanged();
                     likes.add(new StockViewObj("No Liked Stocks", 0.00, 0.00));
             }
         }
