@@ -2,6 +2,9 @@ package edu.neu.team28finalproject;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +31,8 @@ import retrofit2.Response;
 public class RecommendationsActivity extends AppCompatActivity {
 
     private static final String TAG = "Company";
+    ProgressBar loadingCircle;
+    TextView loadingText;
     static List<StockScreener> allStocks;
     private final ControllerImpl controller = new ControllerImpl();
     ArrayList<RecViewObj> recList;
@@ -43,6 +48,9 @@ public class RecommendationsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.recommendations);
+
+        loadingCircle = findViewById(R.id.loadingCircle);
+        loadingText = findViewById(R.id.loadingText);
 
         up = new UserPreferencesImpl(this);
         recList = new ArrayList<>();
@@ -124,6 +132,8 @@ public class RecommendationsActivity extends AppCompatActivity {
                                                             recList.add(rec);
                                                             Log.i(TAG, "onResponse: " + recList);
                                                             adapter.notifyDataSetChanged();
+                                                            loadingCircle.setVisibility(View.GONE);
+                                                            loadingText.setVisibility(View.GONE);
                                                         }
                                                     }  else {
                                                         try {
