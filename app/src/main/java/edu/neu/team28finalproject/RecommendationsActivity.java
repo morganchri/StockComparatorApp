@@ -103,6 +103,10 @@ public class RecommendationsActivity extends AppCompatActivity {
                                     if (topTen.size() > 0) {
                                         for (int i = 0; i < topTen.size(); i++) {
                                             String ticker = topTen.get(i).getSymbol();
+                                            String industry = topTen.get(i).getIndustry();
+                                            double marketCap = topTen.get(i).getMarketCap();
+                                            double volume = topTen.get(i).getVolume();
+                                            double dividends = topTen.get(i).getLastAnnualDividend();
                                             //Get price info using getQuote
                                             controller.getQuote(ticker).enqueue(new Callback<Quote>() {
                                                 @Override
@@ -112,9 +116,14 @@ public class RecommendationsActivity extends AppCompatActivity {
                                                         if (response.body().getTimestamp() > 0) {
                                                             current = response.body().getCurrentPrice();
                                                             open = response.body().getOpenPrice();
+                                                            Log.i(TAG, "getQuoteSuccessful: " + response.body());
                                                             Log.i(TAG, "" + current);
                                                             Log.i(TAG, "" + open);
-                                                            Log.i(TAG, "getQuoteSuccessful: " + response.body());
+                                                            RecViewObj rec = new RecViewObj(ticker, current, open, industry, marketCap, volume, dividends);
+                                                            Log.i(TAG, "recViewObj " + rec.toString());
+                                                            recList.add(rec);
+                                                            Log.i(TAG, "onResponse: " + recList);
+                                                            adapter.notifyDataSetChanged();
                                                         }
                                                     }  else {
                                                         try {
@@ -132,15 +141,8 @@ public class RecommendationsActivity extends AppCompatActivity {
                                                     Log.i(TAG,"getQuoteFailure: " + t);
                                                 }
                                             });
-                                            String industry = topTen.get(i).getIndustry();
-                                            double marketCap = topTen.get(i).getMarketCap();
-                                            double volume = topTen.get(i).getVolume();
-                                            double dividends = topTen.get(i).getLastAnnualDividend();
-                                            RecViewObj rec = new RecViewObj(ticker, current, open, industry, marketCap, volume, dividends);
-                                            Log.i(TAG, "recViewObj " + rec.toString());
-                                            recList.add(rec);
-                                            Log.i(TAG, "onResponse: " + recList);
-                                            adapter.notifyDataSetChanged();
+
+
                                         }
                                     }
                                 }

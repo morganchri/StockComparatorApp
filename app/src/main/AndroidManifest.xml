@@ -35,7 +35,8 @@
             android:exported="false" />
         <activity
             android:name=".RecommendationsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

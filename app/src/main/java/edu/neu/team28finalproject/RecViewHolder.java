@@ -39,12 +39,12 @@ public class RecViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     public void bindThisData(RecViewObj recToBind) {
         ticker.setText(recToBind.getTicker());
-        price.setText(String.valueOf(recToBind.getCurrent()));
-        delta_price.setText(String.valueOf(recToBind.getChange()));
-        delta_percent.setText(String.valueOf(recToBind.getPctChange()));
+        price.setText("$" + String.valueOf(recToBind.getCurrent()));
+        delta_price.setText(String.format("%.2f", recToBind.getChange()));
+        delta_percent.setText(String.format("%.2f", recToBind.getPctChange()));
 
         //Figure out the like and add button drawables
         //like_button.setImageDrawable();
@@ -52,8 +52,8 @@ public class RecViewHolder extends RecyclerView.ViewHolder {
 
         industry.setText(String.valueOf(recToBind.getIndustry()));
         dividends.setText(String.valueOf(recToBind.getDividends()));
-        market_cap.setText(String.valueOf(recToBind.getMarketCap()));
-        volume.setText(String.valueOf(recToBind.getVolume()));
+        market_cap.setText(String.format("%.2f", recToBind.getMarketCap()));
+        volume.setText(String.format("%.2f", recToBind.getVolume()));
 
     }
 }

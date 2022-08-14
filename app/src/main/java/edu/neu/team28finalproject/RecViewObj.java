@@ -54,14 +54,14 @@ public class RecViewObj {
     public double getDividends() {return dividends;}
 
     public String toString() {
-        return "Ticker: " + this.ticker + "/n"
-                + "Current: " + this.current + "/n"
-                + "Open: " + this.open + "/n"
-                + "Change: " + this.change + "/n"
-                + "Pct Change: " + this.pctChange + "/n" +
-                "Industry: " + this.industry + "/n" +
-                "MarketCap: " + this.marketCap + "/n" +
-                "Volume: " + this.volume + "/n" +
-                "Dividends: " + this.dividends + "/n";
+        return "Ticker: " + this.ticker + "\n"
+                + "Current: " + this.current + "\n"
+                + "Open: " + this.open + "\n"
+                + "Change: " + this.change + "\n"
+                + "Pct Change: " + this.pctChange + "\n" +
+                "Industry: " + this.industry + "\n" +
+                "MarketCap: " + this.marketCap + "\n" +
+                "Volume: " + this.volume + "\n" +
+                "Dividends: " + this.dividends + "\n";
     }
 }
