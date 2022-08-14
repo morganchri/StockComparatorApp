@@ -20,21 +20,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import edu.neu.team28finalproject.controller.ControllerImpl;
 import edu.neu.team28finalproject.datatransferobjects.Error;
@@ -51,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     TextView title;
     SwipeRefreshLayout swipeRefreshLayout;
     List<Object> stockList;
+    List<String> stockStrings;
     RecyclerView stockRecyclerView;
     StockViewAdapter sa;
     ControllerImpl cr;
@@ -60,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     private static final String TAG = "Main";
 
 
-    @SuppressLint({"SourceLockedOrientationActivity", "ResourceType"})
+    @SuppressLint({"SourceLockedOrientationActivity", "ResourceType", "NotifyDataSetChanged"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         title = findViewById(R.id.Title);
         title.setGravity(View.TEXT_ALIGNMENT_CENTER);
         stockList = new ArrayList<>();
+        stockStrings = new ArrayList<>();
         up = new UserPreferencesImpl(this);
         cr = new ControllerImpl();
 
@@ -96,14 +103,22 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         sa = new StockViewAdapter(stockList,this);
         stockRecyclerView.setAdapter(sa);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //List<Object> list = (List<Object>) getIntent().getSerializableExtra("Ticker");
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            addStockFromLikes(bundle.getString("Ticker"));
-            //StockViewObj stock = (StockViewObj) stockList.get(0);
-            //System.out.println(stock.getTicker());
-            //stockList.addAll(list);
-            //sa.notifyDataSetChanged();
+            String jsonString = bundle.getString("Ticker");
+            Type listOfStockType = new TypeToken<ArrayList<String>>() {}.getType();
+            Gson gson = new Gson();
+            ArrayList<String> Stocklist = gson.fromJson(jsonString, listOfStockType);
+            for (int i = 0; i < Stocklist.size(); i++) {
+                addStockFromLikes(Stocklist.get(i));
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            System.out.println("NULL");
         }
 
         Button openList = findViewById(R.id.listButton);
@@ -147,7 +162,14 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             public void onClick(View v) {
                 Intent openList = new Intent(MainActivity.this,
                         LikesActivity.class);
-                //openList.putExtra("stockList", (Serializable) stockList);
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonString = null;
+                try {
+                    jsonString = mapper.writeValueAsString(stockStrings);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+                openList.putExtra("stockList", jsonString);
                 startActivity(openList);
             }
         });
@@ -300,6 +322,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                                     cPrice,
                                                     oPrice);
                                             stockList.add(newStock);
+                                            stockStrings.add(stockInput.getText().toString().toUpperCase());
                                             Snackbar.make(view, "Adding Stock was successful",
                                                             Snackbar.LENGTH_LONG)
                                                     .setAction("Action", null).show();
@@ -397,14 +420,18 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         alert.show();
     }
 
+    public void addStockFrom(String stockInput) {
+        stockStrings.add(stockInput);
+    }
+
 
     public void addStockFromLikes(String stockInput) {
-        for (int i = 0; i < stockList.size(); i+=2) {
-            StockViewObj check = (StockViewObj)stockList.get(i);
-            if (check.getTicker().equalsIgnoreCase(stockInput)) {
-                return;
-            }
-        }
+        //for (int i = 0; i < stockList.size(); i+=2) {
+        //    StockViewObj check = (StockViewObj)stockList.get(i);
+        //    if (check.getTicker().equalsIgnoreCase(stockInput)) {
+        //        return;
+        //    }
+       // }
             try {
                 if (isValidTicker(stockInput.toUpperCase())) {
                     cr.getQuote(stockInput.toUpperCase())
@@ -461,9 +488,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                             .toUpperCase(),
                                             getData(response.body().getClosePrices()));
                                     stockList.add(newGraph);
-//                                            up.viewStock(stockInput
-//                                                    .getText().toString().toUpperCase(),
-//                                                    String.valueOf(System.currentTimeMillis()));
+                                    stockStrings.add(stockInput.toUpperCase());
                                     sa.notifyDataSetChanged();
                                     Log.i(TAG, "getIndicatorsOnResponse: "
                                             + response.body());

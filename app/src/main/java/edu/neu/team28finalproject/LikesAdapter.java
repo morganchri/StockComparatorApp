@@ -12,9 +12,14 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.neu.team28finalproject.controller.ControllerImpl;
 import edu.neu.team28finalproject.preferences.UserPreferencesImpl;
 
 public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
@@ -22,6 +27,7 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
     private final List<StockViewObj> likes;
     private final Context context;
     private final UserPreferencesImpl up;
+    private ControllerImpl cr;
     public OnItemClickListener listener;
     public Button removeLikeButton;
 
@@ -38,6 +44,7 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
         this.context = context;
         up = new UserPreferencesImpl(context);
         Intent intent = new Intent(context, LikesActivity.class);
+
     }
 
     @NonNull
@@ -53,10 +60,19 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
         holder.bindThisData(likes.get(position));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                final int REQUEST_CODE_CHOOSE_ITEM = 100;
+                cr = new ControllerImpl();
+                Intent likesIntent = ((LikesActivity) context).getIntent();
+                String jsonString = likesIntent.getStringExtra("stockList");
+                Gson gson = new Gson();
+                Type stockListType = new TypeToken<ArrayList<String>>() {}.getType();
+                ArrayList<String> stockList = gson.fromJson(jsonString, stockListType);
+                String stockInput = likes.get(position).getTicker();
+                if (!stockList.contains(stockInput.toUpperCase())) {
+                    stockList.add(stockInput);
+                }
                 Intent intent = new Intent(v.getContext(), MainActivity.class);
-                intent.putExtra("Ticker", likes.get(position).getTicker());
-                //startActivityForResult(intent, REQUEST_CODE_CHOOSE_ITEM);
+                String stockString = gson.toJson(stockList);
+                intent.putExtra("Ticker", stockString);
                 context.startActivity(intent);
             }
         });
