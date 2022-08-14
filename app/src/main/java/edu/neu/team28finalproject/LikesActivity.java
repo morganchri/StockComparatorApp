@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class LikesActivity extends AppCompatActivity {
     TextView header;
     UserPreferencesImpl up;
     ControllerImpl controller;
-    ImageButton removeLikesButton;
+    MaterialButton removeLikesButton;
     private static final String TAG = "Likes";
 
     @Override

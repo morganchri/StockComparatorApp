@@ -2,11 +2,14 @@ package edu.neu.team28finalproject;
 
 import android.graphics.Color;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
 
 public class LikesViewHolder extends RecyclerView.ViewHolder {
 
@@ -14,7 +17,7 @@ public class LikesViewHolder extends RecyclerView.ViewHolder {
     private TextView price;
     private TextView change;
     private TextView pctChange;
-    public ImageButton removeLikeButton;
+    public MaterialButton removeLikeButton;
 
     public LikesViewHolder(@NonNull View likesView) {
         super(likesView);

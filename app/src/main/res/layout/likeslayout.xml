@@ -8,7 +8,7 @@
     app:cardCornerRadius="5dp"
     app:cardElevation="5dp"
     app:contentPadding="5dp"
-    android:backgroundTint="#F4F3EE">
+    android:backgroundTint="#F3F2EF">
 
 
     <LinearLayout
@@ -24,9 +24,9 @@
             android:layout_height="30dp"
             android:layout_alignParentStart="true"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="6dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
             android:layout_toStartOf="@id/price"
             android:linksClickable="false"
             android:textColor="@color/black"
@@ -38,9 +38,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="0dp"
             android:layout_toStartOf="@id/change"
             android:text="100.00"
             android:textColor="@color/black"
@@ -51,9 +51,9 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="0dp"
             android:layout_toStartOf="@id/pctChange"
             android:text="(-14.00)"
             android:textColor="@color/black"
@@ -64,28 +64,32 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
             android:layout_toStartOf="@id/removeLikesButton"
             android:text="13.68%"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.AppCompat.Button.Colored"
             android:id="@+id/removeLikesButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
             android:background="#00FFFFFF"
+            android:text="Unlike"
+            android:textColor="@color/black"
+            app:strokeColor="#42413C"
+            app:strokeWidth="2dp"
             android:minWidth="48dp"
-            android:minHeight="48dp"
-            app:srcCompat="@android:drawable/btn_dialog" />
+            android:minHeight="48dp" />
 
     </LinearLayout>
 
