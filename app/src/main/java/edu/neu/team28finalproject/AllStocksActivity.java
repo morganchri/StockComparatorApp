@@ -70,15 +70,9 @@ public class AllStocksActivity extends AppCompatActivity {
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // calling a method to capture our image.
                 dispatchTakePictureIntent();
-
             }
         });
-
-
-
-        //TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
         stocks = new ArrayList<>();
         RecyclerView listRecyclerView = findViewById(R.id.stockListRecyclerView);
         listRecyclerView.setHasFixedSize(true);
@@ -169,10 +163,7 @@ public class AllStocksActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // calling on activity result method.
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            // on below line we are getting
-            // data from our bundles. .
             Bundle extras = data.getExtras();
             imageBitmap = (Bitmap) extras.get("data");
             detectTxt();
@@ -197,16 +188,14 @@ public class AllStocksActivity extends AppCompatActivity {
                         new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(AllStocksActivity.this, "Image to text failed",
+                                Toast.makeText(AllStocksActivity.this,
+                                        "Image to text failed",
                                         Toast.LENGTH_LONG).show();
                             }
                         });
     }
-
     private void processTextBlock(Text result) {
         String resultText = result.getText();
-
-
         this.searchBar.setQuery(resultText, true);
     }
 }
