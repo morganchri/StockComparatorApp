@@ -27,7 +27,6 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
     private final List<StockViewObj> likes;
     private final Context context;
     private final UserPreferencesImpl up;
-    private ControllerImpl cr;
     public OnItemClickListener listener;
     public Button removeLikeButton;
 
@@ -43,8 +42,6 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
         this.likes = likes;
         this.context = context;
         up = new UserPreferencesImpl(context);
-        Intent intent = new Intent(context, LikesActivity.class);
-
     }
 
     @NonNull
@@ -60,7 +57,6 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
         holder.bindThisData(likes.get(position));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                cr = new ControllerImpl();
                 Intent likesIntent = ((LikesActivity) context).getIntent();
                 String jsonString = likesIntent.getStringExtra("stockList");
                 Gson gson = new Gson();
