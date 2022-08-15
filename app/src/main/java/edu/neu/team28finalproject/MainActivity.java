@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -45,6 +44,7 @@ import edu.neu.team28finalproject.datatransferobjects.Error;
 import edu.neu.team28finalproject.datatransferobjects.Indicator;
 import edu.neu.team28finalproject.datatransferobjects.IndicatorResolution;
 import edu.neu.team28finalproject.datatransferobjects.Quote;
+import edu.neu.team28finalproject.datatransferobjects.Symbol;
 import edu.neu.team28finalproject.preferences.UserPreferencesImpl;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     StockViewAdapter sa;
     ControllerImpl cr;
     UserPreferencesImpl up;
+    List<String> tickers;
     ArrayList<String> stockNames = new ArrayList<>();
     ArrayList<String> timestamps = new ArrayList<>();
     private static final String TAG = "Main";
@@ -70,14 +71,14 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        up = new UserPreferencesImpl(this);
+        cr = new ControllerImpl();
+        tickers = new ArrayList<>();
+        getTickers();
         title = findViewById(R.id.Title);
         title.setGravity(View.TEXT_ALIGNMENT_CENTER);
         stockList = new ArrayList<>();
         stockStrings = new ArrayList<>();
-        up = new UserPreferencesImpl(this);
-        cr = new ControllerImpl();
-
-
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         stockRecyclerView = findViewById(R.id.recyclerView);
         stockRecyclerView.setHasFixedSize(true);
@@ -364,9 +365,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                                     .getText().toString().toUpperCase(),
                                                     getData(response.body().getClosePrices()));
                                             stockList.add(newGraph);
-//                                            up.viewStock(stockInput
-//                                                    .getText().toString().toUpperCase(),
-//                                                    String.valueOf(System.currentTimeMillis()));
                                             sa.notifyDataSetChanged();
                                             Log.i(TAG, "getIndicatorsOnResponse: "
                                                     + response.body());
@@ -419,11 +417,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         alert.show();
     }
 
-    public void addStockFrom(String stockInput) {
-        stockStrings.add(stockInput);
-    }
-
-
     public void addStockFromLikes(String stockInput) {
         //for (int i = 0; i < stockList.size(); i+=2) {
         //    StockViewObj check = (StockViewObj)stockList.get(i);
@@ -431,8 +424,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         //        return;
         //    }
        // }
-            try {
-                if (isValidTicker(stockInput.toUpperCase())) {
+
                     cr.getQuote(stockInput.toUpperCase())
                             .enqueue(new Callback<Quote>() {
                                 @Override
@@ -516,40 +508,48 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                             Log.i(TAG, "getIndicatorsOnFailure: " + t);
                         }
                     });
-                } else {
-                    //no data
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
-    public ArrayList<String> getTickers() throws IOException {
-        ArrayList<String> tickers = new ArrayList<>();
-        InputStream inputStream = getResources().openRawResource(R.raw.newtickers);
-        BufferedReader bufferedReader= new BufferedReader(new InputStreamReader(inputStream));
-        String eachline = bufferedReader.readLine();
-        while (eachline != null) {
-            eachline = bufferedReader.readLine();
-            tickers.add(eachline);
-        }
-        return tickers;
+    public void getTickers() {
+        cr.getSymbols().enqueue(new Callback<List<Symbol>>() {
+            @Override
+            public void onResponse(Call<List<Symbol>> call, Response<List<Symbol>> response) {
+                if (response.isSuccessful()) {
+                    for (int i = 0; i < response.body().size(); i++) {
+                        tickers.add(response.body().get(i).getDisplaySymbol());
+                    }
+                    Log.i(TAG, "getSymbolsOnResponse: " + response.body());
+                } else {
+                    try {
+                        Log.i(TAG, "getSymbolsOnResponseNotSuccessful: " +
+                                response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Symbol>> call, Throwable t) {
+                Log.i(TAG, "getSymbolsOnFailure: " + t);
+            }
+        });
+        //ArrayList<String> tickers = new ArrayList<>();
+        //InputStream inputStream = getResources().openRawResource(R.raw.newtickers);
+        //BufferedReader bufferedReader= new BufferedReader(new InputStreamReader(inputStream));
+        //String eachline = bufferedReader.readLine();
+        //while (eachline != null) {
+        //    eachline = bufferedReader.readLine();
+        //    tickers.add(eachline);
+        //}
+        //return tickers;
     }
 
     public boolean isValidTicker(String ticker) throws IOException {
-        ArrayList<String> tickers = this.getTickers();
-        int l = 0;
-        int r = tickers.size() - 1;
-        while (l <= r) {
-            int m = l + (r - l) / 2;
-
-            int res = ticker.toUpperCase().compareTo(tickers.get(m).toUpperCase());
-            if (res == 0)
+        for (int i = 0; i < tickers.size(); i++) {
+            if (ticker.equalsIgnoreCase(tickers.get(i))) {
                 return true;
-            if (res > 0)
-                l = m + 1;
-            else
-                r = m - 1;
+            }
         }
         return false;
     }
