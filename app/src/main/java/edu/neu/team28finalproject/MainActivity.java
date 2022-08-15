@@ -418,97 +418,91 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     }
 
     public void addStockFromLikes(String stockInput) {
-        //for (int i = 0; i < stockList.size(); i+=2) {
-        //    StockViewObj check = (StockViewObj)stockList.get(i);
-        //    if (check.getTicker().equalsIgnoreCase(stockInput)) {
-        //        return;
-        //    }
-       // }
-
-                    cr.getQuote(stockInput.toUpperCase())
-                            .enqueue(new Callback<Quote>() {
-                                @Override
-                                public void onResponse(@NonNull Call<Quote> call,
-                                                       @NonNull Response<Quote> response) {
-                                    if (response.isSuccessful()) {
-                                        assert response.body() != null;
-                                        if (response.body().getTimestamp() > 0) {
-                                            up.viewStock(stockInput.toUpperCase(),
-                                                    String.valueOf(System.currentTimeMillis()));
-                                            double cPrice = response.body().getCurrentPrice();
-                                            double oPrice = response.body().getOpenPrice();
-                                            StockViewObj newStock = new StockViewObj(stockInput
-                                                    .toUpperCase(),
-                                                    cPrice,
-                                                    oPrice);
-                                            stockList.add(newStock);
-                                            Log.i(TAG, "getQuoteOnResponse: "
-                                                    + response.body());
-                                        }
-                                        else {
-                                            //no data
-                                        }
-                                    } else {
-                                        try {
-                                            assert response.errorBody() != null;
-                                            Log.i(TAG, "getQuoteOnResponseNotSuccessful: " +
-                                                    response.errorBody().string());
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }
-                                @Override
-                                public void onFailure(@NonNull Call<Quote> call,
-                                                      @NonNull Throwable t) {
-                                    Log.i(TAG, "getQuoteOnFailure: " + t);
-                                }
-                            });
-                    cr.getIndicators(stockInput.toUpperCase(),
-                            IndicatorResolution.RES_D, dateToUnix(getPrevYear()),
-                            dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
-                        @SuppressLint("NotifyDataSetChanged")
-                        @Override
-                        public void onResponse(@NonNull Call<Indicator> call,
-                                               @NonNull Response<Indicator> response) {
-                            if (response.isSuccessful()) {
-                                assert response.body() != null;
-                                if (response.body().getStatus()
-                                        .equalsIgnoreCase("ok")) {
-                                    GraphViewObj newGraph = new GraphViewObj(stockInput
-                                            .toUpperCase(),
-                                            getData(response.body().getClosePrices()));
-                                    stockList.add(newGraph);
-                                    stockStrings.add(stockInput.toUpperCase());
-                                    sa.notifyDataSetChanged();
-                                    Log.i(TAG, "getIndicatorsOnResponse: "
-                                            + response.body());
-                                } else {
-                                   //no data
-                                }
+        cr.getQuote(stockInput.toUpperCase())
+                .enqueue(new Callback<Quote>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Quote> call,
+                                           @NonNull Response<Quote> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (response.body().getTimestamp() > 0) {
+                                up.viewStock(stockInput.toUpperCase(),
+                                        String.valueOf(System.currentTimeMillis()));
+                                double cPrice = response.body().getCurrentPrice();
+                                double oPrice = response.body().getOpenPrice();
+                                StockViewObj newStock = new StockViewObj(stockInput
+                                        .toUpperCase(),
+                                        cPrice,
+                                        oPrice);
+                                stockList.add(newStock);
+                                Log.i(TAG, "getQuoteOnResponse: "
+                                        + response.body());
                             } else {
-                                try {
-                                    assert response.errorBody() != null;
-                                    Log.i(TAG,
-                                            "getIndicatorsOnResponseNotSuccessful: " +
-                                                    response.errorBody().
-                                                            string());
-                                    ObjectMapper om = new ObjectMapper();
-                                    Error e = om.readValue(response.errorBody().string(),
-                                            Error.class);
-                                    Log.i(TAG, "error: " + e.getError());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                //no data
+                            }
+                        } else {
+                            try {
+                                assert response.errorBody() != null;
+                                Log.i(TAG, "getQuoteOnResponseNotSuccessful: " +
+                                        response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
                         }
-                        @Override
-                        public void onFailure(@NonNull Call<Indicator> call,
-                                              @NonNull Throwable t) {
-                            Log.i(TAG, "getIndicatorsOnFailure: " + t);
-                        }
-                    });
-        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Quote> call,
+                                          @NonNull Throwable t) {
+                        Log.i(TAG, "getQuoteOnFailure: " + t);
+                    }
+                });
+        cr.getIndicators(stockInput.toUpperCase(),
+                IndicatorResolution.RES_D, dateToUnix(getPrevYear()),
+                dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onResponse(@NonNull Call<Indicator> call,
+                                   @NonNull Response<Indicator> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    if (response.body().getStatus()
+                            .equalsIgnoreCase("ok")) {
+                        GraphViewObj newGraph = new GraphViewObj(stockInput
+                                .toUpperCase(),
+                                getData(response.body().getClosePrices()));
+                        stockList.add(newGraph);
+                        stockStrings.add(stockInput.toUpperCase());
+                        sa.notifyDataSetChanged();
+                        Log.i(TAG, "getIndicatorsOnResponse: "
+                                + response.body());
+                    } else {
+                        //no data
+                    }
+                } else {
+                    try {
+                        assert response.errorBody() != null;
+                        Log.i(TAG,
+                                "getIndicatorsOnResponseNotSuccessful: " +
+                                        response.errorBody().
+                                                string());
+                        ObjectMapper om = new ObjectMapper();
+                        Error e = om.readValue(response.errorBody().string(),
+                                Error.class);
+                        Log.i(TAG, "error: " + e.getError());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Indicator> call,
+                                  @NonNull Throwable t) {
+                Log.i(TAG, "getIndicatorsOnFailure: " + t);
+            }
+        });
+    }
 
     public void getTickers() {
         cr.getSymbols().enqueue(new Callback<List<Symbol>>() {
