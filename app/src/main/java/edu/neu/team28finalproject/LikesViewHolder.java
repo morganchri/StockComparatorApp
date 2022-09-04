@@ -1,23 +1,20 @@
 package edu.neu.team28finalproject;
 
-import android.content.res.ColorStateList;
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
-
 public class LikesViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView ticker;
-    private TextView price;
-    private TextView change;
-    private TextView pctChange;
+    private final TextView ticker;
+    private final TextView price;
+    private final TextView change;
+    private final TextView pctChange;
     public Button removeLikeButton;
 
     public LikesViewHolder(@NonNull View likesView, LikesAdapter.OnItemClickListener listener) {
@@ -27,14 +24,11 @@ public class LikesViewHolder extends RecyclerView.ViewHolder {
         this.change = likesView.findViewById(R.id.change);
         this.pctChange = likesView.findViewById(R.id.pctChange);
         this.removeLikeButton = likesView.findViewById(R.id.removeLikesButton);
-        removeLikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onItemClick(getAbsoluteAdapterPosition());
-            }
-        });
+        removeLikeButton.setOnClickListener(view
+                -> listener.onItemClick(getAbsoluteAdapterPosition()));
     }
 
+    @SuppressLint("SetTextI18n")
     public void bindThisData(StockViewObj likeToBind) {
         if (likeToBind.getTicker().equals("No Liked Stocks")) {
             ticker.setText("                " + likeToBind.getTicker());
@@ -52,7 +46,7 @@ public class LikesViewHolder extends RecyclerView.ViewHolder {
                 price.setTextColor(Color.rgb(76, 153, 0));
                 change.setTextColor(Color.rgb(76, 153, 0));
                 pctChange.setTextColor(Color.rgb(76, 153, 0));
-            } else if (likeToBind.getChange() > 0) {
+            } else if (likeToBind.getChange() < 0) {
                 ticker.setTextColor(Color.RED);
                 price.setTextColor(Color.RED);
                 change.setTextColor(Color.RED);

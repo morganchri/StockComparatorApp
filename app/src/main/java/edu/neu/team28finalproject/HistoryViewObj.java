@@ -1,6 +1,5 @@
 package edu.neu.team28finalproject;
 
-
 public class HistoryViewObj {
 
     public String tickerName;

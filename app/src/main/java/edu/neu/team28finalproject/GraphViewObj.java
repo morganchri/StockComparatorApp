@@ -4,7 +4,7 @@ import com.github.mikephil.charting.data.LineData;
 
 public class GraphViewObj {
 
-    private String ticker;
+    private final String ticker;
     private LineData entries;
 
     public GraphViewObj(String ticker, LineData entries) {

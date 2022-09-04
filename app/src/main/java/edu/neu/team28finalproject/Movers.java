@@ -1,16 +1,17 @@
 package edu.neu.team28finalproject;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import edu.neu.team28finalproject.controller.ControllerImpl;
 import edu.neu.team28finalproject.datatransferobjects.BiggestMovers;
@@ -61,8 +62,10 @@ public class Movers extends AppCompatActivity {
         }
         controller = new ControllerImpl();
         controller.getMostGainers().enqueue(new Callback<List<BiggestMovers>>() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onResponse(Call<List<BiggestMovers>> call, Response<List<BiggestMovers>> response) {
+            public void onResponse(@NonNull Call<List<BiggestMovers>> call,
+                                   @NonNull Response<List<BiggestMovers>> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     List<BiggestMovers> gainers = new ArrayList<>(response.body());
@@ -71,20 +74,25 @@ public class Movers extends AppCompatActivity {
                         tickers[i].setTextColor(Color.rgb(76,153,0));
                     }
                     for(int i = 0; i < 6; i++) {
-                        prices[i].setText(Double.toString(Math.round(gainers.get(i).getPrice()*100.00)/100.00));
+                        prices[i].setText(Double.toString(
+                                Math.round(gainers.get(i).getPrice()*100.00)/100.00));
                         prices[i].setTextColor(Color.rgb(76,153,0));
                     }
                     for(int i = 0; i < 6; i++) {
-                        changes[i].setText("+" + Math.round(gainers.get(i).getChange()*100.00)/100.00);
+                        changes[i].setText("+" +
+                                Math.round(gainers.get(i).getChange()*100.00)/100.00);
                         changes[i].setTextColor(Color.rgb(76,153,0));
                     }
                     for(int i = 0; i < 6; i++) {
-                        pctChanges[i].setText("+" + Math.round(gainers.get(i).getPercentageChange()*100.00)/100.00 + "%");
+                        pctChanges[i].setText("+" +
+                                Math.round(gainers.get(i).getPercentageChange()*100.00)/100.00 +
+                                "%");
                         pctChanges[i].setTextColor(Color.rgb(76,153,0));
                     }
                     Log.i(TAG, "getBiggestMoversOnResponse: " + response.body());
                 } else {
                     try {
+                        assert response.errorBody() != null;
                         Log.i(TAG, "getBiggestMoversNotSuccessful: " +
                                 response.errorBody().string());
                     } catch (IOException e) {
@@ -94,13 +102,15 @@ public class Movers extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<BiggestMovers>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<BiggestMovers>> call, @NonNull Throwable t) {
                 Log.i(TAG, "getBiggestMoversOnFailure: " + t);
             }
         });
         controller.getMostLosers().enqueue(new Callback<List<BiggestMovers>>() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onResponse(Call<List<BiggestMovers>> call, Response<List<BiggestMovers>> response) {
+            public void onResponse(@NonNull Call<List<BiggestMovers>> call,
+                                   @NonNull Response<List<BiggestMovers>> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     List<BiggestMovers> losers = new ArrayList<>(response.body());
@@ -109,20 +119,25 @@ public class Movers extends AppCompatActivity {
                         tickers[i + 6].setTextColor(Color.RED);
                     }
                     for(int i = 0; i < 6; i++) {
-                        prices[i + 6].setText(Double.toString(Math.round(losers.get(i).getPrice()*100.00)/100.00));
+                        prices[i + 6].setText(Double.toString(
+                                Math.round(losers.get(i).getPrice()*100.00)/100.00));
                         prices[i + 6].setTextColor(Color.RED);
                     }
                     for(int i = 0; i < 6; i++) {
-                        changes[i + 6].setText(Double.toString(Math.round(losers.get(i).getChange()*100.00)/100.00));
+                        changes[i + 6].setText(Double.toString(
+                                Math.round(losers.get(i).getChange()*100.00)/100.00));
                         changes[i + 6].setTextColor(Color.RED);
                     }
                     for(int i = 0; i < 6; i++) {
-                        pctChanges[i + 6].setText(Math.round(losers.get(i).getPercentageChange()*100.00)/100.00 + "%");
+                        pctChanges[i + 6].setText(
+                                Math.round(losers.get(i).getPercentageChange()*100.00)/100.00 +
+                                        "%");
                         pctChanges[i + 6].setTextColor(Color.RED);
                     }
                     Log.i(TAG, "getBiggestMoversOnResponse: " + response.body());
                 } else {
                     try {
+                        assert response.errorBody() != null;
                         Log.i(TAG, "getBiggestMoversNotSuccessful: " +
                                 response.errorBody().string());
                     } catch (IOException e) {
@@ -132,7 +147,8 @@ public class Movers extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<BiggestMovers>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<BiggestMovers>> call,
+                                  @NonNull Throwable t) {
                 Log.i(TAG, "getBiggestMoversOnFailure: " + t);
             }
         });

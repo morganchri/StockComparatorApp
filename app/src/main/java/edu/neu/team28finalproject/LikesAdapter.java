@@ -4,14 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -19,7 +17,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.neu.team28finalproject.controller.ControllerImpl;
 import edu.neu.team28finalproject.preferences.UserPreferencesImpl;
 
 public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
@@ -28,7 +25,6 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
     private final Context context;
     private final UserPreferencesImpl up;
     public OnItemClickListener listener;
-    public Button removeLikeButton;
 
     public interface OnItemClickListener{
         void onItemClick(int position);
@@ -55,30 +51,30 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesViewHolder>{
     public void onBindViewHolder(@NonNull LikesViewHolder holder,
                                  @SuppressLint("RecyclerView") int position) {
         holder.bindThisData(likes.get(position));
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent likesIntent = ((LikesActivity) context).getIntent();
-                String jsonString = likesIntent.getStringExtra("stockList");
-                Gson gson = new Gson();
-                Type stockListType = new TypeToken<ArrayList<String>>() {}.getType();
-                ArrayList<String> stockList = gson.fromJson(jsonString, stockListType);
-                String stockInput = likes.get(position).getTicker();
-                if (!stockList.contains(stockInput.toUpperCase())) {
-                    stockList.add(stockInput);
-                }
-                Intent intent = new Intent(v.getContext(), MainActivity.class);
-                String stockString = gson.toJson(stockList);
-                intent.putExtra("Ticker", stockString);
-                context.startActivity(intent);
+        holder.itemView.setOnClickListener(v -> {
+            Intent likesIntent = ((LikesActivity) context).getIntent();
+            String jsonString = likesIntent.getStringExtra("stockList");
+            Gson gson = new Gson();
+            Type stockListType = new TypeToken<ArrayList<String>>() {}.getType();
+            ArrayList<String> stockList = gson.fromJson(jsonString, stockListType);
+            String stockInput = likes.get(position).getTicker();
+            if (!stockList.contains(stockInput.toUpperCase())) {
+                stockList.add(stockInput);
             }
+            Intent intent = new Intent(v.getContext(), MainActivity.class);
+            String stockString = gson.toJson(stockList);
+            intent.putExtra("Ticker", stockString);
+            context.startActivity(intent);
         });
-        holder.removeLikeButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int newPosition = holder.getAdapterPosition();
-                likes.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(newPosition, likes.size());
-            }
+        holder.removeLikeButton.setOnClickListener(v -> {
+            int newPosition = holder.getAdapterPosition();
+            up.unlikeStock(likes.get(position).getTicker());
+            likes.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(newPosition, likes.size());
+            Snackbar.make(v, "Stock unliked",
+                            Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
         });
     }
 

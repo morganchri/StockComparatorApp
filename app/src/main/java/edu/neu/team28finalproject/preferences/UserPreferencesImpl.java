@@ -34,7 +34,8 @@ public class UserPreferencesImpl implements UserPreferences {
      */
     public  UserPreferencesImpl(Context context) {
         preferences = context.getSharedPreferences(context
-                .getResources().getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                .getResources().getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
         editor = preferences.edit();
         favorites = loadFavorites();
         viewed = loadViewed();

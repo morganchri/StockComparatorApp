@@ -5,15 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.google.android.material.button.MaterialButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +35,7 @@ public class LikesActivity extends AppCompatActivity {
     Button removeLikesButton;
     private static final String TAG = "Likes";
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,13 +90,10 @@ public class LikesActivity extends AppCompatActivity {
                                 Log.i(TAG, "getQuoteOnFailure: " + t);
                             }
                         });
-                la.setOnItemClickListener(new LikesAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(int position) {
-                        up.unlikeStock(ticker);
-                        finish();
-                        startActivity(getIntent());
-                    }
+                la.setOnItemClickListener(position -> {
+                    up.unlikeStock(ticker);
+                    finish();
+                    startActivity(getIntent());
                 });
                  }
                 } else {

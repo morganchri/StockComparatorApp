@@ -13,9 +13,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -26,9 +23,6 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
@@ -56,7 +50,6 @@ public class AllStocksActivity extends AppCompatActivity {
     StockListAdapter sa;
     ProgressBar mProgressBar;
     TextView loading;
-    TextRecognizer recognizer;
     ImageButton camera;
     Bitmap imageBitmap;
     private final Controller controller = new ControllerImpl();
@@ -72,12 +65,7 @@ public class AllStocksActivity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.progress_bar);
         loading = findViewById(R.id.loading);
         camera = findViewById(R.id.cameraButton);
-        camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dispatchTakePictureIntent();
-            }
-        });
+        camera.setOnClickListener(v -> dispatchTakePictureIntent());
         stocks = new ArrayList<>();
         RecyclerView listRecyclerView = findViewById(R.id.stockListRecyclerView);
         listRecyclerView.setHasFixedSize(true);
@@ -85,31 +73,25 @@ public class AllStocksActivity extends AppCompatActivity {
         sa = new StockListAdapter(stocks,this);
         listRecyclerView.setAdapter(sa);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA},
-                        1);
-            }
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    1);
         }
+
         controller.getSymbols().enqueue(new Callback<List<Symbol>>() {
             @Override
             public void onResponse(@NonNull Call<List<Symbol>> call,
                                    @NonNull Response<List<Symbol>> response) {
                 if (response.isSuccessful()) {
                     for (int i = 0; i < Objects.requireNonNull(response.body()).size(); i++) {
-                        StockListObj stock = new StockListObj(response.body().get(i).getDisplaySymbol(),
+                        StockListObj stock =
+                                new StockListObj(response.body().get(i).getDisplaySymbol(),
                                 response.body().get(i).getDescription());
                         stocks.add(stock);
                     }
-                    stocks.sort(new Comparator<StockListObj>() {
-                        @Override
-                        public int compare(final StockListObj object1, final StockListObj object2) {
-                            return object1.getTicker().compareTo(object2.getTicker());
-                        }
-                    });
+                    stocks.sort(Comparator.comparing(StockListObj::getTicker));
                     sa.notifyDataSetChanged();
                     mProgressBar.setVisibility(View.GONE);
                     loading.setVisibility(View.GONE);
@@ -137,7 +119,8 @@ public class AllStocksActivity extends AppCompatActivity {
                 if(containsName(stocks, query)){
                     List<StockListObj> temp;
                     temp = stocks.stream().filter(stockListObj ->
-                                    stockListObj.getName().toLowerCase().contains(query.toLowerCase()))
+                                    stockListObj.getName()
+                                            .toLowerCase().contains(query.toLowerCase()))
                             .collect(Collectors.toList());
                     StockListAdapter sa = new StockListAdapter(temp,AllStocksActivity.this);
                     listRecyclerView.setAdapter(sa);
@@ -149,12 +132,14 @@ public class AllStocksActivity extends AppCompatActivity {
                 if(containsName(stocks, newText)){
                     List<StockListObj> temp;
                     temp = stocks.stream().filter(stockListObj ->
-                                    stockListObj.getName().toLowerCase().contains(newText.toLowerCase()))
+                                    stockListObj.getName().toLowerCase()
+                                            .contains(newText.toLowerCase()))
                             .collect(Collectors.toList());
                     StockListAdapter sa = new StockListAdapter(temp,AllStocksActivity.this);
                     listRecyclerView.setAdapter(sa);
                 } else {
-                    StockListAdapter sa = new StockListAdapter(stocks,AllStocksActivity.this);
+                    StockListAdapter sa = new StockListAdapter(stocks,
+                            AllStocksActivity.this);
                     listRecyclerView.setAdapter(sa);
                 }
                 return false;
@@ -190,21 +175,11 @@ public class AllStocksActivity extends AppCompatActivity {
         InputImage image = InputImage.fromBitmap(imageBitmap, 0);
         TextRecognizer detector = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
         detector.process(image)
-                .addOnSuccessListener(new OnSuccessListener<Text>() {
-                    @Override
-                    public void onSuccess(Text visionText) {
-                        processTextBlock(visionText);
-                    }
-                })
+                .addOnSuccessListener(this::processTextBlock)
                 .addOnFailureListener(
-                        new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(AllStocksActivity.this,
-                                        "Image to text failed",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        e -> Toast.makeText(AllStocksActivity.this,
+                                "Image to text failed",
+                                Toast.LENGTH_LONG).show());
     }
     private void processTextBlock(Text result) {
         String resultText = result.getText();
@@ -216,21 +191,15 @@ public class AllStocksActivity extends AppCompatActivity {
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    camera.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dispatchTakePictureIntent();
-                        }
-                    });
+        if (requestCode == 1) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                camera.setOnClickListener(v -> dispatchTakePictureIntent());
 
-                } else {
-                    Toast.makeText(this, "Permission denied to use the camera", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
+            } else {
+                Toast.makeText(this, "Permission denied to use the camera",
+                        Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
     }

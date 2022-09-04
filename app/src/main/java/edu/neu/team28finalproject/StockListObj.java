@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class StockListObj implements Serializable {
 
-    private String ticker;
-    private String name;
+    private final String ticker;
+    private final String name;
 
     public StockListObj(String ticker, String name) {
         this.ticker = ticker;

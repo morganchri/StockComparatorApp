@@ -28,10 +28,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
@@ -61,8 +58,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     ControllerImpl cr;
     UserPreferencesImpl up;
     List<String> tickers;
-    ArrayList<String> stockNames = new ArrayList<>();
-    ArrayList<String> timestamps = new ArrayList<>();
     private static final String TAG = "Main";
 
 
@@ -83,22 +78,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         stockRecyclerView = findViewById(R.id.recyclerView);
         stockRecyclerView.setHasFixedSize(true);
         LinearLayoutManager linLayManager = new LinearLayoutManager(this);
-        stockRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy < 0) {
-
-                } else if (dy > 0) {
-                    // Recycle view scrolling down...
-                }
-            }
-        });
         stockRecyclerView.setLayoutManager(linLayManager);
         sa = new StockViewAdapter(stockList,this);
         stockRecyclerView.setAdapter(sa);
@@ -122,66 +101,61 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         }
 
         Button openList = findViewById(R.id.listButton);
-        openList.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent openList = new Intent(MainActivity.this,
-                        AllStocksActivity.class);
-                MainActivity.this.startActivity(openList);
+        openList.setOnClickListener(v -> {
+            Intent openList1 = new Intent(MainActivity.this,
+                    AllStocksActivity.class);
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString = null;
+            try {
+                jsonString = mapper.writeValueAsString(stockStrings);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
             }
+            openList1.putExtra("stockList", jsonString);
+            MainActivity.this.startActivity(openList1);
         });
 
         Button openRecs = findViewById(R.id.recsButton);
-        openRecs.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent openRecs = new Intent(MainActivity.this,
-                        RecommendationsActivity.class);
-                MainActivity.this.startActivity(openRecs);
-            }
+        openRecs.setOnClickListener(v -> {
+            Intent openRecs1 = new Intent(MainActivity.this,
+                    RecommendationsActivity.class);
+            MainActivity.this.startActivity(openRecs1);
         });
 
         Button openMovers = findViewById(R.id.openMovers);
-        openMovers.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent openMovers = new Intent(MainActivity.this,
-                        Movers.class);
-                MainActivity.this.startActivity(openMovers);
-            }
+        openMovers.setOnClickListener(v -> {
+            Intent openMovers1 = new Intent(MainActivity.this,
+                    Movers.class);
+            MainActivity.this.startActivity(openMovers1);
         });
 
         Button histButton = findViewById(R.id.histButton);
-        histButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent openList = new Intent(MainActivity.this,
-                        HistoryActivity.class);
-                MainActivity.this.startActivity(openList);
-            }
+        histButton.setOnClickListener(v -> {
+            Intent openList12 = new Intent(MainActivity.this,
+                    HistoryActivity.class);
+            MainActivity.this.startActivity(openList12);
         });
 
         Button likedButton = findViewById(R.id.likedButton);
-        likedButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent openList = new Intent(MainActivity.this,
-                        LikesActivity.class);
-                ObjectMapper mapper = new ObjectMapper();
-                String jsonString = null;
-                try {
-                    jsonString = mapper.writeValueAsString(stockStrings);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-                openList.putExtra("stockList", jsonString);
-                startActivity(openList);
+        likedButton.setOnClickListener(v -> {
+            Intent openList13 = new Intent(MainActivity.this,
+                    LikesActivity.class);
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString = null;
+            try {
+                jsonString = mapper.writeValueAsString(stockStrings);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
             }
+            openList13.putExtra("stockList", jsonString);
+            startActivity(openList13);
         });
 
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
-                updateOperation();
-                Log.i(TAG, "onRefresh called from SwipeRefreshLayout");
-            }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            updateOperation();
+            Log.i(TAG, "onRefresh called from SwipeRefreshLayout");
         });
 
     }
@@ -209,9 +183,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                         stockList.set(finalI, newStock);
                                         Log.i(TAG, "getQuoteOnResponse: "
                                                 + response.body());
-                                    }
-                                    else {
-                                        //no data
                                     }
                                 } else {
                                     try {
@@ -242,7 +213,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                             assert response.body() != null;
                             if (response.body().getStatus()
                                     .equalsIgnoreCase("ok")) {
-                                GraphViewObj newGraph = new GraphViewObj(graph.getTicker().toUpperCase(),
+                                GraphViewObj newGraph =
+                                        new GraphViewObj(graph.getTicker().toUpperCase(),
                                         getData(response.body().getClosePrices()));
                                 stockList.set(finalI, newGraph);
                                 stockRecyclerView.setAdapter(sa);
@@ -322,7 +294,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                                     cPrice,
                                                     oPrice);
                                             stockList.add(newStock);
-                                            stockStrings.add(stockInput.getText().toString().toUpperCase());
+                                            stockStrings.add(
+                                                    stockInput.getText().toString().toUpperCase());
                                             Snackbar.make(view, "Adding Stock was successful",
                                                             Snackbar.LENGTH_LONG)
                                                     .setAction("Action", null).show();
@@ -407,12 +380,10 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 }
             }
         });
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                Snackbar.make(view, "Adding Stock was cancelled", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                dialog.cancel();
-            }
+        alert.setNegativeButton("Cancel", (dialog, whichButton) -> {
+            Snackbar.make(view, "Adding Stock was cancelled", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            dialog.cancel();
         });
         alert.show();
     }
@@ -437,8 +408,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                                 stockList.add(newStock);
                                 Log.i(TAG, "getQuoteOnResponse: "
                                         + response.body());
-                            } else {
-                                //no data
                             }
                         } else {
                             try {
@@ -507,14 +476,18 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     public void getTickers() {
         cr.getSymbols().enqueue(new Callback<List<Symbol>>() {
             @Override
-            public void onResponse(Call<List<Symbol>> call, Response<List<Symbol>> response) {
+            public void onResponse(@NonNull Call<List<Symbol>> call,
+                                   @NonNull Response<List<Symbol>> response) {
                 if (response.isSuccessful()) {
-                    for (int i = 0; i < response.body().size(); i++) {
-                        tickers.add(response.body().get(i).getDisplaySymbol());
+                    if (response.body() != null) {
+                        for (int i = 0; i < response.body().size(); i++) {
+                            tickers.add(response.body().get(i).getDisplaySymbol());
+                        }
                     }
                     Log.i(TAG, "getSymbolsOnResponse: " + response.body());
                 } else {
                     try {
+                        assert response.errorBody() != null;
                         Log.i(TAG, "getSymbolsOnResponseNotSuccessful: " +
                                 response.errorBody().string());
                     } catch (IOException e) {
@@ -524,19 +497,11 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             }
 
             @Override
-            public void onFailure(Call<List<Symbol>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Symbol>> call,
+                                  @NonNull Throwable t) {
                 Log.i(TAG, "getSymbolsOnFailure: " + t);
             }
         });
-        //ArrayList<String> tickers = new ArrayList<>();
-        //InputStream inputStream = getResources().openRawResource(R.raw.newtickers);
-        //BufferedReader bufferedReader= new BufferedReader(new InputStreamReader(inputStream));
-        //String eachline = bufferedReader.readLine();
-        //while (eachline != null) {
-        //    eachline = bufferedReader.readLine();
-        //    tickers.add(eachline);
-        //}
-        //return tickers;
     }
 
     public boolean isValidTicker(String ticker) throws IOException {
@@ -579,22 +544,4 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     private LocalDate getPrevYear() {
         return LocalDate.now().minusYears(1);
     }
-
-    private LocalDate getPrevSixMonths() {
-        return LocalDate.now().minusMonths(6);
-    }
-
-    private LocalDate getPrevMonth() {
-        return LocalDate.now().minusMonths(1);
-    }
-
-    private LocalDate getPrevFiveDays() {
-        return LocalDate.now().minusDays(5);
-    }
-
-    private LocalDate getPrevDay() {
-        return LocalDate.now().minusDays(3);
-    }
-
-
 }

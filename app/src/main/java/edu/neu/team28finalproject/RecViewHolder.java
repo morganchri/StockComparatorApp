@@ -2,9 +2,7 @@ package edu.neu.team28finalproject;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.provider.MediaStore;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -43,7 +41,7 @@ public class RecViewHolder extends RecyclerView.ViewHolder {
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     public void bindThisData(RecViewObj recToBind) {
         ticker.setText(recToBind.getTicker());
-        price.setText("$" + String.valueOf(recToBind.getCurrent()));
+        price.setText("$" + recToBind.getCurrent());
         delta_price.setText("(" + String.format("%.2f", recToBind.getChange()) + ")");
         delta_percent.setText(String.format("%.2f", recToBind.getPctChange()) + "%");
         if (recToBind.getChange() > 0) {
@@ -53,9 +51,6 @@ public class RecViewHolder extends RecyclerView.ViewHolder {
             delta_price.setTextColor(Color.RED);
             delta_percent.setTextColor(Color.RED);
         }
-
-        //Figure out the like and add button drawables
-        //like_button.setImageDrawable();
 
         industry.setText(String.valueOf(recToBind.getIndustry()));
         dividends.setText(String.valueOf(recToBind.getDividends()));

@@ -5,10 +5,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +22,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import edu.neu.team28finalproject.controller.Controller;
 import edu.neu.team28finalproject.controller.ControllerImpl;
@@ -55,7 +52,8 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == 0) {
-            return new StockViewHolder(LayoutInflater.from(context).inflate(R.layout.stockviewlayout,
+            return new StockViewHolder(
+                    LayoutInflater.from(context).inflate(R.layout.stockviewlayout,
                     parent, false));
         } else {
             return new GraphViewHolder(LayoutInflater.from(context).inflate(R.layout.graphlayout,
@@ -63,22 +61,21 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder,
                                  @SuppressLint("RecyclerView") int position) {
         Object item = stocks.get(position);
         if (holder instanceof StockViewHolder) {
             ((StockViewHolder) holder).bindThisData((StockViewObj) item);
-            ((StockViewHolder) holder).deleteButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    int newPosition = holder.getAdapterPosition();
-                    stocks.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(newPosition, stocks.size());
-                    stocks.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(newPosition, stocks.size());
-                }
+            ((StockViewHolder) holder).deleteButton.setOnClickListener(v -> {
+                int newPosition = holder.getAdapterPosition();
+                stocks.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(newPosition, stocks.size());
+                stocks.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(newPosition, stocks.size());
             });
             StockViewObj stock = (StockViewObj) stocks.get(position);
             if (up.getLikedStocks().size() > 0) {
@@ -90,287 +87,283 @@ public class StockViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             }
             if (!((StockViewHolder) holder).likeButton.isChecked()) {
-                ((StockViewHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    public void onClick(View v) {
-                        StockViewObj stock = (StockViewObj) stocks.get(position);
-                        if (up.getLikedStocks().size() > 0) {
-                            for (int i = 0; i < up.getLikedStocks().size(); i++) {
-                                if (stock.getTicker().equals(up.getLikedStocks().get(i))) {
-                                    Snackbar.make(v, "Stock already liked",
-                                                    Snackbar.LENGTH_LONG)
-                                            .setAction("Action", null).show();
-                                    notifyDataSetChanged();
-                                } else {
-                                    up.likeStock(stock.getTicker());
-                                    Snackbar.make(v, "Stock liked",
-                                                    Snackbar.LENGTH_LONG)
-                                            .setAction("Action", null).show();
-                                    notifyDataSetChanged();
+                ((StockViewHolder) holder).
+                        likeButton.setOnClickListener(v -> {
+                            StockViewObj stock12 = (StockViewObj) stocks.get(position);
+                            if (up.getLikedStocks().size() > 0) {
+                                for (int i = 0; i < up.getLikedStocks().size(); i++) {
+                                    if (stock12.getTicker().equals(up.getLikedStocks().get(i))) {
+                                        Snackbar.make(v, "Stock already liked",
+                                                        Snackbar.LENGTH_LONG)
+                                                .setAction("Action", null).show();
+                                        notifyDataSetChanged();
+                                    } else {
+                                        up.likeStock(stock12.getTicker());
+                                        Snackbar.make(v, "Stock liked",
+                                                        Snackbar.LENGTH_LONG)
+                                                .setAction("Action", null).show();
+                                        notifyDataSetChanged();
+                                    }
                                 }
+                            } else {
+                                up.likeStock(stock12.getTicker());
+                                Snackbar.make(v, "Stock liked",
+                                                Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                                notifyDataSetChanged();
                             }
-                        } else {
-                            up.likeStock(stock.getTicker());
-                            Snackbar.make(v, "Stock liked",
+                        });
+            } else {
+                ((StockViewHolder) holder).likeButton.
+                        setOnClickListener(v -> {
+                            StockViewObj stock1 = (StockViewObj) stocks.get(position);
+                            up.unlikeStock(stock1.getTicker());
+                            ((StockViewHolder) holder).likeButton.setChecked(false);
+                            Snackbar.make(v, "Stock unliked",
                                             Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
                             notifyDataSetChanged();
-                        }
-                    }
-                });
-            } else {
-                ((StockViewHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    public void onClick(View v) {
-                        StockViewObj stock = (StockViewObj) stocks.get(position);
-                        up.unlikeStock(stock.getTicker());
-                        ((StockViewHolder) holder).likeButton.setChecked(false);
-                        Snackbar.make(v, "Stock unliked",
-                                        Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                        notifyDataSetChanged();
-                    }
-                });
+                        });
             }
         } else {
             ((GraphViewHolder) holder).bindThisData((GraphViewObj) item);
-            ((GraphViewHolder) holder).btn[0].setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    for (int i = 0; i < ((GraphViewHolder) holder).btn.length; i++) {
-                        unFocus(((GraphViewHolder) holder).btn[i]);
-                    }
-                    setFocus(((GraphViewHolder) holder).btn[0]);
-                    controller.getIndicators(((GraphViewObj) item).getTicker(),
-                            IndicatorResolution.RES_60, dateToUnix(getPrevDay()),
-                            dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
-                        @SuppressLint("NotifyDataSetChanged")
-                        @Override
-                        public void onResponse(@NonNull Call<Indicator> call,
-                                               @NonNull Response<Indicator> response) {
-                            if (response.isSuccessful()) {
-                                assert response.body() != null;
-                                if (response.body().getStatus().equalsIgnoreCase("ok")) {
-                                    ((GraphViewObj) item).setEntries(getData(response.body().getClosePrices()));
-                                    StockViewObj stock = (StockViewObj) stocks.get(position - 1);
-                                    stock.setOpen(response.body().getClosePrices().get(0));
-                                    //notifyItemChanged(position - 1);
-                                    notifyDataSetChanged();
-                                    Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
-                                } else {
-                                    Snackbar.make(v, "No data",
-                                                    Snackbar.LENGTH_LONG)
-                                            .setAction("Action", null).show();
-                                }
+            ((GraphViewHolder) holder).btn[0].setOnClickListener(v -> {
+                for (int i = 0; i < ((GraphViewHolder) holder).btn.length; i++) {
+                    unFocus(((GraphViewHolder) holder).btn[i]);
+                }
+                setFocus(((GraphViewHolder) holder).btn[0]);
+                controller.getIndicators(((GraphViewObj) item).getTicker(),
+                        IndicatorResolution.RES_60, dateToUnix(getPrevDay()),
+                        dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onResponse(@NonNull Call<Indicator> call,
+                                           @NonNull Response<Indicator> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (response.body().getStatus().equalsIgnoreCase("ok")) {
+                                ((GraphViewObj) item).setEntries(
+                                        getData(response.body().getClosePrices()));
+                                StockViewObj stock = (StockViewObj) stocks.get(position - 1);
+                                stock.setOpen(response.body().getClosePrices().get(0));
+                                //notifyItemChanged(position - 1);
+                                notifyDataSetChanged();
+                                Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
                             } else {
-                                try {
-                                    assert response.errorBody() != null;
-                                    Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
-                                            response.errorBody().string());
-                                    ObjectMapper om = new ObjectMapper();
-                                    Error e = om.readValue(response.errorBody().string(), Error.class);
-                                    Log.i(TAG, "error: " + e.getError());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                Snackbar.make(v, "No data",
+                                                Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            }
+                        } else {
+                            try {
+                                assert response.errorBody() != null;
+                                Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
+                                        response.errorBody().string());
+                                ObjectMapper om = new ObjectMapper();
+                                Error e = om.readValue(response.errorBody().string(),
+                                        Error.class);
+                                Log.i(TAG, "error: " + e.getError());
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
                         }
-                        @Override
-                        public void onFailure(@NonNull Call<Indicator> call,
-                                              @NonNull Throwable t) {
-                            Log.i(TAG, "getIndicatorsOnFailure: " + t);
-                        }
-                    });
-                }
-            });
-            ((GraphViewHolder) holder).btn[1].setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    for (int i = 0; i < ((GraphViewHolder) holder).btn.length; i++) {
-                        unFocus(((GraphViewHolder) holder).btn[i]);
                     }
-                    setFocus(((GraphViewHolder) holder).btn[1]);
+                    @Override
+                    public void onFailure(@NonNull Call<Indicator> call,
+                                          @NonNull Throwable t) {
+                        Log.i(TAG, "getIndicatorsOnFailure: " + t);
+                    }
+                });
+            });
+            ((GraphViewHolder) holder).btn[1].setOnClickListener(v -> {
+                for (int i = 0; i < ((GraphViewHolder) holder).btn.length; i++) {
+                    unFocus(((GraphViewHolder) holder).btn[i]);
+                }
+                setFocus(((GraphViewHolder) holder).btn[1]);
 
-                    controller.getIndicators(((GraphViewObj) item).getTicker(),
-                            IndicatorResolution.RES_60, dateToUnix(getPrevFiveDays()),
-                            dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
-                        @SuppressLint("NotifyDataSetChanged")
-                        @Override
-                        public void onResponse(@NonNull Call<Indicator> call,
-                                               @NonNull Response<Indicator> response) {
-                            if (response.isSuccessful()) {
-                                assert response.body() != null;
-                                if (response.body().getStatus().equalsIgnoreCase("ok")) {
-                                    ((GraphViewObj) item).setEntries(getData(response.body().getClosePrices()));
-                                    StockViewObj stock = (StockViewObj) stocks.get(position - 1);
-                                    stock.setOpen(response.body().getClosePrices().get(0));
-                                    notifyDataSetChanged();
-                                    Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
-                                } else {
-                                    Snackbar.make(v, "No data",
-                                                    Snackbar.LENGTH_LONG)
-                                            .setAction("Action", null).show();
-                                }
+                controller.getIndicators(((GraphViewObj) item).getTicker(),
+                        IndicatorResolution.RES_60, dateToUnix(getPrevFiveDays()),
+                        dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onResponse(@NonNull Call<Indicator> call,
+                                           @NonNull Response<Indicator> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (response.body().getStatus().equalsIgnoreCase("ok")) {
+                                ((GraphViewObj) item).setEntries(
+                                        getData(response.body().getClosePrices()));
+                                StockViewObj stock = (StockViewObj) stocks.get(position - 1);
+                                stock.setOpen(response.body().getClosePrices().get(0));
+                                notifyDataSetChanged();
+                                Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
                             } else {
-                                try {
-                                    assert response.errorBody() != null;
-                                    Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
-                                            response.errorBody().string());
-                                    ObjectMapper om = new ObjectMapper();
-                                    Error e = om.readValue(response.errorBody().string(), Error.class);
-                                    Log.i(TAG, "error: " + e.getError());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                Snackbar.make(v, "No data",
+                                                Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            }
+                        } else {
+                            try {
+                                assert response.errorBody() != null;
+                                Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
+                                        response.errorBody().string());
+                                ObjectMapper om = new ObjectMapper();
+                                Error e = om.readValue(response.errorBody().string(),
+                                        Error.class);
+                                Log.i(TAG, "error: " + e.getError());
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
                         }
-                        @Override
-                        public void onFailure(@NonNull Call<Indicator> call, @NonNull Throwable t) {
-                            Log.i(TAG, "getIndicatorsOnFailure: " + t);
-                        }
-                    });
-                }
-            });
-            ((GraphViewHolder) holder).btn[2].setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    for (int i = 0; i < ((GraphViewHolder) holder).btn.length; i++) {
-                        unFocus(((GraphViewHolder) holder).btn[i]);
                     }
-                    setFocus(((GraphViewHolder) holder).btn[2]);
+                    @Override
+                    public void onFailure(@NonNull Call<Indicator> call, @NonNull Throwable t) {
+                        Log.i(TAG, "getIndicatorsOnFailure: " + t);
+                    }
+                });
+            });
+            ((GraphViewHolder) holder).btn[2].setOnClickListener(v -> {
+                for (int i = 0; i < ((GraphViewHolder) holder).btn.length; i++) {
+                    unFocus(((GraphViewHolder) holder).btn[i]);
+                }
+                setFocus(((GraphViewHolder) holder).btn[2]);
 
-                    controller.getIndicators(((GraphViewObj) item).getTicker(),
-                            IndicatorResolution.RES_D, dateToUnix(getPrevMonth()),
-                            dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
-                        @SuppressLint("NotifyDataSetChanged")
-                        @Override
-                        public void onResponse(@NonNull Call<Indicator> call,
-                                               @NonNull Response<Indicator> response) {
-                            if (response.isSuccessful()) {
-                                assert response.body() != null;
-                                if (response.body().getStatus().equalsIgnoreCase("ok")) {
-                                    ((GraphViewObj) item).setEntries(getData(response.body().getClosePrices()));
-                                    StockViewObj stock = (StockViewObj) stocks.get(position - 1);
-                                    stock.setOpen(response.body().getClosePrices().get(0));
-                                    notifyDataSetChanged();
-                                    Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
-                                } else {
-                                    Snackbar.make(v, "No data",
-                                                    Snackbar.LENGTH_LONG)
-                                            .setAction("Action", null).show();
-                                }
+                controller.getIndicators(((GraphViewObj) item).getTicker(),
+                        IndicatorResolution.RES_D, dateToUnix(getPrevMonth()),
+                        dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onResponse(@NonNull Call<Indicator> call,
+                                           @NonNull Response<Indicator> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (response.body().getStatus().equalsIgnoreCase("ok")) {
+                                ((GraphViewObj) item).setEntries(
+                                        getData(response.body().getClosePrices()));
+                                StockViewObj stock = (StockViewObj) stocks.get(position - 1);
+                                stock.setOpen(response.body().getClosePrices().get(0));
+                                notifyDataSetChanged();
+                                Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
                             } else {
-                                try {
-                                    assert response.errorBody() != null;
-                                    Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
-                                            response.errorBody().string());
-                                    ObjectMapper om = new ObjectMapper();
-                                    Error e = om.readValue(response.errorBody().string(), Error.class);
-                                    Log.i(TAG, "error: " + e.getError());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                Snackbar.make(v, "No data",
+                                                Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            }
+                        } else {
+                            try {
+                                assert response.errorBody() != null;
+                                Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
+                                        response.errorBody().string());
+                                ObjectMapper om = new ObjectMapper();
+                                Error e = om.readValue(response.errorBody().string(),
+                                        Error.class);
+                                Log.i(TAG, "error: " + e.getError());
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
                         }
-                        @Override
-                        public void onFailure(@NonNull Call<Indicator> call,
-                                              @NonNull Throwable t) {
-                            Log.i(TAG, "getIndicatorsOnFailure: " + t);
-                        }
-                    });
-                }
-            });
-            ((GraphViewHolder) holder).btn[3].setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    for (int i = 0; i < ((GraphViewHolder) holder).btn.length; i++) {
-                        unFocus(((GraphViewHolder) holder).btn[i]);
                     }
-                    setFocus(((GraphViewHolder) holder).btn[3]);
+                    @Override
+                    public void onFailure(@NonNull Call<Indicator> call,
+                                          @NonNull Throwable t) {
+                        Log.i(TAG, "getIndicatorsOnFailure: " + t);
+                    }
+                });
+            });
+            ((GraphViewHolder) holder).btn[3].setOnClickListener(v -> {
+                for (int i = 0; i < ((GraphViewHolder) holder).btn.length; i++) {
+                    unFocus(((GraphViewHolder) holder).btn[i]);
+                }
+                setFocus(((GraphViewHolder) holder).btn[3]);
 
-                    controller.getIndicators(((GraphViewObj) item).getTicker(),
-                            IndicatorResolution.RES_D, dateToUnix(getPrevSixMonths()),
-                            dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
-                        @SuppressLint("NotifyDataSetChanged")
-                        @Override
-                        public void onResponse(@NonNull Call<Indicator> call,
-                                               @NonNull Response<Indicator> response) {
-                            if (response.isSuccessful()) {
-                                assert response.body() != null;
-                                if (response.body().getStatus().equalsIgnoreCase("ok")) {
-                                    ((GraphViewObj) item).setEntries(getData(response.body().getClosePrices()));
-                                    StockViewObj stock = (StockViewObj) stocks.get(position - 1);
-                                    stock.setOpen(response.body().getClosePrices().get(0));
-                                    notifyDataSetChanged();
-                                    Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
-                                } else {
-                                    Snackbar.make(v, "No data",
-                                                    Snackbar.LENGTH_LONG)
-                                            .setAction("Action", null).show();
-                                }
+                controller.getIndicators(((GraphViewObj) item).getTicker(),
+                        IndicatorResolution.RES_D, dateToUnix(getPrevSixMonths()),
+                        dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onResponse(@NonNull Call<Indicator> call,
+                                           @NonNull Response<Indicator> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (response.body().getStatus().equalsIgnoreCase("ok")) {
+                                ((GraphViewObj) item).setEntries(getData(response.body()
+                                        .getClosePrices()));
+                                StockViewObj stock = (StockViewObj) stocks.get(position - 1);
+                                stock.setOpen(response.body().getClosePrices().get(0));
+                                notifyDataSetChanged();
+                                Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
                             } else {
-                                try {
-                                    assert response.errorBody() != null;
-                                    Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
-                                            response.errorBody().string());
-                                    ObjectMapper om = new ObjectMapper();
-                                    Error e = om.readValue(response.errorBody().string(), Error.class);
-                                    Log.i(TAG, "error: " + e.getError());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                Snackbar.make(v, "No data",
+                                                Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            }
+                        } else {
+                            try {
+                                assert response.errorBody() != null;
+                                Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
+                                        response.errorBody().string());
+                                ObjectMapper om = new ObjectMapper();
+                                Error e = om.readValue(response.errorBody().string(),
+                                        Error.class);
+                                Log.i(TAG, "error: " + e.getError());
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
                         }
-                        @Override
-                        public void onFailure(@NonNull Call<Indicator> call,
-                                              @NonNull Throwable t) {
-                            Log.i(TAG, "getIndicatorsOnFailure: " + t);
-                        }
-                    });
-                }
-            });
-            ((GraphViewHolder) holder).btn[4].setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    for (int i = 0; i < ((GraphViewHolder) holder).btn.length; i++) {
-                        unFocus(((GraphViewHolder) holder).btn[i]);
                     }
-                    setFocus(((GraphViewHolder) holder).btn[4]);
-                    controller.getIndicators(((GraphViewObj) item).getTicker(),
-                            IndicatorResolution.RES_D, dateToUnix(getPrevYear()),
-                            dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
-                        @SuppressLint("NotifyDataSetChanged")
-                        @Override
-                        public void onResponse(@NonNull Call<Indicator> call,
-                                               @NonNull Response<Indicator> response) {
-                            if (response.isSuccessful()) {
-                                assert response.body() != null;
-                                if (response.body().getStatus().equalsIgnoreCase("ok")) {
-                                    ((GraphViewObj) item).setEntries(getData(response.body().getClosePrices()));
-                                    StockViewObj stock = (StockViewObj) stocks.get(position - 1);
-                                    stock.setOpen(response.body().getClosePrices().get(0));
-                                    notifyDataSetChanged();
-                                    Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
-                                } else {
-                                    Snackbar.make(v, "No data",
-                                                    Snackbar.LENGTH_LONG)
-                                            .setAction("Action", null).show();
-                                }
+                    @Override
+                    public void onFailure(@NonNull Call<Indicator> call,
+                                          @NonNull Throwable t) {
+                        Log.i(TAG, "getIndicatorsOnFailure: " + t);
+                    }
+                });
+            });
+            ((GraphViewHolder) holder).btn[4].setOnClickListener(v -> {
+                for (int i = 0; i < ((GraphViewHolder) holder).btn.length; i++) {
+                    unFocus(((GraphViewHolder) holder).btn[i]);
+                }
+                setFocus(((GraphViewHolder) holder).btn[4]);
+                controller.getIndicators(((GraphViewObj) item).getTicker(),
+                        IndicatorResolution.RES_D, dateToUnix(getPrevYear()),
+                        dateToUnix(getCurrYear())).enqueue(new Callback<Indicator>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onResponse(@NonNull Call<Indicator> call,
+                                           @NonNull Response<Indicator> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (response.body().getStatus().equalsIgnoreCase("ok")) {
+                                ((GraphViewObj) item).setEntries(getData(response.body().
+                                        getClosePrices()));
+                                StockViewObj stock = (StockViewObj) stocks.get(position - 1);
+                                stock.setOpen(response.body().getClosePrices().get(0));
+                                notifyDataSetChanged();
+                                Log.i(TAG, "getIndicatorsOnResponse: " + response.body());
                             } else {
-                                try {
-                                    assert response.errorBody() != null;
-                                    Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
-                                            response.errorBody().string());
-                                    ObjectMapper om = new ObjectMapper();
-                                    Error e = om.readValue(response.errorBody().string(), Error.class);
-                                    Log.i(TAG, "error: " + e.getError());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                Snackbar.make(v, "No data",
+                                                Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            }
+                        } else {
+                            try {
+                                assert response.errorBody() != null;
+                                Log.i(TAG, "getIndicatorsOnResponseNotSuccessful: " +
+                                        response.errorBody().string());
+                                ObjectMapper om = new ObjectMapper();
+                                Error e = om.readValue(response.errorBody().string(),
+                                        Error.class);
+                                Log.i(TAG, "error: " + e.getError());
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
                         }
-                        @Override
-                        public void onFailure(@NonNull Call<Indicator> call,
-                                              @NonNull Throwable t) {
-                            Log.i(TAG, "getIndicatorsOnFailure: " + t);
-                        }
-                    });
-                }
+                    }
+                    @Override
+                    public void onFailure(@NonNull Call<Indicator> call,
+                                          @NonNull Throwable t) {
+                        Log.i(TAG, "getIndicatorsOnFailure: " + t);
+                    }
+                });
             });
         }
     }

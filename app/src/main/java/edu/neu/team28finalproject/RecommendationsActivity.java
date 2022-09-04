@@ -1,10 +1,12 @@
 package edu.neu.team28finalproject;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,7 +72,9 @@ public class RecommendationsActivity extends AppCompatActivity {
         //Setting allStocks list using stockscreener
         controller.getAllStockInfo().enqueue(new Callback<List<StockScreener>>() {
             @Override
-            public void onResponse(Call<List<StockScreener>> call, Response<List<StockScreener>> response) {
+            public void onResponse(@NonNull Call<List<StockScreener>> call,
+                                   @NonNull Response<List<StockScreener>> response)
+                    throws NullPointerException{
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     allStocks = new ArrayList<>(response.body());
@@ -85,28 +89,43 @@ public class RecommendationsActivity extends AppCompatActivity {
                             String t = ticker.split("-")[0];
                             if (t.equalsIgnoreCase(stock.getSymbol())) {
                                 String industry = stock.getIndustry();
-                                industryCounts.put(industry, industryCounts.getOrDefault(industry,0) + 1);
+                                try {
+                                    industryCounts.put(industry,
+                                            industryCounts.getOrDefault(industry,0) + 1);
+
+                                } catch (NullPointerException e) {
+                                    Toast.makeText(RecommendationsActivity.this,
+                                            "Failure",
+                                            Toast.LENGTH_LONG).show();
+                                }
                             }
                         }
                     }
                     Log.w(TAG, "onCreate: " + industryCounts);
                     String favIndustry = "";
                     if (industryCounts.size() > 0)
-                        favIndustry = Collections.max(industryCounts.entrySet(), Map.Entry.comparingByValue()).getKey();
+                        favIndustry = Collections.max(industryCounts.entrySet(),
+                                Map.Entry.comparingByValue()).getKey();
 
                     if (!favIndustry.equalsIgnoreCase("")) {
                         //Getting a list of stocks that fall under favIndustry
-                        controller.getStocksByIndustry(favIndustry).enqueue(new Callback<List<StockScreener>>() {
+                        controller.getStocksByIndustry(favIndustry)
+                                .enqueue(new Callback<List<StockScreener>>() {
                             @Override
-                            public void onResponse(Call<List<StockScreener>> call, Response<List<StockScreener>> response) {
+                            public void onResponse(@NonNull Call<List<StockScreener>> call,
+                                                   @NonNull Response<List<StockScreener>>
+                                                           response) {
                                 if (response.isSuccessful()) {
                                     assert response.body() != null;
                                     industryStocks = response.body();
-                                    industryStocks.sort(Comparator.comparing(StockScreener::getVolume).reversed());
-                                    Log.i(TAG,"getStocksByIndustrySuccessful: " + response.body());
+                                    industryStocks.sort(Comparator.comparing
+                                            (StockScreener::getVolume).reversed());
+                                    Log.i(TAG,"getStocksByIndustrySuccessful: "
+                                            + response.body());
 
                                     //Get top 10 stocks with highest volume from industryStocks list
-                                    List<StockScreener> topTen = industryStocks.stream().limit(10).collect(Collectors.toList());
+                                    List<StockScreener> topTen = industryStocks.stream().limit(10)
+                                            .collect(Collectors.toList());
 
                                     if (topTen.size() > 0) {
                                         for (int i = 0; i < topTen.size(); i++) {
@@ -114,23 +133,34 @@ public class RecommendationsActivity extends AppCompatActivity {
                                             String industry = topTen.get(i).getIndustry();
                                             double marketCap = topTen.get(i).getMarketCap();
                                             double volume = topTen.get(i).getVolume();
-                                            double dividends = topTen.get(i).getLastAnnualDividend();
+                                            double dividends =
+                                                    topTen.get(i).getLastAnnualDividend();
                                             //Get price info using getQuote
-                                            controller.getQuote(ticker).enqueue(new Callback<Quote>() {
+                                            controller.getQuote(ticker).enqueue(
+                                                    new Callback<Quote>() {
+                                                @SuppressLint("NotifyDataSetChanged")
                                                 @Override
-                                                public void onResponse(Call<Quote> call, @NonNull Response<Quote> response) {
+                                                public void onResponse(@NonNull Call<Quote> call,
+                                                                       @NonNull Response<Quote>
+                                                                               response) {
                                                     if (response.isSuccessful()) {
                                                         assert response.body() != null;
                                                         if (response.body().getTimestamp() > 0) {
-                                                            current = response.body().getCurrentPrice();
+                                                            current = response.body()
+                                                                    .getCurrentPrice();
                                                             open = response.body().getOpenPrice();
-                                                            Log.i(TAG, "getQuoteSuccessful: " + response.body());
+                                                            Log.i(TAG, "getQuoteSuccessful: "
+                                                                    + response.body());
                                                             Log.i(TAG, "" + current);
                                                             Log.i(TAG, "" + open);
-                                                            RecViewObj rec = new RecViewObj(ticker, current, open, industry, marketCap, volume, dividends);
-                                                            Log.i(TAG, "recViewObj " + rec.toString());
+                                                            RecViewObj rec = new RecViewObj(ticker,
+                                                                    current, open, industry,
+                                                                    marketCap, volume, dividends);
+                                                            Log.i(TAG, "recViewObj "
+                                                                    + rec);
                                                             recList.add(rec);
-                                                            Log.i(TAG, "onResponse: " + recList);
+                                                            Log.i(TAG, "onResponse: "
+                                                                    + recList);
                                                             adapter.notifyDataSetChanged();
                                                             loadingCircle.setVisibility(View.GONE);
                                                             loadingText.setVisibility(View.GONE);
@@ -138,7 +168,8 @@ public class RecommendationsActivity extends AppCompatActivity {
                                                     }  else {
                                                         try {
                                                             assert response.errorBody() != null;
-                                                            Log.i(TAG, "getQuoteOnResponseNotSuccessful: " +
+                                                            Log.i(TAG,
+                                                                    "getQuoteNotSuccessful: " +
                                                                     response.errorBody().string());
                                                         } catch (IOException e) {
                                                             e.printStackTrace();
@@ -147,7 +178,8 @@ public class RecommendationsActivity extends AppCompatActivity {
                                                 }
 
                                                 @Override
-                                                public void onFailure(Call<Quote> call, Throwable t) {
+                                                public void onFailure(@NonNull Call<Quote> call,
+                                                                      @NonNull Throwable t) {
                                                     Log.i(TAG,"getQuoteFailure: " + t);
                                                 }
                                             });
@@ -159,7 +191,8 @@ public class RecommendationsActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onFailure(Call<List<StockScreener>> call, Throwable t) {
+                            public void onFailure(@NonNull Call<List<StockScreener>> call,
+                                                  @NonNull Throwable t) {
                                 Log.i(TAG, "getStocksByIndustryFailure: " + t);
                             }
                         });
@@ -168,7 +201,8 @@ public class RecommendationsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<StockScreener>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<StockScreener>> call,
+                                  @NonNull Throwable t) {
                 Log.i(TAG, "getAllStockInfoFailure: " + t);
             }
         });

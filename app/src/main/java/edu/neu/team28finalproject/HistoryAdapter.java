@@ -16,6 +16,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder>{
 
     public HistoryAdapter(List<HistoryViewObj> historyViewObjList, Context context) {
         this.historyViewObjs = historyViewObjList;
+
         this.context = context;
     }
 
